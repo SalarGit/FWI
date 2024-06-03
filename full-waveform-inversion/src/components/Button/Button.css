@@ -1,0 +1,36 @@
+.layout {
+    display: flex;
+    width: 200px;
+    height: 56px;
+    padding: var(--Padding-Padding-16, 16px) 0px;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: var(--Border-Corner-radius-12, 12px);
+    /* background: var(--Controls-Primary, #3561FE); */
+    background-color: #3561FE;
+
+    /* padding: 0; */
+    border: none;
+
+    margin-top: 32px;
+    margin-bottom: 32px;
+    margin-right: 56px;
+}
+
+.buttonText {
+    color: var(--Controls-Secondary, #FFF);
+    text-align: center;
+    
+    /* Label Medium/Label M - Semibold */
+    font-family: "General Sans Variable";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 150% */
+}
+
+/* .style {
+    border-radius: var(--Border-Corner-radius-12, 12px);
+    background: var(--Controls-Primary, #3561FE);
+} */
