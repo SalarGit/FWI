@@ -22,8 +22,16 @@ export default function Header() {
 
             {/* Buttons Container*/}
             <div className='flex space-x-4'>
-                <button>Compare runs</button>
-                <button>Add new run</button>
+                <button className='w-[200px] h-[56px]
+                    border-2 rounded-xl border-gray-400 text-gray-400'
+                >
+                    Compare runs
+                </button>
+                <button className='w-[200px] h-[56px]
+                    rounded-xl bg-blue-600 text-white'
+                >
+                    Add new run
+                </button>
             </div>
         </div>
     )
