@@ -6,7 +6,7 @@ export default function Header() {
     return (
         // Header Container
         // fix 120px
-        <div className='flex items-center justify-between min-w-screen min-h-[120px]'
+        <div className='flex items-center justify-between min-w-screen'
         >
             {/* Logo & Title Container */}
             <div className='flex items-center'>

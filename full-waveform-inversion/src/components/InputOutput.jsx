@@ -3,7 +3,7 @@ import Output from "./Output.jsx"
 
 export default function InputOutput() {
     return (
-        <div className="flex space-x-6 border border-black">
+        <div className="flex space-x-6">
             <Input />
             <Output />
         </div>
