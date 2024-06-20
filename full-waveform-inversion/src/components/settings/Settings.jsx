@@ -1,5 +1,3 @@
-import info from '../../assets/info.svg';
-
 import Header from '../custom/Header.jsx';
 import Title from '../custom/Title.jsx';
 
@@ -58,7 +56,7 @@ export default function Settings() {
                 >
                     <Model model="forward" modelType="Integral"/>
                     <div class="border border-violet-200" />
-                    <Model model="minimisation" modelType="GradientDescent"/>
+                    <Model model="minimisation" modelType="ConjugateGradient"/>
                 </div>
             </div>
         </div>
