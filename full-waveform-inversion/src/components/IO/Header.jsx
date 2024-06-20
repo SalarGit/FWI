@@ -1,6 +1,6 @@
 // import '../App.css'
-import '../index.css'
-import logo from '../assets/fwi-logo.png'
+import '../../index.css'
+import logo from '../../assets/fwi-logo.png'
 
 export default function Header() {
     return (

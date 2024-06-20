@@ -1,30 +1,30 @@
 import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
 import './index.css'
 
-import Header from './components/Header.jsx';
+import Header from './components/IO/Header.jsx';
 import Settings from './components/settings/Settings.jsx';
-import InputOutput from './components/InputOutput.jsx';
+import Input from './components/IO/Input.jsx';
+import Output from './components/IO/Output.jsx';
 
 function App() {
-        // const [count, setCount] = useState(0)
-        // bg-[#F4F6FB]
-  return (
+    return (
         <div className='flex flex-col min-h-screen bg-[#F4F6FB]
             px-14 py-8 space-y-6'
         >
             <Header />
             {/* Settings */}
             <Settings />
-            {/* I/O */}
-            <InputOutput />
+            {/* IO Container */}
+            <div className="flex space-x-6">
+                <Input />
+                <Output />
+            </div>
+            {/* <InputOutput /> */}
             {/* Input */}
             {/* Ouput */}
 
         </div>
-  )
+    )
 }
 
 export default App
