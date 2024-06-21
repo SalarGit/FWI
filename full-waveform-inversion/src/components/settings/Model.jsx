@@ -1,4 +1,5 @@
-import info from '../../assets/info.svg';
+import infoSvg from '../../assets/info.svg';
+import info from '../../assets/info.png';
 import infoBlue from '../../assets/info-blue.png';
 import infoBlueSvg from '../../assets/info-blue.svg';
 
@@ -11,15 +12,15 @@ export default function Model({ model, modelType }) {
     // const infoIcon = 
 
     return (
-        <div className="flex flex-col space-y-[34px] relative">
+        <div className="flex flex-col space-y-[34px]">
             <div className="flex space-x-3">
                 <Title title={title}/>
-                <div className="group hover:w-[34px]">
-                    {/* <img src={info} alt="info.svg" 
-                    /> */}
-                    <img src={infoBlueSvg} alt="info-blue.svg" 
-                        className="absolute bg-blue-50 border border-violet-200 rounded-xl w-[34px] p-1"
+                <div className="relative group flex flex-col items-center justify-center">
+                    <img src={info} alt="info.png" 
                     />
+                    {/* <img src={infoBlueSvg} alt="info-blue.svg" 
+                        className="absolute bg-blue-50 border border-violet-200 rounded-xl w-[34px] p-1"
+                    /> */}
                     <ToolTip />
                 </div>
             </div>

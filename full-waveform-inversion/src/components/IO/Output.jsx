@@ -17,8 +17,10 @@ export default function Output() {
         handleSetIsOpen();
     }
 
+    // Create comp that outputs array of outputTypes
+    // right-6 top-[90px]
     const dropDown = !isOpen ? null :
-        <div className="absolute bg-white w-[277px] right-6 top-[90px]
+        <div className="absolute bg-white w-[277px]
             flex flex-col space-y-5 py-5 px-3
             border border-violet-200 rounded-xl"
             >
@@ -49,9 +51,9 @@ export default function Output() {
     
     const dropDownIcon = !isOpen ? <img src={closedIcon} alt="drop-icon.png" /> : <img src={closedIcon} alt="drop-icon.png" className="rotate-180" />
 
-
+                // relative
     return (
-        <div class="relative flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2 h-[530px]">
+        <div class="flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2 h-[530px]">
             {/* Upper Part */}
             {/* Container */}
             <div className="flex justify-between">
