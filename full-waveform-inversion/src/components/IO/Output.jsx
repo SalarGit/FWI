@@ -18,32 +18,32 @@ export default function Output() {
     }
 
     // Create comp that outputs array of outputTypes
-    // right-6 top-[90px]
     const dropDown = !isOpen ? null :
+    // Position from Output container: right-6 top-[90px]
         <div className="absolute bg-white w-[277px]
-            flex flex-col space-y-5 py-5 px-3
+            flex flex-col space-y-5 py-5 px-3 left-[0px] right-[0px] top-[90px]
             border border-violet-200 rounded-xl"
-            >
+        >
             {/* <button className="text-left px-1 rounded-md
                 hover:bg-gradient-to-r from-violet-200 to-white hover:-translate-y-0.5"
             >Output values</button> */}
             <div className="group">
-                <button className="text-left px-1 rounded-md group-hover:-translate-y-0.5"
+                <button className="text-left px-1 rounded-md" // w-full
                     onClick={() => handleSetOutputType("Output values")}
                 >Output values</button>
             </div>
             <div className="group">
-                <button className="text-left px-1 rounded-md group-hover:-translate-y-0.5"
+                <button className="text-left px-1 rounded-md w-full"
                     onClick={() => handleSetOutputType("Residual graph")}
                 >Residual graph</button>
             </div>
             <div className="group">
-                <button className="text-left px-1 rounded-md group-hover:-translate-y-0.5"
+                <button className="text-left px-1 rounded-md w-full"
                     onClick={() => handleSetOutputType("Residual field")}
                 >Residual field</button>
             </div>
             <div className="group">
-                <button className="text-left px-1 rounded-md group-hover:-translate-y-0.5"
+                <button className="text-left px-1 rounded-md w-full"
                     onClick={() => handleSetOutputType("Quality metrics")}
                 >Quality metrics</button>
             </div>
@@ -59,17 +59,18 @@ export default function Output() {
             <div className="flex justify-between">
                 <Header header="Calculated output"/>
 
-                <button onClick={handleSetIsOpen}
-                    className="flex items-center justify-between pl-4 pr-2 my-4 mr-6
-                    border border-violet-200 rounded-xl w-[277px]"
-                >
-                    <p>{outputType}</p>
-
-                    {dropDownIcon}
-                </button>
+                <div className="relative">
+                    <button onClick={handleSetIsOpen}
+                        className="flex items-center justify-between pl-4 pr-2 py-4 my-4 mr-6
+                        border border-violet-200 rounded-xl w-[277px]"
+                    >
+                        <p>{outputType}</p>
+                        {dropDownIcon}
+                    </button>
+                    {dropDown}
+                </div>
 
                 {/* Output types drop-down menu */}
-                {dropDown}
                 
             </div>
 

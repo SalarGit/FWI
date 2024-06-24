@@ -16,12 +16,11 @@ export default function Model({ model, modelType }) {
             <div className="flex space-x-3">
                 <Title title={title}/>
                 <div className="relative group flex flex-col items-center justify-center">
-                    <img src={info} alt="info.png" 
-                    />
+                    <img src={info} alt="info.png"/>
                     {/* <img src={infoBlueSvg} alt="info-blue.svg" 
                         className="absolute bg-blue-50 border border-violet-200 rounded-xl w-[34px] p-1"
                     /> */}
-                    <ToolTip />
+                    <ToolTip model={model} modelType ={modelType}/>
                 </div>
             </div>
             <p className="text-lg font-medium">{modelType}</p>
