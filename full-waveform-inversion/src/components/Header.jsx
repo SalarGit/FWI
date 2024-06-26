@@ -5,6 +5,7 @@ import logo from '../assets/fwi-logo.png'
 
 import H1 from './custom/H1.jsx';
 import UpperPart from './custom/UpperPart.jsx';
+import Child from './custom/Child.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
@@ -49,11 +50,13 @@ export default function Header() {
                         <div className='absolute w-[604px] mt-4 right-0
                             bg-white border border-violet-200 rounded-xl'
                         >
-                            <UpperPart heading='New run' styling='p-6' side={'t'}/>
+                            <UpperPart heading='New run' styling='p-6' side={'t'}>
+                                <p>Ay yo shut yo mous</p>
+                            </UpperPart>
 
                             {/* Lower Part */}
                             <div className='p-6'>
-
+                                
                             </div>
                         </div>
                     )}

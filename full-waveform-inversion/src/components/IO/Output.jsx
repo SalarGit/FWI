@@ -3,6 +3,7 @@ import EmptyGraphs from "./EmptyGraphs.jsx";
 import closedIcon from "../../assets/drop-icon.png";
 
 import { useState } from "react";
+import UpperPart from "../custom/UpperPart.jsx";
 
 export default function Output() {
     const [isOpen, setIsOpen] = useState(false);
@@ -57,12 +58,15 @@ export default function Output() {
             {/* Upper Part */}
             {/* Container */}
             <div className="flex justify-between items-center py-4 pl-8 pr-6">
+                {/* <UpperPart heading="Calculated output" side="t">
+
+                </UpperPart> */}
                 <H1 heading="Calculated output"/>
 
                 <div className="relative">
                     <button onClick={handleSetIsOpen}
                                                                                     // my-4 mr-6
-                        className="flex items-center justify-between pl-4 pr-2 py-4 
+                        className="flex items-center justify-between pl-4 pr-2 py-3 
                         border border-violet-200 rounded-xl w-[277px]"
                     >
                         <p>{outputType}</p>
