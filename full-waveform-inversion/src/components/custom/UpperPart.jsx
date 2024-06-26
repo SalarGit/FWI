@@ -1,11 +1,13 @@
 import H1 from "./H1.jsx";
 import Border from "./Border.jsx";
 
-export default function UpperPart({children, heading, side, styling="py-6 pl-8"}) {
+export default function UpperPart({children, heading, side, styling="pl-8 py-6"}) {
     return (
         <div>
-            <H1 heading={heading} styling={styling}/>
-            {children}
+            <div className={`flex items-center justify-between ${styling}`}>
+                <H1 heading={heading}/>
+                {children} {/* Sometimes there's no children. */}
+            </div>
             <Border side={side}/>
         </div>
     )

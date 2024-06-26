@@ -54,19 +54,13 @@ export default function Output() {
 
                 // relative
     return (
-        <div class="flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2 h-[530px]">
-            {/* Upper Part */}
-            {/* Container */}
-            <div className="flex justify-between items-center py-4 pl-8 pr-6">
-                {/* <UpperPart heading="Calculated output" side="t">
-
-                </UpperPart> */}
-                <H1 heading="Calculated output"/>
-
+        <div class="flex flex-col bg-white border border-violet-200 pl- rounded-3xl w-1/2 h-[530px]">
+            <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-3" side="t">
                 <div className="relative">
                     <button onClick={handleSetIsOpen}
                                                                                     // my-4 mr-6
-                        className="flex items-center justify-between pl-4 pr-2 py-3 
+                                                                                    // pl-1 pt-2 pr-3 pb-4
+                        className="flex items-center justify-between h-[24px]
                         border border-violet-200 rounded-xl w-[277px]"
                     >
                         <p>{outputType}</p>
@@ -74,15 +68,13 @@ export default function Output() {
                     </button>
                     {dropDown}
                 </div>
+            </UpperPart>
+
+
+                
 
                 {/* Output types drop-down menu */}
                 
-            </div>
-
-            {/* Border */}
-            <div class="border-t border-violet-200" />
-
-            {/* Lower Part */}
             <EmptyGraphs/>
         </div>
     )

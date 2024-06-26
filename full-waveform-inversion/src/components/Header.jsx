@@ -5,7 +5,6 @@ import logo from '../assets/fwi-logo.png'
 
 import H1 from './custom/H1.jsx';
 import UpperPart from './custom/UpperPart.jsx';
-import Child from './custom/Child.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
