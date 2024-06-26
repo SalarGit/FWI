@@ -56,12 +56,13 @@ export default function Output() {
         <div class="flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2 h-[530px]">
             {/* Upper Part */}
             {/* Container */}
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center py-4 pl-8 pr-6">
                 <H1 heading="Calculated output"/>
 
                 <div className="relative">
                     <button onClick={handleSetIsOpen}
-                        className="flex items-center justify-between pl-4 pr-2 py-4 my-4 mr-6
+                                                                                    // my-4 mr-6
+                        className="flex items-center justify-between pl-4 pr-2 py-4 
                         border border-violet-200 rounded-xl w-[277px]"
                     >
                         <p>{outputType}</p>

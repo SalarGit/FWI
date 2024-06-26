@@ -3,6 +3,9 @@ import { useState } from 'react';
 import '../index.css'
 import logo from '../assets/fwi-logo.png'
 
+import H1 from './custom/H1.jsx';
+import UpperPart from './custom/UpperPart.jsx';
+
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
 
@@ -43,11 +46,15 @@ export default function Header() {
                     </button>
                     {addingNewRun && (
                         // New Run Container
-                        <div className='absolute w-[604px] p-6 mt-4 right-0
+                        <div className='absolute w-[604px] mt-4 right-0
                             bg-white border border-violet-200 rounded-xl'
                         >
-                            {/* Top Part */}
+                            <UpperPart heading='New run' styling='p-6' side={'t'}/>
 
+                            {/* Lower Part */}
+                            <div className='p-6'>
+
+                            </div>
                         </div>
                     )}
                 </div>

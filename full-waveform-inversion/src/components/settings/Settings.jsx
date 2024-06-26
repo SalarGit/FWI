@@ -3,6 +3,7 @@ import H2 from '../custom/H2.jsx';
 
 import Model from './Model.jsx';
 import Process from './Process.jsx';
+import UpperPart from '../custom/UpperPart.jsx';
 
 export default function Settings() {
     return (
@@ -10,8 +11,7 @@ export default function Settings() {
         <div class="flex flex-col bg-white border border-violet-200 rounded-3xl">
             
             {/* Upper Part */}
-            <H1 heading="Settings"/>
-            <div class="border-t border-violet-200" />
+            <UpperPart heading={"Settings"} side={"t"}/>
 
             {/* Lower Part */}
             <div className="flex space-x-6 py-8 px-6">

@@ -1,5 +1,5 @@
-export default function H1({ heading }) {
+export default function H1({ heading, styling=""}) {
     return (
-        <p className="py-8 pl-6 text-lg font-bold">{heading}</p>
+        <p className={`text-lg font-bold ${styling}`}>{heading}</p>
     )
 }
