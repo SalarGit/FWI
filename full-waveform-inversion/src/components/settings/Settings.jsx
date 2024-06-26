@@ -1,5 +1,5 @@
-import Header from '../custom/Header.jsx';
-import Title from '../custom/Title.jsx';
+import H1 from '../custom/H1.jsx';
+import H2 from '../custom/H2.jsx';
 
 import Model from './Model.jsx';
 import Process from './Process.jsx';
@@ -10,7 +10,7 @@ export default function Settings() {
         <div class="flex flex-col bg-white border border-violet-200 rounded-3xl">
             
             {/* Upper Part */}
-            <Header header="Settings"/>
+            <H1 heading="Settings"/>
             <div class="border-t border-violet-200" />
 
             {/* Lower Part */}
@@ -20,7 +20,7 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 h-[166px] w-[332px]"
                 >
-                    <Title title="case folder"/>
+                    <H2 heading="case folder"/>
                     <div className="text-lg font-medium break-all line-clamp-2">
                         /Users/Username/Documents/Work/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/
                     </div>
@@ -31,7 +31,7 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 h-[166px] w-[594px]"
                 >
-                    <Title title="processing steps"/>
+                    <H2 heading="processing steps"/>
 
                     {/* Processes container */}
                     <div className="flex space-x-3">
@@ -46,7 +46,7 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"
                 >
-                    <Title title="threads/cores:"/>
+                    <H2 heading="threads/cores:"/>
                     <p className="text-lg font-medium">1</p>
                 </div>
 

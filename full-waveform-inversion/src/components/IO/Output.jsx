@@ -1,4 +1,4 @@
-import Header from "../custom/Header.jsx";
+import H1 from "../custom/H1.jsx";
 import EmptyGraphs from "./EmptyGraphs.jsx";
 import closedIcon from "../../assets/drop-icon.png";
 
@@ -9,7 +9,7 @@ export default function Output() {
     const [outputType, setOutputType] = useState("Output values");
 
     function handleSetIsOpen() {
-        setIsOpen((prevStatus) => prevStatus ? false : true);
+        setIsOpen((prevState) => prevState ? false : true);
     }
 
     function handleSetOutputType(type) {
@@ -57,7 +57,7 @@ export default function Output() {
             {/* Upper Part */}
             {/* Container */}
             <div className="flex justify-between">
-                <Header header="Calculated output"/>
+                <H1 heading="Calculated output"/>
 
                 <div className="relative">
                     <button onClick={handleSetIsOpen}

@@ -11,9 +11,9 @@ export default function ToolTip({ model, modelType }) {
             
             toolTip = (
                 <div className="flex flex-col space-y-4">
-                    <DataBlock header={"Iteration 1"} dataObject={conjugateGradientFirst} />
+                    <DataBlock heading={"Iteration 1"} dataObject={conjugateGradientFirst} />
                     <div className="border-t border-violet-200" />
-                    <DataBlock header={"DeltaAmplification"} dataObject={conjugateGradientSecond} />
+                    <DataBlock heading={"DeltaAmplification"} dataObject={conjugateGradientSecond} />
                 </div>
             )
         }
@@ -29,7 +29,7 @@ export default function ToolTip({ model, modelType }) {
             const evolution = {nChildrenPerGeneration: 100, nGeneration: 77, toleranceOver: "5e-05"}; // toleranceOver would be a number
 
             toolTip = (
-                <DataBlock header="" dataObject={evolution}/> 
+                <DataBlock heading="" dataObject={evolution}/> 
             );
         }
         else if (modelType === "Integral") {
@@ -38,9 +38,9 @@ export default function ToolTip({ model, modelType }) {
 
             toolTip = (
                 <div className="flex flex-col space-y-4">
-                    <DataBlock header="PMLWidthFactor" dataObject={integralFirst} />
+                    <DataBlock heading="PMLWidthFactor" dataObject={integralFirst} />
                     <div className="border-t border-violet-200" />
-                    <DataBlock header="SourceParameter" dataObject={integralSecond} />
+                    <DataBlock heading="SourceParameter" dataObject={integralSecond} />
                 </div>
             );
         }
