@@ -52,29 +52,28 @@ export default function Output() {
     
     const dropDownIcon = !isOpen ? <img src={closedIcon} alt="drop-icon.png" /> : <img src={closedIcon} alt="drop-icon.png" className="rotate-180" />
 
-                // relative
+    // relative
     return (
         <div class="flex flex-col bg-white border border-violet-200 pl- rounded-3xl w-1/2 h-[530px]">
-            <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-3" side="t">
+            <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-3">
                 <div className="relative">
                     <button onClick={handleSetIsOpen}
-                                                                                    // my-4 mr-6
-                                                                                    // pl-1 pt-2 pr-3 pb-4
-                        className="flex items-center justify-between h-[24px]
-                        border border-violet-200 rounded-xl w-[277px]"
+                        // my-4 mr-6
+                        // pl-1 pt-2 pr-3 pb-4
+                        // border inside, force height
+                        className="flex items-center justify-between 
+                        w-[277px] h-[48px] pl-4 pr-2
+                        border border-violet-200 rounded-xl"
                     >
                         <p>{outputType}</p>
                         {dropDownIcon}
                     </button>
+
+                    {/* Output types drop-down menu */}
                     {dropDown}
                 </div>
             </UpperPart>
-
-
-                
-
-                {/* Output types drop-down menu */}
-                
+  
             <EmptyGraphs/>
         </div>
     )

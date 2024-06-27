@@ -11,7 +11,7 @@ export default function Settings() {
         <div class="flex flex-col bg-white border border-violet-200 rounded-3xl">
             
             {/* Upper Part */}
-            <UpperPart heading={"Settings"} side={"t"}/>
+            <UpperPart heading={"Settings"}/>
 
             {/* Lower Part */}
             <div className="flex space-x-6 py-8 px-6">

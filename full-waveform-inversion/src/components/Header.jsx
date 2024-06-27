@@ -12,7 +12,6 @@ export default function Header() {
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
-
     return (
         // Header Container
         // fix 120px
@@ -32,6 +31,7 @@ export default function Header() {
 
             {/* Buttons Container*/}
             <div className='flex space-x-4'>
+            {/* Border inside, force height */}
                 <button className='w-[200px] h-[56px]
                     border-2 rounded-xl border-gray-400 text-gray-400'
                 >
@@ -49,7 +49,7 @@ export default function Header() {
                         <div className='absolute w-[604px] mt-4 right-0
                             bg-white border border-violet-200 rounded-xl'
                         >
-                            <UpperPart heading='New run' styling='p-6' side={'t'}>
+                            <UpperPart heading='New run' styling='p-6'>
                                 <p>Ay yo shut yo mous</p>
                             </UpperPart>
 
