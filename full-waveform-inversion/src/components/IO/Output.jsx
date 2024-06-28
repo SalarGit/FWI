@@ -55,7 +55,7 @@ export default function Output() {
     // relative
     return (
         <div class="flex flex-col bg-white border border-violet-200 pl- rounded-3xl w-1/2 h-[530px]">
-            <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-3">
+            <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-4">
                 <div className="relative">
                     <button onClick={handleSetIsOpen}
                         // my-4 mr-6
