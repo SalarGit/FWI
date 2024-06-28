@@ -22,7 +22,7 @@ export default function Output() {
     const dropDown = !isOpen ? null :
     // Position from Output container: right-6 top-[90px]
         <div className="absolute bg-white w-[277px]
-            flex flex-col space-y-5 py-5 px-3 left-[0px] right-[0px] top-[90px]
+            flex flex-col space-y-5 py-5 px-3 left-[0px] right-[0px] top-[57px]
             border border-violet-200 rounded-xl"
         >
             {/* <button className="text-left px-1 rounded-md
@@ -68,12 +68,15 @@ export default function Output() {
                         <p>{outputType}</p>
                         {dropDownIcon}
                     </button>
-
-                    {/* Output types drop-down menu */}
                     {dropDown}
                 </div>
             </UpperPart>
-  
+
+
+                
+
+                {/* Output types drop-down menu */}
+                
             <EmptyGraphs/>
         </div>
     )

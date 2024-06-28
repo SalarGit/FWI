@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-import '../index.css'
-import logo from '../assets/fwi-logo.png'
+import '../index.css';
+import logo from '../assets/fwi-logo.png';
+import close from '../assets/close.png';
+import closeBig from '../assets/close-big.png';
 
 import H1 from './custom/H1.jsx';
 import UpperPart from './custom/UpperPart.jsx';
@@ -50,7 +52,11 @@ export default function Header() {
                             bg-white border border-violet-200 rounded-xl'
                         >
                             <UpperPart heading='New run' styling='p-6'>
-                                <p>Ay yo shut yo mous</p>
+                                <button onClick={handleSetAddingNewRun}
+                                    className='hover:bg-violet-200 duration-200 rounded-md'
+                                >
+                                    <img src={closeBig} alt="close-big.png" />
+                                </button>
                             </UpperPart>
 
                             {/* Lower Part */}
