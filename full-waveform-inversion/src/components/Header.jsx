@@ -49,7 +49,7 @@ export default function Header() {
                     {addingNewRun && (
                         // New Run Container
                         <div className='absolute w-[604px] mt-4 right-0
-                            bg-white border border-violet-200 rounded-xl'
+                            bg-white border border-violet-200 rounded-2xl'
                         >
                             <UpperPart heading='New run' styling='p-6'>
                                 <button onClick={handleSetAddingNewRun}
@@ -60,8 +60,8 @@ export default function Header() {
                             </UpperPart>
 
                             {/* Lower Part */}
-                            <div className='p-6'>
-                                
+                            <div className='m-6 bg-[#F1F4FF] rounded-3xl'>
+                                bruh
                             </div>
                         </div>
                     )}
