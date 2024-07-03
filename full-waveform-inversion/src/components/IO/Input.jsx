@@ -5,7 +5,7 @@ import EmptyGraphs from "./EmptyGraphs.jsx";
 
 export default function Input() {
     return (
-        <div class="flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2">
+        <div className="flex flex-col bg-white border border-violet-200 rounded-3xl w-1/2">
             <UpperPart heading={"Original input"}/>
 
             <EmptyGraphs />

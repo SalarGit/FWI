@@ -50,6 +50,7 @@ export default function ToolTip({ model, modelType }) {
     return (
         // Tooltip container
         // w-max
+        // z-10
         <div className="absolute w-max top-[33px] p-4 z-10
             bg-white rounded-2xl border border-violet-200 shadow
             hidden group-hover:block"

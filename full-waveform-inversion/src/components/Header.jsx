@@ -5,8 +5,13 @@ import logo from '../assets/fwi-logo.png';
 import close from '../assets/close.png';
 import closeBig from '../assets/close-big.png';
 
-import H1 from './custom/H1.jsx';
+import H2 from './custom/H2.jsx';
 import UpperPart from './custom/UpperPart.jsx';
+import Border from './custom/Border.jsx';
+import InputBox from './custom/InputBox.jsx';
+import SelectEditButton from './custom/buttons/SelectEditButton.jsx';
+
+import Test from './Test.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
@@ -49,7 +54,8 @@ export default function Header() {
                     {addingNewRun && (
                         // New Run Container
                         <div className='absolute w-[604px] mt-4 right-0
-                            bg-white border border-violet-200 rounded-2xl'
+                            bg-white border border-violet-200 rounded-2xl
+                            z-20'
                         >
                             <UpperPart heading='New run' styling='p-6'>
                                 <button onClick={handleSetAddingNewRun}
@@ -59,9 +65,61 @@ export default function Header() {
                                 </button>
                             </UpperPart>
 
-                            {/* Lower Part */}
-                            <div className='m-6 bg-[#F1F4FF] rounded-3xl'>
-                                bruh
+                            {/* Lower Part Container*/}
+                            <div className='flex flex-col space-y-6 m-6'>
+
+                                {/* Upper Part Container*/}
+                                <div className='flex flex-col space-y-3 p-6
+                                    bg-[#F1F4FF] rounded-3xl'
+                                >
+                                    <H2 heading="Case folder" />
+
+                                    {/* Input field */}
+                                    {/* <div className='flex items-center justify-between h-12 py-2 pr-2 pl-4
+                                        bg-white border border-violet-200 rounded-xl'> */}
+                                    <InputBox>
+                                        <p className="break-all line-clamp-1">
+                                            /home/user/default
+                                        </p>
+                                        <SelectEditButton title="Select folder"/>
+                                    </InputBox>
+                                    {/* </div> */}
+
+                                    {/* Data */}
+                                    <div className='flex justify-between pt-1'>
+                                        <div className='flex space-x-3'>
+                                            <p className="text-[#7F7F7F] text-sm font-normal">Grid size:</p>
+                                            <p className="text-sm font-normal">64 x 32</p>
+                                        </div>
+                                        <div className='flex space-x-3'>
+                                            <p className="text-[#7F7F7F] text-sm font-normal">Subsurface model:</p>
+                                            <p className="text-sm font-normal">temple_64_32</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <Border />
+                                
+                                {/* Middle Part Container*/}
+                                <div className='flex space-x-4'>
+                                    <div className='flex flex-col space-y-3 w-1/2'>
+                                        <H2 heading="Forward model"/>
+                                        {/* <InputBox>
+                                            <p>Integral</p>
+                                            <SelectEditButton title="Edit"/>
+                                        </InputBox> */}
+                                        <Test></Test>
+                                    </div>
+                                    <div className='flex flex-col space-y-3  w-1/2'>
+                                        <H2 heading="Minimisation model"/>
+                                        <InputBox>
+                                            <p>ConjugateGradient</p>
+                                            <SelectEditButton title="Edit"/>
+                                        </InputBox>
+                                    </div>
+                                </div>
+
+                                {/* Lower Part Container */}
                             </div>
                         </div>
                     )}

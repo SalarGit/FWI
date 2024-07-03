@@ -8,7 +8,7 @@ import UpperPart from '../custom/UpperPart.jsx';
 export default function Settings() {
     return (
         // Settings Container
-        <div class="flex flex-col bg-white border border-violet-200 rounded-3xl">
+        <div className="flex flex-col bg-white border border-violet-200 rounded-3xl">
             
             {/* Upper Part */}
             <UpperPart heading={"Settings"}/>
@@ -20,10 +20,11 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 h-[166px] w-[332px]"
                 >
-                    <H2 heading="case folder"/>
-                    <div className="text-lg font-medium break-all line-clamp-2">
+                    <H2 heading="case folder" styling='uppercase'/>
+                    {/* Used to be a div element. IDK why */}
+                    <p className="text-lg font-medium break-all line-clamp-2">
                         /Users/Username/Documents/Work/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/
-                    </div>
+                    </p>
                 </div>
             
                 {/* PROCESSING STEPS container */}
@@ -31,7 +32,7 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 h-[166px] w-[594px]"
                 >
-                    <H2 heading="processing steps"/>
+                    <H2 heading="processing steps" styling='uppercase'/>
 
                     {/* Processes container */}
                     <div className="flex space-x-3">
@@ -46,7 +47,7 @@ export default function Settings() {
                     border border-violet-200 rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"
                 >
-                    <H2 heading="threads/cores:"/>
+                    <H2 heading="threads/cores:" styling='uppercase'/>
                     <p className="text-lg font-medium">1</p>
                 </div>
 
@@ -55,7 +56,7 @@ export default function Settings() {
                     px-8 pt-8 pb-[46px] h-[166px] w-[538px]"
                 >
                     <Model model="forward" modelType="Evolution" />
-                    <div class="border-l border-violet-200" />
+                    <div className="border-l border-violet-200" />
                     <Model model="minimisation" modelType="ConjugateGradient" />
                 </div>
             </div>
