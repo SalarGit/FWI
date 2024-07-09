@@ -2,8 +2,8 @@ import H1 from '../custom/H1.jsx';
 import H2 from '../custom/H2.jsx';
 
 import Model from './Model.jsx';
-import Process from './Process.jsx';
 import UpperPart from '../custom/UpperPart.jsx';
+import Chip from '../custom/Chip.jsx';
 
 export default function Settings() {
     return (
@@ -36,9 +36,9 @@ export default function Settings() {
 
                     {/* Processes container */}
                     <div className="flex space-x-3">
-                        <Process processType="Pre-Processing"/>
-                        <Process processType="Processing"/>
-                        <Process processType="Post-Processing"/>
+                        <Chip title="Pre-Processing"/>
+                        <Chip title="Processing"/>
+                        <Chip title="Post-Processing"/>
                     </div>
                 </div>
 

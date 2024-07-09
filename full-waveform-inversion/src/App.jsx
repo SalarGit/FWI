@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './index.css'
 
-import Header from './components/Header.jsx';
+import Header from './components/header/Header.jsx';
 import Settings from './components/settings/Settings.jsx';
 import Input from './components/IO/Input.jsx';
 import Output from './components/IO/Output.jsx';
