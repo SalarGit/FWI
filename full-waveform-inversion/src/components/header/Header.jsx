@@ -13,15 +13,16 @@ import Border from '../custom/Border.jsx';
 import InputBox from '../custom/InputBox.jsx';
 import SelectEditButton from '../custom/buttons/SelectEditButton.jsx';
 import Chip from '../custom/Chip.jsx';
-import Test from '../Test.jsx';
 import NewRun from './NewRun.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
+    
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
+
 
     return (
         // Header Container
