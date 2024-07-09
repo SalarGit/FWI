@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+input:focus {
+  outline: none;
+}
+
 /* #root {
   width: 100%;
   height: 100%;

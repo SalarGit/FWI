@@ -9,7 +9,7 @@ export default function SelectBox({ isOpen, onOpenClose, selectedItem }) {
             // pl-1 pt-2 pr-3 pb-4
             // border inside, force height
             className="flex items-center justify-between
-            w-[277px] h-[48px] pl-4 pr-2
+            w-full h-[48px] pl-4 pr-2
             border border-violet-200 rounded-xl"
         >
             <p>{selectedItem}</p>

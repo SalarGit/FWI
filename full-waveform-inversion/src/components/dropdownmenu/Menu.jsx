@@ -9,7 +9,7 @@ export default function Menu({ items, onSelect }) {
                     // <div className="group">
                         <button onClick={() => onSelect(item)}
                             className="py-2 px-[10px] text-left rounded-md
-                            hover:bg-[#F1F4FF] hover:text-[#3561FE] duration-100" // w-full
+                            hover:bg-[#F1F4FF] hover:text-[#3561FE] duration-75" // w-full
                         >
                             {item}
                         </button>

@@ -10,15 +10,19 @@ import UpperPart from './custom/UpperPart.jsx';
 import Border from './custom/Border.jsx';
 import InputBox from './custom/InputBox.jsx';
 import SelectEditButton from './custom/buttons/SelectEditButton.jsx';
-
-import Test from './Test.jsx';
+import DropdownMenu from './dropdownMenu/DropdownMenu.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
+    const [folder, setFolder] = useState("");
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
+
+    const forwardModelItems = ['FiniteDifference', 'Integral'];
+    const minimisationModelItems = ['GradientDescent', 'ConjugateGradient', 'Evolution', 'Random', 'ParticleSwarm', 'Proportional'];
+
     return (
         // Header Container
         // fix 120px
@@ -51,15 +55,16 @@ export default function Header() {
                     >
                         Add new run
                     </button>
+
+                    {/* New Run Container */}
                     {addingNewRun && (
-                        // New Run Container
                         <div className='absolute w-[604px] mt-4 right-0
                             bg-white border border-violet-200 rounded-2xl
                             z-20'
                         >
                             <UpperPart heading='New run' styling='p-6'>
                                 <button onClick={handleSetAddingNewRun}
-                                    className='hover:bg-violet-200 duration-200 rounded-md'
+                                    className='hover:bg-[#F1F4FF] duration-200 rounded-md'
                                 >
                                     <img src={closeBig} alt="close-big.png" />
                                 </button>
@@ -75,14 +80,22 @@ export default function Header() {
                                     <H2 heading="Case folder" />
 
                                     {/* Input field */}
-                                    {/* <div className='flex items-center justify-between h-12 py-2 pr-2 pl-4
-                                        bg-white border border-violet-200 rounded-xl'> */}
-                                    <InputBox>
+                                    <div className='relative'>
+                                        {/* className="break-all line-clamp-1" */}
+                                        <input type='string' maxLength={15} required value={folder} onChange={(e) => setFolder(e.target.value)}
+                                            className="flex items-center justify-between
+                                            w-full h-[48px] pl-4 pr-2
+                                            border border-violet-200 rounded-xl"
+                                        />
+                                        <SelectEditButton title="Select folder" absoluteStyling="right-2 top-2"/>
+                                    </div>
+
+                                    {/* <InputBox>
                                         <p className="break-all line-clamp-1">
                                             /home/user/default
                                         </p>
                                         <SelectEditButton title="Select folder"/>
-                                    </InputBox>
+                                    </InputBox> */}
                                     {/* </div> */}
 
                                     {/* Data */}
@@ -104,18 +117,15 @@ export default function Header() {
                                 <div className='flex space-x-4'>
                                     <div className='flex flex-col space-y-3 w-1/2'>
                                         <H2 heading="Forward model"/>
-                                        {/* <InputBox>
-                                            <p>Integral</p>
-                                            <SelectEditButton title="Edit"/>
-                                        </InputBox> */}
-                                        <Test></Test>
+                                        <DropdownMenu initialValue="Integral" items={forwardModelItems}>
+                                            <SelectEditButton title="Edit" absoluteStyling="right-10 top-2"/>
+                                        </DropdownMenu>
                                     </div>
-                                    <div className='flex flex-col space-y-3  w-1/2'>
+                                    <div className='flex flex-col space-y-3 w-1/2'>
                                         <H2 heading="Minimisation model"/>
-                                        <InputBox>
-                                            <p>ConjugateGradient</p>
-                                            <SelectEditButton title="Edit"/>
-                                        </InputBox>
+                                        <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems}>
+                                            <SelectEditButton title="Edit" absoluteStyling="right-10 top-2"/>
+                                        </DropdownMenu>
                                     </div>
                                 </div>
 

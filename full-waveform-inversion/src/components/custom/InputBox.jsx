@@ -13,7 +13,6 @@ export default function InputBox({ children, onClickInputBox }) {
             bg-white border border-violet-200 rounded-xl'
         >
             {children}
-            {bruh}
         </div>
     )
 }
