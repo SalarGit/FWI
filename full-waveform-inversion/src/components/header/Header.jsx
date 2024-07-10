@@ -2,17 +2,6 @@ import { useState } from 'react';
 
 import '../../index.css';
 import logo from '../../assets/fwi-logo.png';
-import close from '../../assets/close.png';
-import closeBig from '../../assets/close-big.png';
-import plus24px from '../../assets/plus24px.svg';
-import minus from '../../assets/minus.svg';
-
-import H2 from '../custom/H2.jsx';
-import UpperPart from '../custom/UpperPart.jsx';
-import Border from '../custom/Border.jsx';
-import InputBox from '../custom/InputBox.jsx';
-import SelectEditButton from '../custom/buttons/SelectEditButton.jsx';
-import Chip from '../custom/Chip.jsx';
 import NewRun from './NewRun.jsx';
 
 export default function Header() {

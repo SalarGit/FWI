@@ -1,20 +1,17 @@
 import { useState } from 'react';
 
 import '../../index.css';
-import logo from '../../assets/fwi-logo.png';
-import close from '../../assets/close.png';
-import closeBig from '../../assets/close-big.png';
-import plus24px from '../../assets/plus24px.svg';
-import minus from '../../assets/minus.svg';
+
 
 import H2 from '../custom/H2.jsx';
 import UpperPart from '../custom/UpperPart.jsx';
 import Border from '../custom/Border.jsx';
-import InputBox from '../custom/InputBox.jsx';
 import SelectEditButton from '../custom/buttons/SelectEditButton.jsx';
 import Chip from '../custom/Chip.jsx';
 import AddSubstract from './AddSubstract.jsx';
 import DropdownMenu from '../dropdownMenu/DropdownMenu.jsx';
+
+import closeBig from '../../assets/close-big.png';
 
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
@@ -152,12 +149,12 @@ export default function NewRun({ onClose }) {
                                 <img src={plus24px} alt="plus24px.svg" />
                                 </button> */}
                                 
-                            <AddSubstract type='SUBSTRACT' onClick={() => handleThreads('SUBSTRACT')}/>
+                            <AddSubstract type='substract' onClick={() => handleThreads('SUBSTRACT')}/>
                             <div className='flex items-center justify-center w-12 h-12
                             bg-white border border-[#D7DFFF] rounded-xl'>
                                 {threads}
                             </div>
-                            <AddSubstract type='ADD' onClick={() => handleThreads('ADD')} />
+                            <AddSubstract type='add' onClick={() => handleThreads('ADD')} />
                         </div>
                     </div>
 
