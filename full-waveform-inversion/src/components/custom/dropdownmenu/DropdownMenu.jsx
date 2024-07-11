@@ -3,7 +3,7 @@ import { useState } from "react";
 import Menu from "./Menu.jsx";
 import SelectBox from "./SelectBox.jsx";
 
-export default function DropdownMenu({ children, initialValue, items, w }) {
+export default function DropdownMenu({ children, initialValue, items, width }) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(initialValue);
@@ -18,7 +18,7 @@ export default function DropdownMenu({ children, initialValue, items, w }) {
     }
 
     return (
-        <div className={`relative ${w}`}>
+        <div className={`relative ${width}`}>
             <SelectBox isOpen={isOpen} onOpenClose={handleSetIsOpen} selectedItem={selectedItem}/>
             {isOpen && <Menu items={items} onSelect={handleSelectItem}/>}
             {children}

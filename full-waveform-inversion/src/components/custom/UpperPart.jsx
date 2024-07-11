@@ -1,4 +1,4 @@
-import H1 from "./H1.jsx";
+import H1 from "./headings/H1.jsx";
 import Border from "./Border.jsx";
 
 export default function UpperPart({children, heading, styling="pl-8 py-[26px]"}) {
