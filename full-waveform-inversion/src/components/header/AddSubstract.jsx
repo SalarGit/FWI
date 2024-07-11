@@ -1,29 +1,33 @@
-import add from '../../assets/add.svg';
-import substract from '../../assets/substract.svg';
-import bruh from '../../assets/dropdown.png';
+import { useState, useEffect } from "react"
 
-export default function AddSubstract({ type, onClick }) {
-    // const source = `../../assets/add.svg`;
+export default function AddSubstract({ type, handleThreads, isDisabled }) {
+    // const [isDisabled, setIsDisabled] = useState(false);
+    // useEffect(() => {
+    //    handleDisable(); 
+    // }, [threads]);
 
-    let icon;
-
-    if (type === 'add') {
-        icon = <img src={add} alt='add.svg' />
-    } else if (type === 'substract') {
-        icon = <img src={substract} alt='substract.svg' />
-    }
+    // function handleDisable() {
+    //     if (type === 'add') {
+    //         if (threads === 8) {
+    //             setIsDisabled(true);
+    //         } else {
+    //             isDisabled && setIsDisabled(false);
+    //         }
+    //     }
+    //     else if (type === 'substract') {
+    //         if (threads === 1) {
+    //             setIsDisabled(true);
+    //         } else {
+    //             isDisabled && setIsDisabled(false);
+    //         }
+    //     }
+    // }
 
     return (
-        <button onClick={onClick}
-            className='p-3 rounded-xl bg-[#F1F4FF]'
+        <button disabled={isDisabled} onClick={handleThreads}
+            className={`p-3 rounded-xl bg-[#F1F4FF] ${isDisabled && 'opacity-60 cursor-not-allowed'}`}
         >
-            {/* {icon} */}
-            <img src="src/assets/add.svg" alt={`${type}.svg`} />
-            {/* <img src={bruh} alt={`${type}.svg`} /> */}
-            {/* {source} */}
+            <img src={`src/assets/${type}.svg`} alt={`${type}.svg`} />
         </button>
     )
 }
-
-
-    

@@ -1,6 +1,6 @@
 import EmptyGraphs from "./EmptyGraphs.jsx";
 import UpperPart from "../custom/UpperPart.jsx";
-import DropdownMenu from "../dropdownMenu/DropdownMenu.jsx";
+import DropdownMenu from "../dropdownmenu/DropdownMenu.jsx";
 
 export default function Output() {
     const items = ['Output values', 'Residual graph', 'Residual field', 'Quality metric'];

@@ -9,7 +9,7 @@ import Border from '../custom/Border.jsx';
 import SelectEditButton from '../custom/buttons/SelectEditButton.jsx';
 import Chip from '../custom/Chip.jsx';
 import AddSubstract from './AddSubstract.jsx';
-import DropdownMenu from '../dropdownMenu/DropdownMenu.jsx';
+import DropdownMenu from '../dropdownmenu/DropdownMenu.jsx';
 
 import closeBig from '../../assets/close-big.png';
 
@@ -17,14 +17,13 @@ export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
     const [threads, setThreads] = useState(1);
 
-    function handleThreads(actionType) {
-        if (actionType === 'ADD') {
-            setThreads((threads) => threads + 1);
-        } else if (actionType === 'SUBSTRACT') {
-            setThreads((threads) => threads - 1);
-        }
-        
-    }
+    // function handleThreads(actionType) {
+    //     if (actionType === 'ADD') {
+    //         setThreads((threads) => threads + 1);
+    //     } else if (actionType === 'SUBSTRACT') {
+    //         setThreads((threads) => threads - 1);
+    //     }
+    // }
 
     const forwardModelItems = ['FiniteDifference', 'Integral'];
     const minimisationModelItems = ['GradientDescent', 'ConjugateGradient', 'Evolution', 'Random', 'ParticleSwarm', 'Proportional'];
@@ -134,32 +133,24 @@ export default function NewRun({ onClose }) {
                         <H2 heading="Threads / Cores (parallel only)" />
 
                         <div className='flex space-x-3'>
-                            {/* <button onClick={() => handleThreads('SUBSTRACT')}
-                                className='p-3 rounded-xl bg-[#F1F4FF]'
-                            >
-                                <img src={minus} alt="minus.svg" />
-                            </button>
+                            <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
                             <div className='flex items-center justify-center w-12 h-12
-                            bg-white border border-[#D7DFFF] rounded-xl'>
+                                bg-white border border-[#D7DFFF] rounded-xl'
+                            >
                                 {threads}
                             </div>
-                            <button onClick={() => handleThreads('ADD')}
-                                className='p-3 rounded-xl bg-[#F1F4FF]'
-                            >
-                                <img src={plus24px} alt="plus24px.svg" />
-                                </button> */}
-                                
-                            <AddSubstract type='substract' onClick={() => handleThreads('SUBSTRACT')}/>
-                            <div className='flex items-center justify-center w-12 h-12
-                            bg-white border border-[#D7DFFF] rounded-xl'>
-                                {threads}
-                            </div>
-                            <AddSubstract type='add' onClick={() => handleThreads('ADD')} />
+                            <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
                         </div>
                     </div>
 
                 </div>
-                {/* Lower Part Container */}
+
+                <Border />
+
+                {/* Lower Part */}
+                <button className="py-4 bg-[#3561FE] rounded-xl">
+                    <p className="text-center text-white font-semibold">Calculate</p>
+                </button>
 
             </div>
         </div>

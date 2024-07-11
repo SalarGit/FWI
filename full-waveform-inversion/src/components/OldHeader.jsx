@@ -10,7 +10,7 @@ import UpperPart from './custom/UpperPart.jsx';
 import Border from './custom/Border.jsx';
 import InputBox from './custom/InputBox.jsx';
 import SelectEditButton from './custom/buttons/SelectEditButton.jsx';
-import DropdownMenu from './dropdownMenu/DropdownMenu.jsx';
+import DropdownMenu from './dropdownmenu/DropdownMenu.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
