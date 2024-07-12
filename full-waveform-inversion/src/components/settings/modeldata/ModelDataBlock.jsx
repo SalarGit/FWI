@@ -1,6 +1,6 @@
-import Data from "./Data.jsx";
+import ModelData from "./ModelData.jsx";
 
-export default function DataBlock({heading, dataObject}) {
+export default function ModelDataBlock({heading, dataObject}) {
     const outerStyle = heading ? "grid grid-cols-2 gap-4" : "grid grid-cols-1 gap-4";
     // [auto_auto]
 
@@ -10,11 +10,11 @@ export default function DataBlock({heading, dataObject}) {
         // max-w-max
         <div className={outerStyle}>
             {heading && <p className="text-sm font-medium col-span-2">{heading}</p>}
-                {
-                    Object.entries(dataObject).map(([key, value]) => (
-                        <Data title={key} value={value}/>
-                    ))
-                }
+            {
+                Object.entries(dataObject).map(([key, value]) => (
+                    <ModelData title={key} value={value}/>
+                ))
+            }
         </div>
     )
 }
