@@ -1,4 +1,4 @@
-import H1 from ".././custom/H1.jsx";
+import H1 from "../custom/headings/H1.jsx";
 import Border from "../custom/Border.jsx";
 import UpperPart from "../custom/UpperPart.jsx";
 import EmptyGraphs from "./EmptyGraphs.jsx";

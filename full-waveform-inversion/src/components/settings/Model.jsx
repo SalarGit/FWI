@@ -3,7 +3,7 @@ import info from '../../assets/info.png';
 import infoBlue from '../../assets/info-blue.png';
 import infoBlueSvg from '../../assets/info-blue.svg';
 
-import H2 from '../custom/H2.jsx';
+import H2 from '../custom/headings/H2.jsx';
 import ToolTip from './ToolTip.jsx';
 
 export default function Model({ model, modelType }) {
