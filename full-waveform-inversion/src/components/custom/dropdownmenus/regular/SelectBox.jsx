@@ -1,4 +1,4 @@
-import dropdown from "../../../assets/dropdown.png";
+import dropdown from "../../../../assets/dropdown.png";
 
 export default function SelectBox({ isOpen, onOpenClose, selectedItem }) {
     const dropDownIcon = !isOpen ? <img src={dropdown} alt="dropdown.png" className="duration-500" /> : <img src={dropdown} alt="dropdown.png" className="rotate-180 duration-500" />

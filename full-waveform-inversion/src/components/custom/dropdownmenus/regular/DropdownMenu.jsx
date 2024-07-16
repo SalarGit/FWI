@@ -3,7 +3,7 @@ import { useState } from "react";
 import Menu from "./Menu.jsx";
 import SelectBox from "./SelectBox.jsx";
 
-export default function DropdownMenu({ children, initialValue, items, width }) {
+export default function DropdownMenu({ children, initialValue, items, width='' }) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(initialValue);

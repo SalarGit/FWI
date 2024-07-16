@@ -6,10 +6,11 @@ import '../../index.css';
 import H2 from '../custom/headings/H2.jsx';
 import UpperPart from '../custom/UpperPart.jsx';
 import Border from '../custom/Border.jsx';
-import SelectEditButton from '../custom/buttons/SelectEditButton.jsx';
+import EditButton from '../custom/buttons/EditButton.jsx';
 import Chip from '../custom/Chip.jsx';
 import AddSubstract from './AddSubstract.jsx';
-import DropdownMenu from '../custom/dropdownmenu/DropdownMenu.jsx';
+import DropdownMenu from '../custom/dropdownmenus/regular/DropdownMenu.jsx';
+import EditDataMenu from '../custom/dropdownmenus/editdata/EditDataMenu.jsx';
 
 import closeBig from '../../assets/close-big.png';
 
@@ -52,7 +53,16 @@ export default function NewRun({ onClose }) {
                             w-full h-[48px] pl-4 pr-2
                             border border-violet-200 rounded-xl"
                             />
-                        <SelectEditButton title="Select folder" absoluteStyling="right-2 top-2"/>
+                        {/* <EditButton title="Select folder" absoluteStyling="right-2 top-2"/> */}
+                        
+                        {/* isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' */}
+                        <button
+                            className="absolute right-2 top-2 py-[6px] px-3 
+                            text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]"
+                        >
+                            <p>Select folder</p>
+                        </button>
+
                     </div>
 
                     {/* Data */}
@@ -78,13 +88,19 @@ export default function NewRun({ onClose }) {
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Forward model"/>
                             <DropdownMenu initialValue="Integral" items={forwardModelItems}>
-                                <SelectEditButton title="Edit" absoluteStyling="right-10 top-2"/>
+                                <EditButton title="Edit" absoluteStyling="right-10 top-2" />
+                                <EditDataMenu>
+                                    {/* <p>bruh</p>
+                                    <p>bruh</p>
+                                    <p>bruh</p>
+                                    <p>bruh</p> */}
+                                </EditDataMenu>
                             </DropdownMenu>
                         </div>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Minimisation model"/>
                             <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems}>
-                                <SelectEditButton title="Edit" absoluteStyling="right-10 top-2"/>
+                                <EditButton title="Edit" absoluteStyling="right-10 top-2"/>
                             </DropdownMenu>
                         </div>
                     </div>
