@@ -1,6 +1,6 @@
 import { forwardModels, minimisationModels } from "../../data.js";
 
-import ModelDataBlock from "./modeldata/ModelDataBlock.jsx";
+import ModelDataBlock from "../custom/data/modeldata/ModelDataBlock.jsx";
 
 export default function ToolTip({ model, modelType }) {
     let toolTip = null;

@@ -1,8 +1,9 @@
-export default function Menu({ items, onSelect }) {
+export default function Menu({ items, onSelect, isOpen }) {
     return (
-        <div className="absolute left-[0px] right-[0px] top-[60px]
+        // <div className={`absolute left-[0px] right-[0px] top-[60px] ${!isOpen ? 'hidden' : ''}
+        <div className={`absolute left-[0px] right-[0px] top-[60px]
             flex flex-col space-y-[6px] p-2
-            border border-violet-200 rounded-xl bg-white"
+            border border-violet-200 rounded-xl bg-white`}
         >
             {
                 items.map((item) => (

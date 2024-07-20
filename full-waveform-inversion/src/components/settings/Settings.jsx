@@ -55,7 +55,7 @@ export default function Settings() {
                 <div className="flex justify-between border border-violet-200 rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[538px]"
                 >
-                    <Model model="forward" modelType="Evolution" />
+                    <Model model="forward" modelType="Integral" />
                     <div className="border-l border-violet-200" />
                     <Model model="minimisation" modelType="ConjugateGradient" />
                 </div>

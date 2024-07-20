@@ -1,19 +1,19 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
-export default function EditButton({ children, title, absoluteStyling }) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function EditButton({ title, absoluteStyling, conditionalStyling, handleClick }) {
+    // const [isOpen, setIsOpen] = useState(false);
 
-    function handleClick() {
-        setIsOpen((prev) => prev ? false : true);
-    }
+    // function handleClick() {
+    //     setIsOpen((prev) => prev ? false : true);
+    // }
 
     return (
         <button onClick={handleClick}
             className={`absolute ${absoluteStyling} rounded bg-[#F1F4FF]
-            text-sm font-medium text-[#3561FE] ${isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' : 'py-[6px] px-3'}`}
+            text-sm font-medium text-[#3561FE] ${conditionalStyling}`}
         >
             {title}
-            {isOpen && children}
+            {/* {isOpen && children} */}
         </button>
     )
 }

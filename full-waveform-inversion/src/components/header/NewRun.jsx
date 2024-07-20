@@ -11,6 +11,8 @@ import Chip from '../custom/Chip.jsx';
 import AddSubstract from './AddSubstract.jsx';
 import DropdownMenu from '../custom/dropdownmenus/regular/DropdownMenu.jsx';
 import EditDataMenu from '../custom/dropdownmenus/editdata/EditDataMenu.jsx';
+import EditDataDropdownMenu from '../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
+import EditModels from './EditModels.jsx';
 
 import closeBig from '../../assets/close-big.png';
 
@@ -84,23 +86,18 @@ export default function NewRun({ onClose }) {
                 <div className='flex flex-col space-y-8'>
 
                     {/* Models */}
-                    <div className='flex space-x-4'>
+                    <div className='flex space-x-4 z-[1]'>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Forward model"/>
                             <DropdownMenu initialValue="Integral" items={forwardModelItems}>
-                                <EditButton title="Edit" absoluteStyling="right-10 top-2" />
-                                <EditDataMenu>
-                                    {/* <p>bruh</p>
-                                    <p>bruh</p>
-                                    <p>bruh</p>
-                                    <p>bruh</p> */}
-                                </EditDataMenu>
+                                {/* <EditDataDropdownMenu /> */}
+                                <EditModels model="forward" modelType="Integral"/>
                             </DropdownMenu>
                         </div>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Minimisation model"/>
                             <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems}>
-                                <EditButton title="Edit" absoluteStyling="right-10 top-2"/>
+                                <EditDataDropdownMenu />
                             </DropdownMenu>
                         </div>
                     </div>
