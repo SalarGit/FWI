@@ -90,20 +90,18 @@ export default function NewRun({ onClose }) {
                     <div className='flex space-x-4 z-[1]'>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Forward model"/>
-                            <DropdownMenu initialValue="Integral" items={forwardModelItems}>
-                                {/* <EditDataDropdownMenu /> */}
-                                <EditModels model="forward" modelType="Integral" />
+                            <DropdownMenu initialValue="Integral" items={forwardModelItems} edit={true} model="forward">
+                                {/* <EditModels model="forward" modelType="Integral" /> */}
                             </DropdownMenu>
                         </div>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Minimisation model"/>
-                            <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems}>
+                            <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems} edit={true} model="minimisation">
                             {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimisationModelItems)}> */}
                             {/* {Object.entries(dataObject).map(([key, value]) => (
                                 <InputModelData title={key} defaultValue={value}/>
                             ))} */}
-                                <EditDataDropdownMenu />
-                                <EditModels model="minimisation" modelType="GradientDescent" />
+                                {/* <EditModels model="minimisation" modelType="GradientDescent" /> */}
                             </DropdownMenu>
                         </div>
                     </div>
