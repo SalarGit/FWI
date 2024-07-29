@@ -1,6 +1,6 @@
-export default function EditDataMenu({ children, isOpen }) {
+export default function EditDataMenu({ children, model, isOpen }) {
     return (
-        <div className={`absolute top-[60px] ${!isOpen ? 'hidden' : ''}
+        <div className={`absolute top-[60px] ${model === 'minimisation' ? 'right-0' : ''} ${!isOpen ? 'hidden' : ''}
             flex flex-col space-y-6 p-4 w-max
             border border-violet-200 rounded-xl bg-white`}
         >

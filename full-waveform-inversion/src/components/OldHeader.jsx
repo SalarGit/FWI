@@ -12,6 +12,8 @@ import InputBox from './custom/InputBox.jsx';
 import EditButton from './custom/buttons/EditButton.jsx';
 import DropdownMenu from './dropdownmenus/DropdownMenu.jsx';
 
+import { forwardModels, minimisationModels } from '../data.js';
+
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [folder, setFolder] = useState("");

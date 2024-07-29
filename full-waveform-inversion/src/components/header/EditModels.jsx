@@ -19,17 +19,15 @@ export default function EditModels({ model, modelType }) {
 
     if (model === 'forward') {
         if (modelType === 'FiniteDifference') {
-            <div>
-                bruh
-            </div>
+            editMenu = 
+            <>
+                <InputModelDataBlock heading="PMLWidthFactor" dataObject={forwardModels.finiteDifference.upper} />
+                <Border/>
+                <InputModelDataBlock heading="SourceParameter" dataObject={forwardModels.finiteDifference.lower} />
+            </>
         }
         else if (modelType === 'Integral') {
-            editMenu =
-            <EditDataMenu isOpen={isOpen}>
-                <InputModelDataBlock heading="PMLWidthFactor" dataObject={forwardModels.integral.upper}/>
-                <Border/>
-                <InputModelDataBlock heading="SourceParameter" dataObject={forwardModels.integral.lower}/>
-            </EditDataMenu>
+            editMenu = <InputModelDataBlock dataObject={forwardModels.integral}/>
         }
     }
 
@@ -39,34 +37,36 @@ export default function EditModels({ model, modelType }) {
             // const conjugateGradientSecond = {Start: 100, Slope: 100, N_max: 50, Do_reg: "on"};
             
             editMenu = (
-                <div>
-
-                </div>
+                <>
+                    <InputModelDataBlock dataObject={minimisationModels.conjugateGradient.upper} />
+                    <Border/>
+                    <InputModelDataBlock heading={"stepAmplification"} dataObject={minimisationModels.conjugateGradient.lower} />
+                </>
             )
         }
-        else if (modelType === "Evolution") {}
-        else if (modelType === "GradientDescent") {}
-        else if (modelType === "ParticleSwarm") {}
-        else if (modelType === "Random") {}
+        else if (modelType === "Evolution") {
+            editMenu = <InputModelDataBlock dataObject={minimisationModels.evolution}/>
+        }
+        else if (modelType === "GradientDescent") {
+            editMenu = <InputModelDataBlock dataObject={minimisationModels.gradientDescent}/>
+        }
+        else if (modelType === "ParticleSwarm") {
+            editMenu = <InputModelDataBlock dataObject={minimisationModels.particleSwarm}/>
+        }
+        else if (modelType === "Random") {
+            editMenu = <InputModelDataBlock dataObject={minimisationModels.random}/>
+        }
         // else if (modelType === "Proportional") {}
     }
-    // ;
-    const obj1 = {x: 0, z: 0};
-    const obj2 = {r: 4, beta: 6.31, boundaryConditionType: "SecondOrderABC"};
-    const bruh = <EditDataMenu isOpen={isOpen}>
-        <InputModelDataBlock heading="PMLWidthFactor" dataObject={obj1}/>
-        <Border/>
-        <InputModelDataBlock heading="SourceParameter" dataObject={obj2}/>
-    </EditDataMenu>
 
     return (
         <div>
             <EditButton title="Edit" absoluteStyling="right-10 top-2" handleClick={handleClick}
                 conditionalStyling={isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' : 'py-[6px] px-3'}
             />
-            {/* <EditDataMenu isOpen={isOpen}> */}
-                {bruh}
-            {/* </EditDataMenu> */}
+            <EditDataMenu model={model} isOpen={isOpen}>
+                {editMenu}
+            </EditDataMenu>
         </div>
     )
 }

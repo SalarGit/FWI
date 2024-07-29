@@ -16,6 +16,8 @@ import EditModels from './EditModels.jsx';
 
 import closeBig from '../../assets/close-big.png';
 
+import { forwardModels, minimisationModels } from '../../data.js';
+
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
     const [threads, setThreads] = useState(1);
@@ -23,7 +25,6 @@ export default function NewRun({ onClose }) {
     const forwardModelItems = ['FiniteDifference', 'Integral'];
     const minimisationModelItems = ['GradientDescent', 'ConjugateGradient', 'Evolution', 'Random', 'ParticleSwarm', 'Proportional'];
 
-    
     return (
         // New Run Container
         <div className='absolute w-[604px] mt-4 right-0
@@ -91,13 +92,18 @@ export default function NewRun({ onClose }) {
                             <H2 heading="Forward model"/>
                             <DropdownMenu initialValue="Integral" items={forwardModelItems}>
                                 {/* <EditDataDropdownMenu /> */}
-                                <EditModels model="forward" modelType="Integral"/>
+                                <EditModels model="forward" modelType="Integral" />
                             </DropdownMenu>
                         </div>
                         <div className='flex flex-col space-y-3 w-1/2'>
                             <H2 heading="Minimisation model"/>
                             <DropdownMenu initialValue="GradientDescent" items={minimisationModelItems}>
+                            {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimisationModelItems)}> */}
+                            {/* {Object.entries(dataObject).map(([key, value]) => (
+                                <InputModelData title={key} defaultValue={value}/>
+                            ))} */}
                                 <EditDataDropdownMenu />
+                                <EditModels model="minimisation" modelType="GradientDescent" />
                             </DropdownMenu>
                         </div>
                     </div>
@@ -135,7 +141,6 @@ export default function NewRun({ onClose }) {
                 <button className="py-4 bg-[#3561FE] rounded-xl">
                     <p className="text-center text-white font-semibold">Calculate</p>
                 </button>
-
             </div>
         </div>
     )
