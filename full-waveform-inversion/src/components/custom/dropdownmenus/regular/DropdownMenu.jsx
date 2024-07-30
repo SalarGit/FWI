@@ -5,10 +5,9 @@ import Menu from "./Menu.jsx";
 import SelectBox from "./SelectBox.jsx";
 import EditModels from "../../../header/EditModels.jsx";
 
-export default function DropdownMenu({ initialValue, items, edit=false, model='', width='' }) {
-
+export default function DropdownMenu({ items, edit=false, model='', width='' }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(initialValue);
+    const [selectedItem, setSelectedItem] = useState(items[0]);
 
     function handleSetIsOpen() {
         setIsOpen((prevState) => prevState ? false : true);

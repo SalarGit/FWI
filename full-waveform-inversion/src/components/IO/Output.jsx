@@ -7,7 +7,7 @@ export default function Output() {
 
     // relative
     return (
-        <div className="flex flex-col bg-white border border-violet-200 pl- rounded-3xl w-1/2 h-[530px]">
+        <div className="flex flex-col bg-white border border-[#D7DFFF] pl- rounded-3xl w-1/2 h-[530px] backdrop-blur">
             <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-4">
                 {/* <div className="w-[277px]"> */}
                     <DropdownMenu initialValue="Output values" items={items} width="w-[277px]" />

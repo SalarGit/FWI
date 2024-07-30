@@ -12,11 +12,12 @@ export default function Header() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
 
+    const styling = addingNewRun ? 'backdrop-blur' : '';
 
     return (
         // Header Container
         // fix 120px
-        <div className='flex items-center justify-between min-w-screen'>
+        <div className={`flex items-center justify-between min-w-screen pb-8`}>
             {/* Logo & Heading Container */}
             <div className='flex items-center'>
                 {/* Logo */}

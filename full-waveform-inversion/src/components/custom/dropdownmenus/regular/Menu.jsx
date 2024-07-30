@@ -3,7 +3,7 @@ export default function Menu({ items, onSelect, isOpen }) {
         // <div className={`absolute left-[0px] right-[0px] top-[60px] ${!isOpen ? 'hidden' : ''}
         <div className={`absolute left-[0px] right-[0px] top-[60px]
             flex flex-col space-y-[6px] p-2
-            border border-violet-200 rounded-xl bg-white`}
+            border border-[#D7DFFF] rounded-xl bg-white`}
         >
             {
                 items.map((item) => (

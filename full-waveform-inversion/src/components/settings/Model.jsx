@@ -18,7 +18,7 @@ export default function Model({ model, modelType }) {
                 <div className="relative group flex flex-col items-center justify-center">
                     <img src={info} alt="info.png"/>
                     {/* <img src={infoBlueSvg} alt="info-blue.svg" 
-                        className="absolute bg-blue-50 border border-violet-200 rounded-xl w-[34px] p-1"
+                        className="absolute bg-blue-50 border border-[#D7DFFF] rounded-xl w-[34px] p-1"
                     /> */}
                     <ToolTip model={model} modelType ={modelType}/>
                 </div>

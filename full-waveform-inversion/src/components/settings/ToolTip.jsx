@@ -2,6 +2,7 @@ import { forwardModels, minimisationModels } from "../../data.js"; // This is no
 
 import ModelDataBlock from "../custom/data/modeldata/ModelDataBlock.jsx";
 import Border from "../custom/Border.jsx";
+import BorderTop from "../custom/borders/BorderTop.jsx";
 
 export default function ToolTip({ model, modelType }) {
     let toolTip = null;
@@ -11,7 +12,7 @@ export default function ToolTip({ model, modelType }) {
             toolTip = (
                 <div className="flex flex-col space-y-4">
                     <ModelDataBlock dataObject={minimisationModels.conjugateGradient.upper} />
-                    <Border/>
+                    <BorderTop />
                     <ModelDataBlock heading={"stepAmplification"} dataObject={minimisationModels.conjugateGradient.lower} />
                 </div>
             )
@@ -35,7 +36,7 @@ export default function ToolTip({ model, modelType }) {
             toolTip = (
                 <div className="flex flex-col space-y-4">
                     <ModelDataBlock heading="PMLWidthFactor" dataObject={forwardModels.finiteDifference.upper} />
-                    <Border/>
+                    <BorderTop />
                     <ModelDataBlock heading="SourceParameter" dataObject={forwardModels.finiteDifference.lower} />
                 </div>
             );
@@ -52,7 +53,7 @@ export default function ToolTip({ model, modelType }) {
         // w-max
         // z-10
         <div className="absolute w-max top-[33px] p-4 z-10
-            bg-white rounded-2xl border border-violet-200 shadow
+            bg-white rounded-2xl border border-[#D7DFFF] shadow
             hidden group-hover:block"
         >
             {toolTip}

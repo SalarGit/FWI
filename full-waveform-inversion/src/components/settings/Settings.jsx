@@ -4,11 +4,17 @@ import H2 from '../custom/headings/H2.jsx';
 import Model from './Model.jsx';
 import UpperPart from '../custom/UpperPart.jsx';
 import Chip from '../custom/Chip.jsx';
+import Border from '../custom/Border.jsx';
+import BorderTop from '../custom/borders/BorderTop.jsx';
+import BorderLeft from '../custom/borders/BorderLeft.jsx';
 
 export default function Settings() {
+    const globalCond = true;
+
     return (
         // Settings Container
-        <div className="flex flex-col bg-white border border-violet-200 rounded-3xl">
+        // <div className={`flex flex-col bg-white border border-[#D7DFFF] rounded-3xl ${globalCond ? 'blur-[2.5px]' : ''}`}>
+        <div className="flex flex-col bg-white border border-[#D7DFFF] rounded-3xl">
             
             {/* Upper Part */}
             <UpperPart heading={"Settings"}/>
@@ -17,7 +23,7 @@ export default function Settings() {
             <div className="flex space-x-6 py-8 px-6">
                 {/* CASE FOLDER */}
                 <div className="flex flex-col space-y-[34px]
-                    border border-violet-200 rounded-2xl
+                    border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 h-[166px] w-[332px]"
                 >
                     <H2 heading="case folder" styling='uppercase'/>
@@ -28,17 +34,18 @@ export default function Settings() {
                 </div>
             
                 {/* Models container */}
-                <div className="flex justify-between border border-violet-200 rounded-2xl
+                <div className="flex justify-between border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[538px]"
                 >
                     <Model model="forward" modelType="Integral" />
-                    <div className="border-l border-violet-200" />
+                    <BorderLeft />
+                    {/* <div className="border-l border-[#D7DFFF]" /> */}
                     <Model model="minimisation" modelType="ConjugateGradient" />
                 </div>
                 
                 {/* PROCESSING STEPS container */}
                 <div className="flex flex-col space-y-[30px]
-                    border border-violet-200 rounded-2xl
+                    border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 h-[166px] w-[594px]"
                 >
                     <H2 heading="processing steps" styling='uppercase'/>
@@ -53,7 +60,7 @@ export default function Settings() {
 
                 {/* THREADS/CORES */}
                 <div className="flex flex-col space-y-[34px]
-                    border border-violet-200 rounded-2xl
+                    border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"
                 >
                     <H2 heading="threads/cores:" styling='uppercase'/>

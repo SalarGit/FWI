@@ -10,7 +10,7 @@ export default function SelectBox({ isOpen, onOpenClose, selectedItem }) {
             // border inside, force height
             className="flex items-center justify-between
             w-full h-[48px] pl-4 pr-2
-            border border-violet-200 rounded-xl"
+            border border-[#D7DFFF] rounded-xl"
         >
             <p>{selectedItem}</p>
             {dropDownIcon}

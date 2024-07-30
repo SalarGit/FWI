@@ -60,7 +60,7 @@ export default function Header() {
                     {/* New Run Container */}
                     {addingNewRun && (
                         <div className='absolute w-[604px] mt-4 right-0
-                            bg-white border border-violet-200 rounded-2xl
+                            bg-white border border-[#D7DFFF] rounded-2xl
                             z-20'
                         >
                             <UpperPart heading='New run' styling='p-6'>
@@ -86,7 +86,7 @@ export default function Header() {
                                         <input type='string' maxLength={15} required value={folder} onChange={(e) => setFolder(e.target.value)}
                                             className="flex items-center justify-between
                                             w-full h-[48px] pl-4 pr-2
-                                            border border-violet-200 rounded-xl"
+                                            border border-[#D7DFFF] rounded-xl"
                                         />
                                         <EditButton title="Select folder" absoluteStyling="right-2 top-2"/>
                                     </div>
@@ -112,7 +112,7 @@ export default function Header() {
                                     </div>
                                 </div>
 
-                                <Border />
+                                <BorderTop />
                                 
                                 {/* Middle Part Container*/}
                                 <div className='flex space-x-4'>
