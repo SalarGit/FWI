@@ -41,14 +41,14 @@ export default function InputModelData({title, defaultValue}) {
             />
         </div>
     : // if (inputType === 'bool')
-    <div className="flex flex-col space-y-5">
-        <H3>{title}:</H3>
-        <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
-            <input type='checkbox' id='check' checked={value} className='sr-only peer' onChange={handleBool}/>
-            <span className='absolute left-1 top-1 w-6 h-6 bg-white rounded-full peer-checked:left-6 transition-all duration-500' />
-        </label>
-        {/* <p>{value ? 'true' : 'false'}</p> */}
-    </div>
+        <div className="flex flex-col space-y-5">
+            <H3>{title}:</H3>
+            <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
+                <input type='checkbox' id='check' checked={value} className='sr-only peer' onChange={handleBool}/>
+                <span className='absolute left-1 top-1 w-6 h-6 bg-white rounded-full peer-checked:left-6 transition-all duration-500' />
+            </label>
+            {/* <p>{value ? 'true' : 'false'}</p> */}
+        </div>
 
     return (
         <>
