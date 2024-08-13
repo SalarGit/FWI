@@ -6,12 +6,14 @@ import NewRun from './NewRun.jsx';
 
 export default function Header() {
     const [addingNewRun, setAddingNewRun] = useState(false);
-    
+    const [history, setHistory] = useState(false);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
-
+    function handleSetHistory() {
+        setHistory((prevState) => prevState ? false : true);
+    }
     const styling = addingNewRun ? 'backdrop-blur' : '';
 
     return (
@@ -31,18 +33,25 @@ export default function Header() {
             {/* Buttons Container*/}
             <div className='flex space-x-4'>
                 {/* Border inside, force height */}
-                <button className='w-[200px] h-[56px]
-                    border-2 rounded-xl border-gray-400 text-gray-400'
-                >
-                    Compare runs
-                </button>
                 <div className='relative'>
-                    <button className='w-[200px] h-[56px]
-                        rounded-xl bg-blue-600 text-white'
-                        onClick={handleSetAddingNewRun}
+                    <button onClick={handleSetHistory}
+                        className={`w-[200px] h-[56px] border-2 rounded-xl 
+                        ${history ? 'border-[#3561FE] text-[#3561FE]' : 'border-gray-400 text-gray-400'}`}
+                    >
+                        History of runs
+                    </button>
+
+                    {history &&
+                        <History onClose={handleSetHistory} />
+                    }
+                </div>
+                <div className='relative'>
+                    <button onClick={handleSetAddingNewRun} 
+                        className='w-[200px] h-[56px] rounded-xl bg-[#3561FE] text-white'
                     >
                         Add new run
                     </button>
+                    
                     {addingNewRun &&
                         <NewRun onClose={handleSetAddingNewRun} />
                     }

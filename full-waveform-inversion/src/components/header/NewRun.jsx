@@ -13,6 +13,7 @@ import DropdownMenu from '../custom/dropdownmenus/regular/DropdownMenu.jsx';
 import EditDataMenu from '../custom/dropdownmenus/editdata/EditDataMenu.jsx';
 import EditDataDropdownMenu from '../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
 import EditModels from './EditModels.jsx';
+import FileInputWithCustomButton from './FileInputWithCustomButton.jsx';
 
 import closeBig from '../../assets/close-big.png';
 
@@ -21,9 +22,14 @@ import { forwardModels, minimisationModels } from '../../data.js';
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
     const [threads, setThreads] = useState(1);
+    const [selecting, setSelecting] = useState(false);
 
     const forwardModelItems = Object.keys(forwardModels);
     const minimisationModelItems = Object.keys(minimisationModels);
+
+    function handleSelecting() {
+        setSelecting((prev) => prev ? false : true);
+    }
 
     return (
         // New Run Container
@@ -59,18 +65,33 @@ export default function NewRun({ onClose }) {
                                 w-full h-[48px] pl-4 pr-2
                                 border border-[#D7DFFF] rounded-xl"
                                 />
-                            {/* <EditButton title="Select folder" absoluteStyling="right-2 top-2"/> */}
-                            
                             {/* isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' */}
-                            <button
+                            {/* <button
                                 className="absolute right-2 top-2 py-[6px] px-3 
                                 text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]"
                             >
                                 <p>Select folder</p>
-                            </button>
+                            </button> */}
+                            {/* <input className='absolute right-2 top-2 py-[6px] px-3 
+                                text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]' 
+                                directory="" webkitdirectory="" type="file" 
+                            /> */}
+                            {/* <input className="[appearance:textfield]" type="file" webkitdirectory mozdirectory directory /> */}
+                            <FileInputWithCustomButton />
 
+                            {/* <label for="caseFolder">
+                                <div className={`absolute right-2 top-2 cursor-pointer rounded bg-[#F1F4FF]
+                                    text-sm font-medium text-[#3561FE] py-[6px] px-3 
+                                    peer-open:bg-black`
+                                }
+                                    // py-[5px] px-[11px] border border-[#3561FE]
+                                >
+                                    <p>Select folder</p>
+                                </div>
+                                <input type="file" id="caseFolder" name="caseFolder" className='peer hidden' />
+                            </label> */}
                         </div>
-
+                        
                         {/* Data */}
                         <div className='flex justify-between pt-1'>
                             <div className='flex space-x-3'>
