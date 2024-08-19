@@ -38,7 +38,7 @@ export default function NewRun({ onClose }) {
             <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
             
             {/* Main container */}
-            <div className='absolute w-[604px] mt-4 right-0
+            <div className='absolute w-[604px] mt-[72px] right-[56px]
                 bg-white border border-[#D7DFFF] rounded-2xl
                 z-30' // Disabled: #B6B7BE
             >

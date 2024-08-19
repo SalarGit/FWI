@@ -5,25 +5,25 @@ import logo from '../../assets/fwi-logo.png';
 import NewRun from './sections/NewRun.jsx';
 import HistoryRuns from './sections/HistoryRuns.jsx';
 
-export default function Header() {
-    const [addingNewRun, setAddingNewRun] = useState(false);
-    const [historyRuns, setHistoryRuns] = useState(false);
+export default function Header({ handleSetAddingNewRun, handleSetHistoryRuns }) {
+    // const [addingNewRun, setAddingNewRun] = useState(false);
+    // const [historyRuns, setHistoryRuns] = useState(false);
 
-    function handleSetAddingNewRun() {
-        setAddingNewRun((prevState) => prevState ? false : true);
-    }
-    function handleSetHistoryRuns() {
-        setHistoryRuns((prevState) => prevState ? false : true);
-    }
-    const styling = addingNewRun ? 'backdrop-blur' : '';
+    // function handleSetAddingNewRun() {
+    //     setAddingNewRun((prevState) => prevState ? false : true);
+    // }
+    // function handleSetHistoryRuns() {
+    //     setHistoryRuns((prevState) => prevState ? false : true);
+    // }
+    // const styling = addingNewRun ? 'backdrop-blur' : '';
 
     return (
         // Header Container
         // fix 120px
         <>
-        {historyRuns &&
+        {/* {historyRuns &&
             <HistoryRuns onClose={handleSetHistoryRuns} />
-        }
+        } */}
 
         <div className={`flex items-center justify-between min-w-screen pb-8`}>
             {/* Logo & Heading Container */}
@@ -41,8 +41,7 @@ export default function Header() {
                 {/* Border inside, force height */}
                 <div className='relative'>
                     <button onClick={handleSetHistoryRuns}
-                        className={`w-[200px] h-[56px] border-2 rounded-xl 
-                        ${historyRuns ? 'border-[#3561FE] text-[#3561FE]' : 'border-gray-400 text-gray-400'}`}
+                        className={`w-[200px] h-[56px] border-2 rounded-xl`}
                     >
                         History of runs
                     </button>
@@ -58,9 +57,9 @@ export default function Header() {
                         Add new run
                     </button>
                     
-                    {addingNewRun &&
+                    {/* {addingNewRun &&
                         <NewRun onClose={handleSetAddingNewRun} />
-                    }
+                    } */}
                 </div>
             </div>
         </div>
