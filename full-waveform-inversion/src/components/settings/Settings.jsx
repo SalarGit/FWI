@@ -14,17 +14,17 @@ export default function Settings() {
     return (
         // Settings Container
         // <div className={`flex flex-col bg-white border border-[#D7DFFF] rounded-3xl ${globalCond ? 'blur-[2.5px]' : ''}`}>
-        <div className="flex flex-col bg-white border border-[#D7DFFF] rounded-3xl">
+        <div className="flex flex-col bg-white border border-[#D7DFFF] rounded-3xl"> {/* w-[1808px] to get 1920 */}
             
             {/* Upper Part */}
             <UpperPart heading={"Settings"}/>
 
             {/* Lower Part */}
-            <div className="flex space-x-6 py-8 px-6">
+            <div className="flex space-x-6 py-6 px-8">
                 {/* CASE FOLDER */}
                 <div className="flex flex-col space-y-[34px]
                     border border-[#D7DFFF] rounded-2xl
-                    px-8 pt-8 h-[166px] w-[332px]"
+                    px-8 pt-8 h-[166px] w-[334px]" // Design says [332px] but I did +2 because entire settings section was 2px less than header and I/O section.
                 >
                     <H2 heading="case folder" styling='uppercase'/>
                     {/* Used to be a div element. IDK why. Prob bc I didn't know semantics. */}

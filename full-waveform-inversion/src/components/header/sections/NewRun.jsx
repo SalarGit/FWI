@@ -1,23 +1,23 @@
 import { useState } from 'react';
 
-import '../../index.css';
+import '../../../index.css';
 
-import H2 from '../custom/headings/H2.jsx';
-import UpperPart from '../custom/UpperPart.jsx';
-import Border from '../custom/Border.jsx';
-import BorderTop from '../custom/borders/BorderTop.jsx';
-import EditButton from '../custom/buttons/EditButton.jsx';
-import Chip from '../custom/Chip.jsx';
-import AddSubstract from './AddSubstract.jsx';
-import DropdownMenu from '../custom/dropdownmenus/regular/DropdownMenu.jsx';
-import EditDataMenu from '../custom/dropdownmenus/editdata/EditDataMenu.jsx';
-import EditDataDropdownMenu from '../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
-import EditModels from './EditModels.jsx';
-import FileInputWithCustomButton from './FileInputWithCustomButton.jsx';
+import H2 from '../../custom/headings/H2.jsx';
+import UpperPart from '../../custom/UpperPart.jsx';
+import Border from '../../custom/Border.jsx';
+import BorderTop from '../../custom/borders/BorderTop.jsx';
+import EditButton from '../../custom/buttons/EditButton.jsx';
+import Chip from '../../custom/Chip.jsx';
+import AddSubstract from '../AddSubstract.jsx';
+import DropdownMenu from '../../custom/dropdownmenus/regular/DropdownMenu.jsx';
+import EditDataMenu from '../../custom/dropdownmenus/editdata/EditDataMenu.jsx';
+import EditDataDropdownMenu from '../../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
+import EditModels from '../EditModels.jsx';
+import FileInputWithCustomButton from '../FileInputWithCustomButton.jsx';
 
-import closeBig from '../../assets/close-big.png';
+import closeBig from '../../../assets/close-big.png';
 
-import { forwardModels, minimisationModels } from '../../data.js';
+import { forwardModels, minimisationModels } from '../../../data.js';
 
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
@@ -34,11 +34,13 @@ export default function NewRun({ onClose }) {
     return (
         // New Run Container
         <>
-            {/* // Grey & Blurry bg */}
-            <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500'></div>
+            {/* Blur background */}
+            <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
+            
+            {/* Main container */}
             <div className='absolute w-[604px] mt-4 right-0
                 bg-white border border-[#D7DFFF] rounded-2xl
-                z-30 backdrop-blur' // Disabled: #B6B7BE
+                z-30' // Disabled: #B6B7BE
             >
                 <UpperPart heading='New run' styling='p-6'>
                     <button onClick={onClose}
