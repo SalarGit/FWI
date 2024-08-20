@@ -42,7 +42,7 @@ export default function NewRun({ onClose }) {
                 bg-white border border-[#D7DFFF] rounded-2xl
                 z-30' // Disabled: #B6B7BE
             >
-                <UpperPart heading='New run' styling='p-6'>
+                <UpperPart heading='New run' styling='p-[26px]'>
                     <button onClick={onClose}
                         className='hover:bg-[#F1F4FF] duration-200 rounded-md'
                     >

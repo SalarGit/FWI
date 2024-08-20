@@ -4,7 +4,7 @@ import BorderTop from "./borders/BorderTop.jsx";
 
 export default function UpperPart({children, heading, styling="pl-8 py-[26px]"}) {
     return (
-        <div>
+        <>
             <div className={`flex items-center justify-between ${styling}`}>
                 <H1 heading={heading}/>
                 {/* <div className="text-black text-lg font-bold font-['General Sans Variable'] leading-loose">Original input</div> */}
@@ -12,6 +12,6 @@ export default function UpperPart({children, heading, styling="pl-8 py-[26px]"})
             </div>
             {/* <BorderTop /> */}
             <BorderTop />
-        </div>
+        </>
     )
 }
