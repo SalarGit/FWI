@@ -6,6 +6,45 @@ input:focus {
   outline: none;
 }
 
+#root {
+    background: #F4F6FB
+}
+
+body::-webkit-scrollbar {
+    width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+}
+
+body::-webkit-scrollbar-thumb {
+    /* width: auto; */
+    background: black;
+    outlien: 10px solid white
+    /* outline: 1px solid #D7DFFF; */
+}
+
+/* "&::-webkit-scrollbar" : {
+    width: "8px"
+},
+"&::-webkit-scrollbar-track" : {
+    background: "white"
+},
+// "&::-webkit-scrollbar-track:hover" : {
+//     background: "black"
+// },
+"&::-webkit-scrollbar-thumb" : {
+    background: "rgb(31 41 55)",
+    borderRadius: "20px",
+    border: "1px solid white"
+},
+"&::-webkit-scrollbar-thumb:hover" : {
+    background: "#c0a0b9"
+  }
+} */
+/* D7DFFF */
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

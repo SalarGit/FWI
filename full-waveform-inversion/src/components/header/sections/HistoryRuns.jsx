@@ -5,12 +5,13 @@ import UpperPart from '../../custom/UpperPart';
 import closeBig from '../../../assets/close-big.png';
 import search from '../../../assets/search.png';
 import BorderTop from '../../custom/borders/BorderTop';
+import BorderBottom from '../../custom/borders/BorderBottom';
 import H1 from '../../custom/headings/H1';
 
 export default function HistoryRuns({ onClose }) {
 
-    const th = 'text-start text-sm font-medium';
-    const td = '';
+    const th = 'text-start text-sm font-medium text-[#808080] px-6 border-b border-[#808080]';
+    const td = 'px-6 border-b border-[#D7DFFF]'
 
     return (
         <>
@@ -54,86 +55,274 @@ export default function HistoryRuns({ onClose }) {
                                 <p>FiniteDifferenceMPI</p>
                             </div>
                         </div> */}
-                        <table class="table-auto w-full py-[18px] px-6
-                            bg-white border border-[#D7DFFF] border-separate rounded-2xl"
+                        <div className='max-h-[823px] overflow-y-auto bg-white border border-[#D7DFFF] rounded-2xl scrollbar-webkit'>
+                        <table class="table-auto w-full py-[18px] border-spacing-0
+                            bg-white border-separate"
+                            // bg-white border border-[#D7DFFF] border-separate rounded-2xl"
                         >
-                            <thead className='border border-black'>
+                            <thead className=''>
                                 <tr className=''>
-                                    <th className={`${th}`}>Run name</th>
+                                    <th className={th}>Run name</th>
                                     <th className={th}>Forward model</th>
                                     <th className={th}>Grid size</th>
                                     <th className={th}>Minimisation model</th>
                                     <th className={th}>Threads</th>
                                     <th className={th}>Location on disk</th>
                                 </tr>
+                                {/* <BorderTop className='w-auto'/> */}
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Data Analysis Run - 01-03-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>Integral</td>
-                                    <td>Evolution</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Data Analysis Run - 01-03-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>Evolution</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Data Quality Assessment - 05-03-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>FiniteDifferenceMPI</td>
-                                    <td>Proportional</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Data Quality Assessment - 05-03-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>FiniteDifferenceMPI</td>
+                                    <td className={td}>Proportional</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Velocity Model Assessment - 10-04-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>FiniteDifferenceMPI</td>
-                                    <td>Random</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Velocity Model Assessment - 10-04-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>FiniteDifferenceMPI</td>
+                                    <td className={td}>Random</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Seismic Metrics Calculation - 15-04-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>FiniteDifference</td>
-                                    <td>ConjugateGradient</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Seismic Metrics Calculation - 15-04-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>FiniteDifference</td>
+                                    <td className={td}>ConjugateGradient</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Quality Assessment Analysis - 17-04-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>Integral</td>
-                                    <td>Evolution</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Quality Assessment Analysis - 17-04-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>Evolution</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Parameter Optimization - 25-07-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>FiniteDifferenceOpenMP</td>
-                                    <td>GradientDescent</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Parameter Optimization - 25-07-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>FiniteDifferenceOpenMP</td>
+                                    <td className={td}>GradientDescent</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Tomographic Model Generation - 18-08-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>Integral</td>
-                                    <td>Evolution</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Tomographic Model Generation - 18-08-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>Evolution</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                                 <tr>
-                                    <td>Seismic Data Analysis - 19-09-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>Integral</td>
-                                    <td>ParticleSwarm</td>
-                                    <td>1</td>
-                                    <td>/home/tony_stark/default/fwi</td>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
+                                </tr>
+                                <tr>
+                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
+                                    <td className={td}>62 x 32</td>
+                                    <td className={td}>Integral</td>
+                                    <td className={td}>ParticleSwarm</td>
+                                    <td className={td}>1</td>
+                                    <td className={td}>/home/tony_stark/default/fwi</td>
                                 </tr>
                             </tbody>
                             </table>
+                            </div>
                         {/* <table className='table-auto'>
                             <thead>
                                 <tr>

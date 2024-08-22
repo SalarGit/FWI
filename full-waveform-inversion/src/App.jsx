@@ -26,9 +26,12 @@ function App() {
     return (
         // <div className={`relative flex flex-col min-h-screen bg-[#F4F6FB]
         //     px-14 py-8 space-y-6 h-[1080px]`}
-        <div className={`relative flex flex-col min-h-screen bg-[#F4F6FB]
-            px-14 py-8 h-[1080px]`}
+        // bg-[#F4F6FB]
+        <div className='relative flex flex-col min-h-screen 
+            px-14 py-8 h-[1080px] scrollbar-webkit'
         >
+            {/* scrollbar-thin scrollbar-webkit*/}
+            <textarea className='resize-none w-64 h-44 outline-none scrollbar-webkit'/>
             {/* Header */}
             <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryRuns={handleSetHistoryRuns} />
             {addingNewRun &&
