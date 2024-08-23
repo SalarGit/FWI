@@ -56,8 +56,8 @@ export default function HistoryRuns({ onClose }) {
                             </div>
                         </div> */}
                         <div className='max-h-[823px] overflow-y-auto bg-white border border-[#D7DFFF] rounded-2xl scrollbar-webkit'>
-                        <table class="table-auto w-full py-[18px] border-spacing-0
-                            bg-white border-separate"
+                        <table className="table-auto w-full py-[18px] border-spacing-0
+                            bg-white border-separate "
                             // bg-white border border-[#D7DFFF] border-separate rounded-2xl"
                         >
                             <thead className=''>

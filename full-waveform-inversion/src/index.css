@@ -10,20 +10,41 @@ input:focus {
     background: #F4F6FB
 }
 
-body::-webkit-scrollbar {
-    width: 1em;
-}
+/* body::-webkit-scrollbar {
+    width: 12px; */
+    /* border-radius: 10px; */
+    /* background-color: #F5F5F5; */
+/* } */
 
-body::-webkit-scrollbar-track {
-    /* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+/* body::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: #f1f1f1;
+} */
+/* 
+body::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #c0c0c0;
+}
+body::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
+    background-color: #888888;
+} */
+
+/* body::-webkit-scrollbar-button {
+    display: none;
 }
 
 body::-webkit-scrollbar-thumb {
-    /* width: auto; */
-    background: black;
-    outlien: 10px solid white
-    /* outline: 1px solid #D7DFFF; */
+    border-radius: 10px;
 }
+
+body::-webkit-scrollbar-track {
+    border-radius: 10px;
+} */
+
+
+
+
 
 /* "&::-webkit-scrollbar" : {
     width: "8px"
