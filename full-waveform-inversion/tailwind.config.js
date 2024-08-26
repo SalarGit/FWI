@@ -51,7 +51,17 @@ export default {
     }
   ],
 }
+// https://stackoverflow.com/questions/21684101/css-vertical-scrollbar-padding-left-right-in-ul-possible
+// https://stackoverflow.com/questions/29866759/how-do-i-add-a-margin-to-a-css-webkit-scrollbar
+// https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
 
 // #f1f1f1;
 // #888888;
 // #c0c0c0;
+
+// Vragen:
+
+// Scrollbar Solutions
+// 1. Check of overflown is en dan vierkant maken met regular scrollbar/
+// 2. Custom scrollbar maken
+
