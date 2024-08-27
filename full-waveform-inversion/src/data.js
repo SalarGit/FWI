@@ -84,3 +84,55 @@ export const minimisationModels = {
         coolingFunction: ['text', "geometric"]
     }
 };
+
+
+export const tableHeaders = [
+    "Run name" ,
+    "Grid size",
+    "Forward model",
+    "Minimisation model",
+    "Threads",
+    "Case folder"
+]
+
+export const tableData = [
+    ["Data Analysis Run - 01-03-2023", "62 x 32", "Evolution", "Integral", "1", "/default"],
+    ["Data Quality Assessment - 05-03-2023", "62 x 32", "FiniteDifferenceMPI", "Proportional", "1", "/default"],
+    ["Velocity Model Assessment - 10-04-2023", "62 x 32", "Random", "FiniteDifferenceMPI", "1", "/default"],
+    ["Seismic Metrics Calculation - 15-04-2023", "62 x 32", "ConjugateGradient", "FiniteDifference", "1", "/default"],
+    ["Quality Assessment Analysis - 17-04-2023", "62 x 32", "Evolution", "Integral", "1", "/default"],
+    ["Parameter Optimization - 25-07-2023", "62 x 32", "GradientDescent", "FiniteDifferenceOpenMP", "1", "/default"],
+    ["Tomographic Model Generation - 18-08-2023", "62 x 32", "Evolution", "Integral", "1", "/default"],
+    ["Seismic Data Analysis - 19-09-2023", "62 x 32", "ParticleSwarm", "Integral", "1", "/default"],
+    ["Geophysical Survey - 12-02-2023", "58 x 40", "Wavelet", "FourierTransform", "2", "/project/survey"],
+    ["Subsurface Mapping - 28-05-2023", "45 x 37", "ConjugateGradient", "SpectralElement", "3", "/project/mapping"],
+    ["Seismic Reflection Analysis - 09-06-2023", "64 x 29", "RandomForest", "FiniteElement", "1", "/project/seismic"],
+    ["Reservoir Simulation - 14-07-2023", "50 x 50", "MonteCarlo", "FiniteVolume", "4", "/project/reservoir"],
+    ["Earthquake Prediction Model - 22-08-2023", "72 x 34", "NeuralNetwork", "SpectralMethod", "1", "/project/earthquake"],
+    ["Well Log Interpretation - 05-09-2023", "60 x 42", "GradientBoosting", "FiniteDifference", "2", "/project/well_log"],
+    ["Fracture Analysis - 17-10-2023", "68 x 36", "SupportVectorMachine", "BoundaryElement", "3", "/project/fracture"],
+    ["Geomechanical Study - 25-11-2023", "55 x 33", "BayesianInference", "LatticeBoltzmann", "1", "/project/geomechanics"],
+    ["Geophysical Survey - 12-02-2023", "58 x 40", "Wavelet", "FourierTransform", "2", "/project/survey"],
+    ["Subsurface Mapping - 28-05-2023", "45 x 37", "ConjugateGradient", "SpectralElement", "3", "/project/mapping"],
+    ["Seismic Reflection Analysis - 09-06-2023", "64 x 29", "RandomForest", "FiniteElement", "1", "/project/seismic"],
+    ["Reservoir Simulation - 14-07-2023", "50 x 50", "MonteCarlo", "FiniteVolume", "4", "/project/reservoir"],
+    ["Earthquake Prediction Model - 22-08-2023", "72 x 34", "NeuralNetwork", "SpectralMethod", "1", "/project/earthquake"],
+    ["Well Log Interpretation - 05-09-2023", "60 x 42", "GradientBoosting", "FiniteDifference", "2", "/project/well_log"],
+    ["Fracture Analysis - 17-10-2023", "68 x 36", "SupportVectorMachine", "BoundaryElement", "3", "/project/fracture"],
+    ["Geomechanical Study - 25-11-2023", "55 x 33", "BayesianInference", "LatticeBoltzmann", "1", "/project/geomechanics"],
+    ["Petrophysical Modeling - 03-03-2023", "62 x 35", "Kriging", "FiniteElement", "2", "/project/petrophysics"],
+    ["Hydrocarbon Detection - 18-04-2023", "57 x 30", "LogisticRegression", "BoundaryElement", "3", "/project/hydrocarbon"],
+    ["Sediment Transport Analysis - 27-07-2023", "49 x 39", "DecisionTree", "SpectralElement", "1", "/project/sediment"],
+    ["Fluid Flow Simulation - 19-08-2023", "66 x 28", "GeneticAlgorithm", "LatticeBoltzmann", "4", "/project/fluid_flow"],
+    ["Crustal Deformation Monitoring - 04-09-2023", "52 x 44", "PrincipalComponentAnalysis", "FiniteDifference", "2", "/project/crustal"],
+    ["Subduction Zone Analysis - 23-10-2023", "69 x 31", "GaussianProcess", "SpectralMethod", "1", "/project/subduction"],
+    ["Basin Modeling - 02-11-2023", "61 x 38", "GradientDescent", "FiniteVolume", "3", "/project/basin"],
+    ["Lithology Prediction - 14-12-2023", "53 x 41", "AdaBoost", "BoundaryElement", "1", "/project/lithology"],
+]
+
+export const runs = {
+    'Run 1': true,
+    'Run 2': false,
+    'Run 3': false,
+    'Run 4': false,
+}

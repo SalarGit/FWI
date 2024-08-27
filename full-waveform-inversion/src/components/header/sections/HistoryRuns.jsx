@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import UpperPart from '../../custom/UpperPart';
+import { tableHeaders, tableData } from '../../../data';
 
+import UpperPart from '../../custom/UpperPart';
 import closeBig from '../../../assets/close-big.png';
 import search from '../../../assets/search.png';
 import BorderTop from '../../custom/borders/BorderTop';
@@ -10,8 +11,8 @@ import H1 from '../../custom/headings/H1';
 
 export default function HistoryRuns({ onClose }) {
 
-    const th = 'text-start text-sm font-medium text-[#808080] px-6 pb-[18px] border-b border-[#808080] '
-    const td = 'px-6 py-3 border-b border-[#D7DFFF] '
+    const th = 'text-start text-sm font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
+    const td = 'px-6 py-3 border-b border-[#D7DFFF]'
     const check = 'flex items-center justify-center'
 
     return (
@@ -38,362 +39,43 @@ export default function HistoryRuns({ onClose }) {
                     </div>
 
                     {/* Lower part */}
-                    <div className='w-[1746px] h-[873px] bg-[#F4F6FB] border border-[#D7DFFF] rounded-b-3xl p-6'>
-                        {/* <div className='flex flex-col justify-between'>
-                            <div className='flex space-x-4 justify-between'>
-                                <p>Run name</p>
-                                <p>Grid size</p>
-                                <p>Forward model</p>
-                            </div>
-                            <div className='flex space-x-4 justify-between'>
-                                <p>Data Analysis Run - 01-03-2023</p>
-                                <p>62 x 32</p>
-                                <p>Integral</p>
-                            </div>
-                            <div className='flex space-x-4'>
-                                <p>Data Analysis Run - 01-03-2023</p>
-                                <p>62 x 32</p>
-                                <p>FiniteDifferenceMPI</p>
-                            </div>
-                        </div> */}
-
-                        <div className='p-[6px] bg-white border border-[#D7DFFF] rounded-2xl'>
-                            {/* This 6px padding is removed from the inner div using minus margin & table (by simple taking 6px from the padding)
-                                to keep the visuals the same. */}
-                            <div className='max-h-[823px] overflow-y-auto scrollbar-webkit rounded-2xl ml-[-6px]'>
-                                <table className="table-auto w-full py-[12px] border-separate border-spacing-0 " // pr-[6px]
-                                    // bg-white border border-[#D7DFFF] border-separate rounded-2xl"
+                    <div className='w-[1746px] h-[897px] bg-[#F4F6FB] border border-[#D7DFFF] rounded-b-3xl p-6'>
+                        
+                        {/* This 10px padding is removed from the inner div using minus margin & table (by simple taking 6px from the padding)
+                            to keep the visuals the same. */}
+                        <div className='p-[10px] pb-3 bg-white border border-[#D7DFFF] rounded-2xl'>
+                            <div className='max-h-[823px] overflow-y-auto scrollbar-webkit ml-[-10px]'>
+                                <table className="table-auto w-full border-separate border-spacing-0 " // pr-[6px]
                                 >
                                     <thead className='sticky top-0 bg-white'>
-                                        <tr className=''>
-                                            <th className={th}>Select</th>
-                                            <th className={th}>Run name</th>
-                                            <th className={th}>Forward model</th>
-                                            <th className={th}>Grid size</th>
-                                            <th className={th}>Minimisation model</th>
-                                            <th className={th}>Threads</th>
-                                            <th className={th}>Location on disk</th>
+                                        <tr>
+                                            {tableHeaders.map((header) =>
+                                                <th className={th}>{header}</th>
+                                            )}
                                         </tr>
-                                        {/* <BorderTop className='w-auto'/> */}
                                     </thead>
                                 <tbody>
-                                    <tr>
-                                        <div className={td}>
-                                            <input type="checkbox" />
-                                        </div>
-                                        <td className={td}>Data Analysis Run - 01-03-2023</td>
-                                        <td className={td}>62 x 32</td>
-                                        <td className={td}>Integral</td>
-                                        <td className={td}>Evolution</td>
-                                        <td className={td}>1</td>
-                                        <td className={td}>/home/tony_stark/default/fwi</td>
-                                    </tr>
-                                <tr>
+                                    {tableData.map((row) =>
+                                        <tr>
+                                            {row.map((data) =>
+                                                <td className={td}>{data}</td>
+                                            )}
+                                        </tr>
+                                    )}
+                                        {/* <td className={td}>Data Analysis Run - 01-03-2023</td> */}
+                                    
+
+                                {/* <tr >
                                     <div className={td}>
                                         <input type="checkbox" />
                                     </div>
-                                    <td className={td}>Data Quality Assessment - 05-03-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>FiniteDifferenceMPI</td>
-                                    <td className={td}>Proportional</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Velocity Model Assessment - 10-04-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>FiniteDifferenceMPI</td>
-                                    <td className={td}>Random</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Metrics Calculation - 15-04-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>FiniteDifference</td>
-                                    <td className={td}>ConjugateGradient</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Quality Assessment Analysis - 17-04-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>Evolution</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Parameter Optimization - 25-07-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>FiniteDifferenceOpenMP</td>
-                                    <td className={td}>GradientDescent</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Tomographic Model Generation - 18-08-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>Evolution</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
                                     <td className={td}>Seismic Data Analysis - 19-09-2023</td>
                                     <td className={td}>62 x 32</td>
                                     <td className={td}>Integral</td>
                                     <td className={td}>ParticleSwarm</td>
                                     <td className={td}>1</td>
                                     <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr>
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
-                                <tr >
-                                <input type="checkbox" />
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr>
+                                </tr> */}
                             </tbody>
                             </table>
                             </div>

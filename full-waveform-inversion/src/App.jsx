@@ -1,6 +1,6 @@
 import { useState } from 'react';
-
 import './index.css'
+import { runs } from './data.js';
 
 import Header from './components/header/Header.jsx';
 import Settings from './components/settings/Settings.jsx';
@@ -8,6 +8,7 @@ import Input from './components/IO/Input.jsx';
 import Output from './components/IO/Output.jsx';
 import NewRun from './components/header/sections/NewRun.jsx';
 import HistoryRuns from './components/header/sections/HistoryRuns.jsx';
+
 
 function App() {
     // const globalCond = true;
@@ -21,7 +22,6 @@ function App() {
     function handleSetHistoryRuns() {
         setHistoryRuns((prevState) => prevState ? false : true);
     }
-
 
     return (
         // <div className={`relative flex flex-col min-h-screen bg-[#F4F6FB]
@@ -38,6 +38,20 @@ function App() {
             }
             {historyRuns &&
                 <HistoryRuns onClose={handleSetHistoryRuns} />
+            }
+
+            {/* runs.length */}
+            {Object.keys(runs).length > 0 &&
+                <div className='ml-6 mb-8 flex items-center'>
+
+                    {Object.entries(runs).map((run) =>
+                    <div className={`h-12 py-3 px-9 ${run[1] && 'border-b-2 border-[#3561fe] text-[#3561fe]'}
+                        text-base font-semibold`}
+                        >
+                            {run[0]}
+                    </div>
+                    )}
+                </div>
             }
 
             {/* Settings & I/O container*/}
