@@ -31,7 +31,6 @@ function App() {
             px-14 py-8 h-[1080px] scrollbar-webkit'
         >
             {/* scrollbar-thin scrollbar-webkit*/}
-            <textarea className='resize-none w-64 h-44 outline-none scrollbar-webkit'/>
             {/* Header */}
             <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryRuns={handleSetHistoryRuns} />
             {addingNewRun &&

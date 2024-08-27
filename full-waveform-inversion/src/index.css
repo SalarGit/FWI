@@ -10,6 +10,11 @@ input:focus {
     background: #F4F6FB
 }
 
+/* Hide scrollbar buttons for all elements */
+body::-webkit-scrollbar-button {
+    display: none;
+}
+
 /* body::-webkit-scrollbar {
     width: 12px; */
     /* border-radius: 10px; */

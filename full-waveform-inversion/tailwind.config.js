@@ -26,8 +26,11 @@ export default {
             },
             ".scrollbar-webkit": {
                 "&::-webkit-scrollbar" : {
-                    width: "18px"
+                    width: "8px"
                 },
+                // "&::webkit-scrollbar-button": {
+                //     display: "none"
+                // },
                 // "&::-webkit-scrollbar-track" : {
                 //     background: "white",
                 //     // borderRadius: "20px",
@@ -37,14 +40,14 @@ export default {
                 // },
                 "&::-webkit-scrollbar-thumb" : {
                     background: "#c0c0c0",
-                    // borderRadius: "20px",
-                    borderRight: "solid 10px transparent",
-                    backgroundClip: "padding-box",
+                    borderRadius: "20px",
+                    // borderRight: "solid 2px transparent",
+                    // backgroundClip: "padding-box",
                     // border: "1px solid white"
                 },
-                // "&::-webkit-scrollbar-thumb:hover" : {
-                //     background: "#888888"
-                //   }
+                "&::-webkit-scrollbar-thumb:hover" : {
+                    background: "#888888"
+                  }
             }
         }
         addUtilities(newUtilities, ["responsive", "hover"])
