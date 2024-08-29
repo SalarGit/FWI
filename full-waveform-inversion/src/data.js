@@ -87,6 +87,7 @@ export const minimisationModels = {
 
 
 export const tableHeaders = [
+    "Select",
     "Run name" ,
     "Grid size",
     "Forward model",

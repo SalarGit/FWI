@@ -49,16 +49,21 @@ export default function HistoryRuns({ onClose }) {
                                 >
                                     <thead className='sticky top-0 bg-white'>
                                         <tr>
-                                            {tableHeaders.map((header) =>
-                                                <th className={th}>{header}</th>
+                                            {tableHeaders.map((header, index) =>
+                                                <th key={index} className={th}>{header}</th>
                                             )}
                                         </tr>
                                     </thead>
                                 <tbody>
                                     {tableData.map((row) =>
                                         <tr>
-                                            {row.map((data) =>
-                                                <td className={td}>{data}</td>
+                                            
+                                            <td className={`${td} pl-10`}>
+                                                <input type='checkbox' />
+                                            </td>
+                                                
+                                            {row.map((data, index) =>
+                                                <td key={index} className={td}>{data}</td>
                                             )}
                                         </tr>
                                     )}
