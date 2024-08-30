@@ -7,20 +7,20 @@ import Settings from './components/settings/Settings.jsx';
 import Input from './components/IO/Input.jsx';
 import Output from './components/IO/Output.jsx';
 import NewRun from './components/header/sections/NewRun.jsx';
-import HistoryRuns from './components/header/sections/HistoryRuns.jsx';
+import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 
 
 function App() {
     // const globalCond = true;
 
     const [addingNewRun, setAddingNewRun] = useState(false);
-    const [historyRuns, setHistoryRuns] = useState(false);
+    const [historyOfRuns, setHistoryOfRuns] = useState(false);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
-    function handleSetHistoryRuns() {
-        setHistoryRuns((prevState) => prevState ? false : true);
+    function handleSetHistoryOfRuns() {
+        setHistoryOfRuns((prevState) => prevState ? false : true);
     }
 
     return (
@@ -32,12 +32,12 @@ function App() {
         >
             {/* scrollbar-thin scrollbar-webkit*/}
             {/* Header */}
-            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryRuns={handleSetHistoryRuns} />
+            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} />
             {addingNewRun &&
                 <NewRun onClose={handleSetAddingNewRun} />
             }
-            {historyRuns &&
-                <HistoryRuns onClose={handleSetHistoryRuns} />
+            {historyOfRuns &&
+                <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
             }
 
             {/* runs.length */}
@@ -45,11 +45,11 @@ function App() {
                 <div className='ml-6 mb-8 flex items-center'>
 
                     {Object.entries(runs).map((run) =>
-                    <div className={`h-12 py-3 px-9 ${run[1] && 'border-b-2 border-[#3561fe] text-[#3561fe]'}
-                        text-base font-semibold`}
-                        >
-                            {run[0]}
-                    </div>
+                        <div className={`h-12 py-3 px-9 ${run[1] && 'border-b-2 border-[#3561fe] text-[#3561fe]'}
+                            text-base font-semibold`}
+                            >
+                                {run[0]}
+                        </div>
                     )}
                 </div>
             }

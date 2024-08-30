@@ -3,17 +3,17 @@ import { useState } from 'react';
 import '../../index.css';
 import logo from '../../assets/fwi-logo.png';
 import NewRun from './sections/NewRun.jsx';
-import HistoryRuns from './sections/HistoryRuns.jsx';
+import HistoryOfRuns from './sections/historyofruns/HistoryOfRuns.jsx';
 
-export default function Header({ handleSetAddingNewRun, handleSetHistoryRuns }) {
+export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }) {
     // const [addingNewRun, setAddingNewRun] = useState(false);
-    // const [historyRuns, setHistoryRuns] = useState(false);
+    // const [historyOfRuns, setHistoryOfRuns] = useState(false);
 
     // function handleSetAddingNewRun() {
     //     setAddingNewRun((prevState) => prevState ? false : true);
     // }
-    // function handleSetHistoryRuns() {
-    //     setHistoryRuns((prevState) => prevState ? false : true);
+    // function handleSetHistoryOfRuns() {
+    //     setHistoryOfRuns((prevState) => prevState ? false : true);
     // }
     // const styling = addingNewRun ? 'backdrop-blur' : '';
 
@@ -21,8 +21,8 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryRuns }) 
         // Header Container
         // fix 120px
         <>
-        {/* {historyRuns &&
-            <HistoryRuns onClose={handleSetHistoryRuns} />
+        {/* {historyOfRuns &&
+            <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
         } */}
 
         <div className={`flex items-center justify-between min-w-screen pb-8`}>
@@ -40,14 +40,14 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryRuns }) 
             <div className='flex space-x-4'>
                 {/* Border inside, force height */}
                 <div className='relative'>
-                    <button onClick={handleSetHistoryRuns}
+                    <button onClick={handleSetHistoryOfRuns}
                         className={`w-[200px] h-[56px] border-2 rounded-xl`}
                     >
                         History of runs
                     </button>
 
-                    {/* {historyRuns &&
-                        <HistoryRuns onClose={handleSetHistoryRuns} />
+                    {/* {historyOfRuns &&
+                        <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
                     } */}
                 </div>
                 <div className='relative'>

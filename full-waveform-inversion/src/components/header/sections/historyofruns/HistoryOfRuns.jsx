@@ -1,15 +1,26 @@
 import { useState } from 'react';
 
-import { tableHeaders, tableData } from '../../../data';
+import { tableHeaders, tableData, outputTypes } from '../../../../data';
 
-import UpperPart from '../../custom/UpperPart';
-import closeBig from '../../../assets/close-big.png';
-import search from '../../../assets/search.png';
-import BorderTop from '../../custom/borders/BorderTop';
-import BorderBottom from '../../custom/borders/BorderBottom';
-import H1 from '../../custom/headings/H1';
+import UpperPart from '../../../custom/UpperPart';
+import closeBig from '../../../../assets/close-big.png';
+import search from '../../../../assets/search.png';
+import BorderTop from '../../../custom/borders/BorderTop';
+import BorderBottom from '../../../custom/borders/BorderBottom';
+import H1 from '../../../custom/headings/H1';
 
-export default function HistoryRuns({ onClose }) {
+export default function HistoryOfRuns({ onClose }) {
+    const [selectedRuns, setSelectedRuns] = useState([]);
+    const [selectedOutputType, setSelectedOutputType] = useState();
+
+    function selectOutputType(outputType) {
+        // Check if chosen output type is alrdy selected, so that site doesn't refresh unnecessarily.
+        setSelectedOutputType((prev) => {
+            if (prev !== outputType) {
+                return outputType;
+            }
+        });
+    }
 
     const th = 'text-start text-sm font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
     const td = 'px-6 py-3 border-b border-[#D7DFFF]'
@@ -28,14 +39,39 @@ export default function HistoryRuns({ onClose }) {
                 <div className='flex flex-col'>
                     {/* Upper part */}
                     <div className='flex items-center justify-between px-6 py-[26px]
-                        w-[1746px] h-[81px] bg-white  rounded-t-3xl'
-                        >
-                        <H1 heading='Mode:'/>
-                        <button className='hover:bg-[#F1F4FF] duration-200 rounded-md'
-                            onClick={onClose}
-                        >
-                            <img src={closeBig} alt="close-big.png" />
-                        </button>
+                        w-[1746px] h-[81px] bg-white  rounded-t-3xl
+                        relative'
+                    >
+                        <H1 heading='History of runs'/>
+                        
+                        {/* px-6 py-[26px]  */}
+                        {/* <div className='absolute  -full flex items-center justify-center'> This way 'X' button becomes unclickable */}
+                        <div className='absolute left-1/2 transform -translate-x-1/2'>
+                            <div className='flex items-center space-x-1
+                                p-[6px] rounded-xl bg-[#F4F6FB]'
+                            >
+                                
+                                {outputTypes.map((outputType) =>
+                                    <button className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}`}
+                                        onClick={() => setSelectedOutputType(outputType)}
+                                    >
+                                        {outputType}
+                                    </button> 
+                                )}
+                            </div>
+                        </div>
+                        <div className='flex space-x-6 items-center'>
+                            <button className={`px-4 py-[10px] border rounded-xl 
+                                ${selectedRuns.length === 0 ? 'border-[#B6B7BE] text-[#B6B7BE]' : 'border-[#3561fe] text-[#3561fe]'}`}
+                            >
+                                Download
+                            </button>
+                            <button className='hover:bg-[#F1F4FF] duration-200 rounded-md size-6'
+                                onClick={onClose}
+                            >
+                                <img src={closeBig} alt="close-big.png" />
+                            </button>
+                        </div>
                     </div>
 
                     {/* Lower part */}

@@ -137,3 +137,10 @@ export const runs = {
     'Run 3': false,
     'Run 4': false,
 }
+
+export const outputTypes = [
+    'Output values',
+    'Residual graph',
+    'Residual field',
+    'Quality metrics'
+]
