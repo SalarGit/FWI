@@ -1,13 +1,13 @@
-import chiValues from "../../assets/chi-values.png";
+import chiValuesOriginal from "../../assets/chi-values-original.png";
+import chiValuesReconstructed from "../../assets/chi-values-reconstructed.png";
 import velocity from "../../assets/velocity.png";
 
-export default function EmptyGraphs() {
+export default function EmptyGraph({ version }) {
     return (
         // Graphs Container
         <div className="flex justify-evenly pt-[54px]">
-
             {/* Chi values */}
-            <img src={chiValues} alt="chi-values.png" 
+            <img src={`src/assets/chi-values-${version}.png`} alt={`chi-values-${version}.png`} 
                 className="w-[536px] h-[353px]"
             />
 

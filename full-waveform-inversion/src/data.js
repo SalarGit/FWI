@@ -87,7 +87,7 @@ export const minimisationModels = {
 
 
 export const tableHeaders = [
-    "Select",
+    // "Select",
     "Run name" ,
     "Grid size",
     "Forward model",
@@ -138,8 +138,15 @@ export const runs = {
     'Run 4': false,
 }
 
-export const outputTypes = [
+export const calculatedOutputTypes = [
     'Output values',
+    'Residual graph',
+    'Residual field',
+    'Quality metrics'
+]
+
+export const historyOutputTypes = [
+    'Overview',
     'Residual graph',
     'Residual field',
     'Quality metrics'

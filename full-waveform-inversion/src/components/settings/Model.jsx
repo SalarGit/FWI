@@ -15,6 +15,7 @@ export default function Model({ model, modelType }) {
         <div className="flex flex-col space-y-[34px]">
             <div className="flex space-x-3">
                 <H2 heading={heading} styling='uppercase'/>
+                {/* Group doesn't do anything? */}
                 <div className="relative group flex flex-col items-center justify-center">
                     <img src={info} alt="info.png"/>
                     {/* <img src={infoBlueSvg} alt="info-blue.svg" 

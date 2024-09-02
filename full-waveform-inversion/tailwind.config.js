@@ -51,7 +51,7 @@ export default {
             }
         }
         addUtilities(newUtilities, ["responsive", "hover"])
-    }
+    },
   ],
 }
 // https://stackoverflow.com/questions/21684101/css-vertical-scrollbar-padding-left-right-in-ul-possible

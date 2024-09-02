@@ -12,8 +12,8 @@ export default function ModelDataBlock({heading, dataObject}) {
         <div className="grid grid-cols-2 gap-4">
             {heading && <p className="text-sm font-medium col-span-2">{heading}</p>}
             {
-                Object.entries(dataObject).map(([key, value]) => (
-                    <ModelData title={key} value={value}/>
+                Object.entries(dataObject).map((object) => (
+                    <ModelData title={object[0]} value={object[1][1]}/>
                 ))
             }
         </div>
