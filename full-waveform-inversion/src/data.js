@@ -236,14 +236,14 @@ export const runs = {
 
 export const calculatedOutputTypes = [
     'Output values',
-    'Residual graph',
     'Residual field',
+    'Residual graph',
     'Quality metrics'
 ]
 
 export const historyOutputTypes = [
     'Overview',
-    'Residual graph',
     'Residual field',
+    'Residual graph',
     'Quality metrics'
 ]

@@ -1,4 +1,4 @@
-export default function ModelParameters() {
+export default function ModelParametersHOR() {
 
     const header = 'text-sm font-medium'
     const dataKey = 'text-sm font-medium text-[#808080]'

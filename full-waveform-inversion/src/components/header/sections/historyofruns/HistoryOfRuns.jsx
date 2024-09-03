@@ -12,7 +12,11 @@ import search from '../../../../assets/search.png';
 import BorderTop from '../../../custom/borders/BorderTop';
 import BorderBottom from '../../../custom/borders/BorderBottom';
 import H1 from '../../../custom/headings/H1';
-import ModelParameters from './ModelParameters';
+
+import ModelParametersHOR from './ModelParametersHOR';
+import ResidualFieldHOR from './ResidualFieldHOR';
+import ResidualGraphHOR from './ResidualGraphHOR';
+import QualityMetricsHOR from './QualityMetricsHOR';
 
 export default function HistoryOfRuns({ onClose }) {
     const [selectedRuns, setSelectedRuns] = useState([]);
@@ -155,8 +159,10 @@ export default function HistoryOfRuns({ onClose }) {
                         
                         {/* This 10px padding is removed from the inner div using minus margin & table (by simple taking 6px from the padding)
                             to keep the visuals the same. */}
+                        {selectedOutputType === 'Overview' &&
                         <div className='p-[10px] pb-3 bg-white border border-[#D7DFFF] rounded-2xl'>
-                            <div className='max-h-[823px] overflow-y-auto scrollbar-webkit ml-[-10px]'>
+                            <div className='max-h-[823px] overflow-y-auto scrollbar-webkit scrollbar-thin ml-[-10px]'>
+                                
                                 <table className="table-auto w-full border-separate border-spacing-0 " // pr-[6px]
                                 >
                                     <thead className='sticky z-30 top-0 bg-white'>
@@ -288,24 +294,23 @@ export default function HistoryOfRuns({ onClose }) {
                                             )}
                                         </React.Fragment>
                                     )}
-                                        {/* <td className={td}>Data Analysis Run - 01-03-2023</td> */}
-                                    
-
-                                {/* <tr >
-                                    <div className={td}>
-                                        <input type="checkbox" />
-                                    </div>
-                                    <td className={td}>Seismic Data Analysis - 19-09-2023</td>
-                                    <td className={td}>62 x 32</td>
-                                    <td className={td}>Integral</td>
-                                    <td className={td}>ParticleSwarm</td>
-                                    <td className={td}>1</td>
-                                    <td className={td}>/home/tony_stark/default/fwi</td>
-                                </tr> */}
                             </tbody>
                             </table>
                             </div>
                         </div>
+                        }
+                        {
+                            selectedOutputType === 'Residual field' &&
+                            <ResidualFieldHOR />
+                        }
+                        {
+                            selectedOutputType === 'Residual graph' &&
+                            <ResidualGraphHOR />
+                        }
+                        {
+                            selectedOutputType === 'Quality metrics' &&
+                            <QualityMetricsHOR />
+                        }
                         {/* <table className='table-auto'>
                             <thead>
                                 <tr>
