@@ -86,6 +86,94 @@ export const minimisationModels = {
 };
 
 
+export const forwardModelsNIKITA = {
+    finiteDifference: {
+        PMLWidthFactor: {
+            x: ['number', 0], 
+            z: ['number', 0]
+        },
+        SourceParameter: {
+            r: ['number', 4], 
+            beta: ['number', 6.31], 
+        },
+        boundaryConditionType: ['text', "SecondOrderABC"]
+    },
+    integral: {
+        Iter2: {
+            n: ['number', 100],
+            tolerance: ['number', '1e-08'], 
+            calcAlpha: ['bool', true],
+        }
+    },
+}
+
+export const minimisationModelsNIKITA = {
+    gradientDescent: {
+        gamma0: ['number', 0.1],
+        x0: ['number', 0.001],
+        iterations: ['number', 100],
+        tolerance: ['number', 0.000001], 
+        stepSize: ['text', 'BarzilaiBorwein'] // or 'Proportional'
+    },
+    conjugateGradient: {
+        upper: {
+            tolerance: ['number', 0.000001], 
+            maxIterations: ['number', 50],
+            
+        },
+        lower: {
+            method: ['text', "DeltaAmplification"], 
+            fixedAmplification: ['number', 50], 
+            deltaAmplificationStart: ['number', 100], 
+            deltaAmplificationSlope: ['number', 1]
+        }
+    },
+    evolution: {
+        wavefieldCalculationPeriod: ['number', 1], 
+        nChildrenPerGeneration: ['number', 100], 
+        maxIterations: ['number', 385], 
+        tolerance: ['number', 0.0001], 
+        lowerBoundChi: ['number', -0.25], 
+        upperBoundChi: ['number', 0.25], 
+        minimumMutationRate: ['number', 0.01], 
+        maxMutationRate: ['number', 0.5], 
+        maxStagnation: ['number', 5], 
+        crossoverMethod: ['text', "FirstParentBias"],
+        mutationRateMultiplier: ['number', 1.2],
+        mutationRateDivider: ['number', 1.1],
+        nGeneration: ['number', 77]
+    },
+    particleSwarm: {
+        wavefieldCalculationPeriod: ['number', 1], 
+        tolerance: ['number', 0.0001], 
+        maxIterations: ['number', 1000], 
+        nParticles: ['number', 50], 
+        c1: ['number', 2], 
+        c2: ['number', 3], 
+        alpha: ['number', 1], 
+        dt: ['number', 1], 
+        xMin: ['number', 0], 
+        xMax: ['number', 0.2], 
+        startWeight: ['number', 1.8], 
+        eindWeight: ['number', 0.4], 
+        beta: ['number', 0.999], 
+        k: ['number', 0.5], 
+        crazyFactor: ['number', 0.2]
+    },
+    random: {
+        wavefieldCalculationPeriod: ['number', 1], 
+        maxIterations: ['number', 10000], 
+        tolerance: ['number', "5e-05"], 
+        stepSize: ['number', 0.1], 
+        gain: ['number', 0.4], 
+        alpha: ['number', 0.9], 
+        initTemperature: ['number', 0.01], 
+        enableSA: ['bool', false], 
+        coolingFunction: ['text', "geometric"]
+    }
+};
+
+
 export const tableHeaders = [
     // "Select",
     "Run name" ,
@@ -94,6 +182,14 @@ export const tableHeaders = [
     "Minimisation model",
     "Threads",
     "Case folder"
+]
+
+
+export const tableDataWithModelParameters = [
+    ["Data Analysis Run - 01-03-2023", "62 x 32", "Evolution", "Integral", "1", "/default", {}, {}],
+    ["Data Quality Assessment - 05-03-2023", "62 x 32", "FiniteDifferenceMPI", "Proportional", "1", "/default", {}, {}],
+    ["Velocity Model Assessment - 10-04-2023", "62 x 32", "Random", "FiniteDifferenceMPI", "1", "/default", {}, {}],
+    ["Seismic Metrics Calculation - 15-04-2023", "62 x 32", "ConjugateGradient", "FiniteDifference", "1", "/default", {}, {}],
 ]
 
 export const tableData = [

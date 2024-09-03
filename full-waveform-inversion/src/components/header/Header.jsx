@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import { tableData } from '../../data.js';
+
 import '../../index.css';
 import logo from '../../assets/fwi-logo.png';
 import NewRun from './sections/NewRun.jsx';
@@ -40,8 +42,9 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
             <div className='flex space-x-4'>
                 {/* Border inside, force height */}
                 <div className='relative'>
-                    <button onClick={handleSetHistoryOfRuns}
-                        className={`w-[200px] h-[56px] border-2 rounded-xl`}
+                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
+                        onClick={handleSetHistoryOfRuns}
+                        disabled={tableData.length === 0}
                     >
                         History of runs
                     </button>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './index.css'
-import { runs } from './data.js';
+import { runs, tableData } from './data.js';
 
 import Header from './components/header/Header.jsx';
 import Settings from './components/settings/Settings.jsx';
@@ -41,6 +41,7 @@ function App() {
             }
 
             {/* runs.length */}
+            {/* {tableData.length > 0 && */}
             {Object.keys(runs).length > 0 &&
                 <div className='ml-6 mb-8 flex items-center'>
 
