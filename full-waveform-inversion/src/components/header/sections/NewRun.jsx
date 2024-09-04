@@ -137,9 +137,12 @@ export default function NewRun({ onClose }) {
                             <H2 heading="Processing steps"/>
                             {/* <ClickableChip title="Pre-processing"/> */}
                             <div className="flex space-x-3">
-                                <Chip title="Pre-Processing" clickable={true} />
+                                <Chip title="Pre-Processing" />
+                                <Chip title="Processing" />
+                                <Chip title="Post-Processing" />
+                                {/* <Chip title="Pre-Processing" clickable={true} />
                                 <Chip title="Processing" clickable={true} />
-                                <Chip title="Post-Processing" clickable={true} />
+                                <Chip title="Post-Processing" clickable={true} /> */}
                             </div>
                         </div>
 

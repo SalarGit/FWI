@@ -52,9 +52,9 @@ export default function Settings() {
 
                     {/* Processes container */}
                     <div className="flex space-x-3">
-                        <Chip title="Pre-Processing"/>
-                        <Chip title="Processing"/>
-                        <Chip title="Post-Processing"/>
+                        <Chip title="Pre-Processing" disabled={true}/>
+                        <Chip title="Processing" disabled={true}/>
+                        <Chip title="Post-Processing" disabled={true}/>
                     </div>
                 </div>
 

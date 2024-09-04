@@ -3,9 +3,9 @@ import { useState } from "react";
 import check from "../../assets/check.svg";
 import plus from "../../assets/plus.svg";
 
-export default function Chip({ title, clickable=false }) {
+export default function Chip({ title, disabled=false }) {
 
-    const [clicked, setClicked] = useState(false);
+    const [clicked, setClicked] = useState(true);
 
     function handleClick() {
         setClicked((prev) => prev ? false : true);
@@ -19,7 +19,7 @@ export default function Chip({ title, clickable=false }) {
 
     return (
         <>
-            {!clickable ?
+            {disabled ?
                 <div className="flex items-center space-x-2 py-3 px-4 bg-[#F1F4FF] rounded-full text-[#3561FE]">
                     <img src={check} alt="check.png" />
                     <p>{title}</p>
