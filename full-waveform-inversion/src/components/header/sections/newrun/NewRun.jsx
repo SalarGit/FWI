@@ -1,23 +1,23 @@
 import { useState } from 'react';
 
-import '../../../index.css';
+import '../../../../index.css';
 
-import H2 from '../../custom/headings/H2.jsx';
-import UpperPart from '../../custom/UpperPart.jsx';
-import Border from '../../custom/Border.jsx';
-import BorderTop from '../../custom/borders/BorderTop.jsx';
-import EditButton from '../../custom/buttons/EditButton.jsx';
-import Chip from '../../custom/Chip.jsx';
-import AddSubstract from '../AddSubstract.jsx';
-import DropdownMenu from '../../custom/dropdownmenus/regular/DropdownMenu.jsx';
-import EditDataMenu from '../../custom/dropdownmenus/editdata/EditDataMenu.jsx';
-import EditDataDropdownMenu from '../../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
-import EditModels from '../EditModels.jsx';
-import FileInputWithCustomButton from '../FileInputWithCustomButton.jsx';
+import H2 from '../../../custom/headings/H2.jsx';
+import UpperPart from '../../../custom/UpperPart.jsx';
+import Border from '../../../custom/Border.jsx';
+import BorderTop from '../../../custom/borders/BorderTop.jsx';
+import EditButton from '../../../custom/buttons/EditButton.jsx';
+import Chip from '../../../custom/Chip.jsx';
+import AddSubstract from '../../AddSubstract.jsx';
+import DropdownMenu from '../../../custom/dropdownmenus/regular/DropdownMenu.jsx';
+import EditDataMenu from '../../../custom/dropdownmenus/editdata/EditDataMenu.jsx';
+import EditDataDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
+import EditModels from '../../EditModels.jsx';
+import FileInputWithCustomButton from '../../FileInputWithCustomButton.jsx';
 
-import closeBig from '../../../assets/close-big.png';
+import closeBig from '../../../../assets/close-big.png';
 
-import { forwardModels, minimisationModels } from '../../../data.js';
+import { forwardModels, minimisationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");

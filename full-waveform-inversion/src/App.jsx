@@ -6,8 +6,9 @@ import Header from './components/header/Header.jsx';
 import Settings from './components/settings/Settings.jsx';
 import Input from './components/IO/Input.jsx';
 import Output from './components/IO/Output.jsx';
-import NewRun from './components/header/sections/NewRun.jsx';
+import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
+import ZipFileHandler from './components/header/sections/newrun/ZipeFileHandler.jsx';
 
 
 function App() {
@@ -15,12 +16,16 @@ function App() {
 
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
+    const [test, setTest] = useState(false);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
     }
     function handleSetHistoryOfRuns() {
         setHistoryOfRuns((prevState) => prevState ? false : true);
+    }
+    function handleSetTest() {
+        setTest((prevState) => prevState ? false : true);
     }
 
     return (
@@ -32,12 +37,15 @@ function App() {
         >
             {/* scrollbar-thin scrollbar-webkit*/}
             {/* Header */}
-            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} />
+            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} handleSetTest={handleSetTest}/>
             {addingNewRun &&
                 <NewRun onClose={handleSetAddingNewRun} />
             }
             {historyOfRuns &&
                 <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
+            }
+            {test &&
+                <ZipFileHandler onClose={handleSetTest} />
             }
 
             {/* runs.length */}

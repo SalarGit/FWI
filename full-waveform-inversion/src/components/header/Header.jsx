@@ -4,10 +4,10 @@ import { tableData } from '../../data.js';
 
 import '../../index.css';
 import logo from '../../assets/fwi-logo.png';
-import NewRun from './sections/NewRun.jsx';
+import NewRun from './sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './sections/historyofruns/HistoryOfRuns.jsx';
 
-export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }) {
+export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, handleSetTest }) {
     // const [addingNewRun, setAddingNewRun] = useState(false);
     // const [historyOfRuns, setHistoryOfRuns] = useState(false);
 
@@ -40,6 +40,14 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
 
             {/* Buttons Container*/}
             <div className='flex space-x-4'>
+                <div className='relative'>
+                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
+                        onClick={handleSetTest}
+                        disabled={tableData.length === 0}
+                    >
+                        Test
+                    </button>
+                </div>
                 {/* Border inside, force height */}
                 <div className='relative'>
                     <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
@@ -48,10 +56,6 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
                     >
                         History of runs
                     </button>
-
-                    {/* {historyOfRuns &&
-                        <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
-                    } */}
                 </div>
                 <div className='relative'>
                     <button onClick={handleSetAddingNewRun} 
@@ -59,10 +63,6 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
                     >
                         Add new run
                     </button>
-                    
-                    {/* {addingNewRun &&
-                        <NewRun onClose={handleSetAddingNewRun} />
-                    } */}
                 </div>
             </div>
         </div>
