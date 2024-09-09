@@ -9,8 +9,33 @@ export default function InputModelData({title, defaultValue}) {
     function handleBool() {
         setValue((prevValue) => prevValue ? false : true);
     }
-
+    
     const inputType = defaultValue[0];
+
+    function handleChangeValue(event, type) {
+        if (type === 'number') {
+            setValue(event.target.value);
+        } else if (type === 'text') {        
+            setValue(event.target.value);
+        }
+    }
+
+    const handleInputChange = (event) => {
+        const { value } = event.target;
+        
+        // Allow empty string, numbers, ".", "-", and "e"
+        if (/^-?\d*\.?\d*([eE]-?\d*)?$/.test(value) || value === '') {
+            setValue(value); // Update input value as a string
+        }
+    };
+
+    const handleBlur = () => {
+        // When input loses focus, convert it to a number if valid
+        const numberValue = parseFloat(value);
+
+        // Update state with number value if valid, otherwise keep it as is
+        setValue(isNaN(numberValue) ? '' : numberValue);
+    };
 
     // let input = <div>bruh</div>
 
@@ -37,7 +62,8 @@ export default function InputModelData({title, defaultValue}) {
             <input className="h-[48px] py-3 px-4
                 rounded-xl border border-[#D7DFFF] 
                 text-sm font-normal"
-                type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
+                // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
+                type={inputType} value={value} onChange={(event) => handleChangeValue(event, inputType)}
             />
         </div>
     : // if (inputType === 'bool')
@@ -52,7 +78,41 @@ export default function InputModelData({title, defaultValue}) {
 
     return (
         <>
-            {input}
+            {inputType === 'number' && 
+                <div className="flex flex-col space-y-3">
+                    <H3>{title}:</H3>
+                    <input className="h-[48px] py-3 px-4
+                        rounded-xl border border-[#D7DFFF] 
+                        text-sm font-normal"
+                        // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
+                        type="text" pattern="[0-9]+" value={value} onChange={handleInputChange} onBlur={handleBlur}
+                        // type="text" pattern="[0-9]+" value={value} onChange={(event) => handleChangeValue(event, 'number')}
+                    />
+                    {typeof value}
+                </div>
+            }
+            {inputType === 'text' && 
+                <div className="flex flex-col space-y-3">
+                    <H3>{title}:</H3>
+                    <input className="h-[48px] py-3 px-4
+                        rounded-xl border border-[#D7DFFF] 
+                        text-sm font-normal"
+                        // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
+                        type='text' value={value} onChange={(event) => handleChangeValue(event, 'text')}
+                    />
+                    {typeof value}
+                </div>
+            }
+            {inputType === 'bool' && 
+                <div className="flex flex-col space-y-5">
+                    <H3>{title}:</H3>
+                    <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
+                        <input type='checkbox' id='check' checked={value} className='sr-only peer' onChange={handleBool}/>
+                        <span className='absolute left-1 top-1 w-6 h-6 bg-white rounded-full peer-checked:left-6 transition-all duration-500' />
+                    </label>
+                    {/* <p>{value ? 'true' : 'false'}</p> */}
+                </div>
+            }
         </>
     );
 }

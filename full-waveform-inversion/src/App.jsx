@@ -9,7 +9,7 @@ import Output from './components/IO/Output.jsx';
 import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 import ZipFileHandler from './components/header/sections/newrun/ZipeFileHandler.jsx';
-
+import RecursiveForm from './components/header/sections/newrun/Test123.jsx';
 
 function App() {
     // const globalCond = true;
@@ -45,7 +45,8 @@ function App() {
                 <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
             }
             {test &&
-                <ZipFileHandler onClose={handleSetTest} />
+                // <ZipFileHandler onClose={handleSetTest} />
+                <RecursiveForm />
             }
 
             {/* runs.length */}
