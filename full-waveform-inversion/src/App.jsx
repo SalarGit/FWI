@@ -46,7 +46,7 @@ function App() {
             }
             {test &&
                 // <ZipFileHandler onClose={handleSetTest} />
-                <RecursiveForm />
+                <ZipFileHandler />
             }
 
             {/* runs.length */}

@@ -21,20 +21,30 @@ export default function InputModelData({title, defaultValue}) {
     }
 
     const handleInputChange = (event) => {
+        console.log("Entered handleInputChange with", typeof event.target.value, event.target.value)
         const { value } = event.target;
         
         // Allow empty string, numbers, ".", "-", and "e"
         if (/^-?\d*\.?\d*([eE]-?\d*)?$/.test(value) || value === '') {
+            console.log("Valid input in handleInputChange")
             setValue(value); // Update input value as a string
+            console.log("Value is now", value)
+        } else {
+            console.log("Invalid input in handleInputChange")
         }
     };
 
     const handleBlur = () => {
+        console.log("Entered handleBlur with", typeof value, value)
         // When input loses focus, convert it to a number if valid
-        const numberValue = parseFloat(value);
-
-        // Update state with number value if valid, otherwise keep it as is
-        setValue(isNaN(numberValue) ? '' : numberValue);
+        if (value = ''){
+            setValue(0);
+        } else {
+            const numberValue = parseFloat(value);
+    
+            // Update state with number value if valid, otherwise keep it as is
+            setValue(isNaN(numberValue) ? '' : numberValue);
+        }
     };
 
     // let input = <div>bruh</div>
@@ -88,6 +98,9 @@ export default function InputModelData({title, defaultValue}) {
                         type="text" pattern="[0-9]+" value={value} onChange={handleInputChange} onBlur={handleBlur}
                         // type="text" pattern="[0-9]+" value={value} onChange={(event) => handleChangeValue(event, 'number')}
                     />
+                    {/* <input className="px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        type="text" pattern="[0-9]+" value={value} onChange={(event) => preHandleInputChange(fullKey, event.target.value)} onBlur={() => handleBlur(fullKey, value)}
+                    /> */}
                     {typeof value}
                 </div>
             }

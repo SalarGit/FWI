@@ -33,8 +33,11 @@ export default function ZipFileHandler() {
 
     const handleInputChange = (e) => {
         const newValue = e.target.value;
+        console.log(newValue, typeof newValue);
         if (jsonData && typeof jsonData.tolerance === 'number') {
             const numValue = parseFloat(newValue);
+            console.log(numValue, typeof numValue);
+
             if (!isNaN(numValue)) {
                 setInputValue(numValue);
             }
@@ -87,9 +90,10 @@ export default function ZipFileHandler() {
                 <input type="file" accept=".zip" onChange={handleFileChange} />
                 {jsonData && (
                     <div className="mt-4">
-                        <label className="block text-sm font-medium text-gray-700">Tolerance</label>
+                        <label className="block text-sm font-medium text-gray-700">Tolerance: {typeof jsonData.tolerance === 'number' ? 'number' : 'text'}</label>
                         <input
                             type={typeof jsonData.tolerance === 'number' ? 'number' : 'text'}
+                            // type='text'
                             value={inputValue}
                             onChange={handleInputChange}
                             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
