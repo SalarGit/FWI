@@ -12,40 +12,59 @@ export default function InputModelData({title, defaultValue}) {
     
     const inputType = defaultValue[0];
 
-    function handleChangeValue(event, type) {
-        if (type === 'number') {
-            setValue(event.target.value);
-        } else if (type === 'text') {        
-            setValue(event.target.value);
+    // function handleChangeValue(event, type) {
+    //     if (type === 'number') {
+    //         setValue(event.target.value);
+    //     } else if (type === 'text') {        
+    //         setValue(event.target.value);
+    //     }
+    // }
+
+    // const handleInputChange = (event) => {
+    function handleInputChange(value, option) {
+        console.log("Entered handleInputChange with", typeof value, value)
+        const regex = /^-?\d*\.?\d*$/
+        // This regex allows:
+        // Numbers with or without decimal points
+        // Negative numbers
+        // Just '-' (parseFloats to NaN, handled as a 0 by handleBlur)
+        // Empty string (parseFloats to NaN, handled as a 0 by handleBlur)
+        // Technical explanation:
+        // ^-?: Optionally matches a negative sign at the beginning.
+        // \d*: Matches zero or more digits.
+        // \.?: Optionally matches a decimal point.
+        // \d*: Matches zero or more digits after the decimal point.
+
+        // /^-?\d*\.?\d*([eE]-?\d*)?$/ ORIGINAL
+        // const regex = /^-?\d+(\.\d+)?$/; CLOSE, DOESNT ALLOW '-'
+
+        if (option === 'NUMBER') {
+            if (regex.test(value) || value === '') {
+                setValue(value); // Update input value as a string
+                console.log("Value is now", value)
+            }
+        }
+        else if (option === 'TEXT') {
+            setValue(value)
         }
     }
-
-    const handleInputChange = (event) => {
-        console.log("Entered handleInputChange with", typeof event.target.value, event.target.value)
-        const { value } = event.target;
-        
-        // Allow empty string, numbers, ".", "-", and "e"
-        if (/^-?\d*\.?\d*([eE]-?\d*)?$/.test(value) || value === '') {
-            console.log("Valid input in handleInputChange")
-            setValue(value); // Update input value as a string
-            console.log("Value is now", value)
-        } else {
-            console.log("Invalid input in handleInputChange")
-        }
-    };
-
-    const handleBlur = () => {
+    
+    function handleBlur() {
         console.log("Entered handleBlur with", typeof value, value)
         // When input loses focus, convert it to a number if valid
-        if (value = ''){
+        if (value === ''){
             setValue(0);
         } else {
             const numberValue = parseFloat(value);
     
             // Update state with number value if valid, otherwise keep it as is
-            setValue(isNaN(numberValue) ? '' : numberValue);
-        }
-    };
+            setValue(isNaN(numberValue) ? 0 : numberValue);
+        }    
+    }
+    
+    // const handleBlur = () => {
+    // };
+
 
     // let input = <div>bruh</div>
 
@@ -95,7 +114,7 @@ export default function InputModelData({title, defaultValue}) {
                         rounded-xl border border-[#D7DFFF] 
                         text-sm font-normal"
                         // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
-                        type="text" pattern="[0-9]+" value={value} onChange={handleInputChange} onBlur={handleBlur}
+                        type="text" value={value} onChange={(e) => handleInputChange(e.target.value, 'NUMBER')} onBlur={handleBlur}
                         // type="text" pattern="[0-9]+" value={value} onChange={(event) => handleChangeValue(event, 'number')}
                     />
                     {/* <input className="px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -111,7 +130,8 @@ export default function InputModelData({title, defaultValue}) {
                         rounded-xl border border-[#D7DFFF] 
                         text-sm font-normal"
                         // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
-                        type='text' value={value} onChange={(event) => handleChangeValue(event, 'text')}
+                        type='text' value={value} onChange={(e) => handleInputChange(e.target.value, 'TEXT')}
+                        // type='text' value={value} onChange={(e) => handleChangeValue(e.target.value, 'TEXT')}
                     />
                     {typeof value}
                 </div>

@@ -9,14 +9,17 @@ import Output from './components/IO/Output.jsx';
 import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 import ZipFileHandler from './components/header/sections/newrun/ZipeFileHandler.jsx';
-import RecursiveForm from './components/header/sections/newrun/Test123.jsx';
+import RecursiveForm from './components/header/sections/newrun/RecursiveForm.jsx';
+import RecursiveZipFileHandler from './components/header/sections/newrun/RecursiveZipFileHandler.jsx';
 
 function App() {
     // const globalCond = true;
 
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
-    const [test, setTest] = useState(false);
+    const [zipFileHandler, setZipFileHandler] = useState(false);
+    const [recursiveForm, setRecursiveForm] = useState(false);
+    const [recursiveZipFileHandler, setRecursiveZipFileHandler] = useState(false);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
@@ -24,8 +27,14 @@ function App() {
     function handleSetHistoryOfRuns() {
         setHistoryOfRuns((prevState) => prevState ? false : true);
     }
-    function handleSetTest() {
-        setTest((prevState) => prevState ? false : true);
+    function handleSetZipFileHandler() {
+        setZipFileHandler((prevState) => prevState ? false : true);
+    }
+    function handleSetRecursiveForm() {
+        setRecursiveForm((prevState) => prevState ? false : true);
+    }
+    function handleSetRecursiveZipFileHandler() {
+        setRecursiveZipFileHandler((prevState) => prevState ? false : true);
     }
 
     return (
@@ -37,16 +46,24 @@ function App() {
         >
             {/* scrollbar-thin scrollbar-webkit*/}
             {/* Header */}
-            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} handleSetTest={handleSetTest}/>
+            <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} handleSetZipFileHandler={handleSetZipFileHandler} handleSetRecursiveForm={handleSetRecursiveForm} handleSetRecursiveZipFileHandler={handleSetRecursiveZipFileHandler} />
             {addingNewRun &&
                 <NewRun onClose={handleSetAddingNewRun} />
             }
             {historyOfRuns &&
                 <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
             }
-            {test &&
+            {zipFileHandler &&
                 // <ZipFileHandler onClose={handleSetTest} />
-                <ZipFileHandler />
+                <ZipFileHandler onClose={handleSetZipFileHandler}/>
+            }
+            {recursiveForm &&
+                // <ZipFileHandler onClose={handleSetTest} />
+                <RecursiveForm onClose={handleSetRecursiveForm}/>
+            }
+            {recursiveZipFileHandler &&
+                // <ZipFileHandler onClose={handleSetTest} />
+                <RecursiveZipFileHandler onClose={handleSetRecursiveZipFileHandler} />
             }
 
             {/* runs.length */}

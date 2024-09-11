@@ -7,7 +7,7 @@ import logo from '../../assets/fwi-logo.png';
 import NewRun from './sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './sections/historyofruns/HistoryOfRuns.jsx';
 
-export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, handleSetTest }) {
+export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, handleSetZipFileHandler, handleSetRecursiveForm, handleSetRecursiveZipFileHandler }) {
     // const [addingNewRun, setAddingNewRun] = useState(false);
     // const [historyOfRuns, setHistoryOfRuns] = useState(false);
 
@@ -42,10 +42,26 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, 
             <div className='flex space-x-4'>
                 <div className='relative'>
                     <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
-                        onClick={handleSetTest}
+                        onClick={handleSetRecursiveZipFileHandler}
                         disabled={tableData.length === 0}
                     >
-                        Test
+                        Recursive zipfile handler
+                    </button>
+                </div>
+                <div className='relative'>
+                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
+                        onClick={handleSetRecursiveForm}
+                        disabled={tableData.length === 0}
+                    >
+                        Recursive form
+                    </button>
+                </div>
+                <div className='relative'>
+                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
+                        onClick={handleSetZipFileHandler}
+                        disabled={tableData.length === 0}
+                    >
+                        zipfile handler
                     </button>
                 </div>
                 {/* Border inside, force height */}
