@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-input:focus {
+/* input:focus {
   outline: none;
-}
+} */
 
 #root {
     background: #F4F6FB

@@ -85,25 +85,7 @@ export default function InputModelData({title, defaultValue}) {
     //         <span className='w-2/5 h-4/5 bg-white absolute rounded-full left-1 top-1 peer-checked:left-11 transition-all duration-500' />
     //     </label>
     // }
-    const input = inputType === 'number' || inputType === 'text' ?
-        <div className="flex flex-col space-y-3">
-            <H3>{title}:</H3>
-            <input className="h-[48px] py-3 px-4
-                rounded-xl border border-[#D7DFFF] 
-                text-sm font-normal"
-                // type={inputType} value={value} onChange={(e) => setValue(e.target.value)}
-                type={inputType} value={value} onChange={(event) => handleChangeValue(event, inputType)}
-            />
-        </div>
-    : // if (inputType === 'bool')
-        <div className="flex flex-col space-y-5">
-            <H3>{title}:</H3>
-            <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
-                <input type='checkbox' id='check' checked={value} className='sr-only peer' onChange={handleBool}/>
-                <span className='absolute left-1 top-1 w-6 h-6 bg-white rounded-full peer-checked:left-6 transition-all duration-500' />
-            </label>
-            {/* <p>{value ? 'true' : 'false'}</p> */}
-        </div>
+
 
     return (
         <>

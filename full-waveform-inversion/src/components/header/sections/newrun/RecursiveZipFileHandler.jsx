@@ -1,36 +1,130 @@
-// Works but not in grid
+// Works but not in grid (and not validation?)
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
 
 export default function ZipFileHandler() {
     const [jsonData, setJsonData] = useState(null);
     const [inputValues, setInputValues] = useState({});
+    const [initialTypes, setInitialTypes] = useState({});
     const [zipContent, setZipContent] = useState(null);
     const [caseId, setCaseId] = useState('');
+    const [filePath, setFilePath] = useState('');  // New state to store file path
+
+    // New zip is not rflected in front-end
+    // const handleFileChange = async (event) => {
+    //     const file = event.target.files[0];
+    //     if (file && file.name.endsWith('.zip')) {
+    //         const zip = new JSZip();
+    //         try {
+    //             const loadedZip = await zip.loadAsync(file);
+    //             setZipContent(loadedZip);
+
+    //             // Find the JSON file inside the ZIP
+    //             const jsonFile = loadedZip.file(/.*\.json$/)?.[2];
+    //             if (jsonFile) {
+    //                 const jsonText = await jsonFile.async('text');
+    //                 const parsedData = JSON.parse(jsonText);
+    //                 setJsonData(parsedData);
+    //                 setInputValues(parsedData);
+    //             } else {
+    //                 console.error('No JSON file found in the ZIP.');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error reading zip file:', error);
+    //         }
+    //     }
+    // };
 
     const handleFileChange = async (event) => {
         const file = event.target.files[0];
         if (file && file.name.endsWith('.zip')) {
+            setFilePath(file.name);  // Save the file path
+
+            // Double redundant
+            // setJsonData(null);  // Reset jsonData
+            // setInputValues({});  // Clear input values
+            // setInitialTypes({});  // Clear initial types
+
             const zip = new JSZip();
             try {
                 const loadedZip = await zip.loadAsync(file);
-                setZipContent(loadedZip);
-
+                setZipContent(loadedZip); // Save the ZIP content
+    
                 // Find the JSON file inside the ZIP
                 const jsonFile = loadedZip.file(/.*\.json$/)?.[0];
                 if (jsonFile) {
                     const jsonText = await jsonFile.async('text');
                     const parsedData = JSON.parse(jsonText);
-                    setJsonData(parsedData);
-                    setInputValues(parsedData);
+    
+                    setJsonData(parsedData);  // Update jsonData with new parsed data
+                    setInputValues(parsedData);  // Set new input values for the form
+    
+                    // Reset initialTypes so that it updates based on the new input values
+                    const newInitialTypes = replaceValuesWithTypes(parsedData);
+                    setInitialTypes(newInitialTypes);  // Set types based on the new file
+    
                 } else {
                     console.error('No JSON file found in the ZIP.');
                 }
+
+                // Reset file input value to allow re-uploading the same file
+                event.target.value = '';  // This ensures the onChange event triggers even for the same file
+
             } catch (error) {
                 console.error('Error reading zip file:', error);
             }
         }
+    };
+    
+
+    // Function to replace values with their types
+    const replaceValuesWithTypes = (obj) => {
+        if (typeof obj === 'object' && obj !== null) {
+            const result = Array.isArray(obj) ? [] : {};
+            for (const key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    const value = obj[key];
+                    if (typeof value === 'object' && value !== null) {
+                        result[key] = replaceValuesWithTypes(value);
+                    } else {
+                        result[key] = typeof value;
+                    }
+                }
+            }
+            return result;
+        } else {
+            return typeof obj;
+        }
+    };
+
+    // // Initialize initialTypes on component mount
+    // useEffect(() => {
+    //     setInitialTypes(replaceValuesWithTypes(inputValues));
+    // }, []); // Empty dependency array ensures this runs only once on mount
+
+    // Initialize initialTypes when inputValues is populated
+    useEffect(() => {
+        // Only set initialTypes if it's empty, to avoid overwriting it
+        if (Object.keys(initialTypes).length === 0 && Object.keys(inputValues).length > 0) {
+            setInitialTypes(replaceValuesWithTypes(inputValues));
+        }
+    }, [inputValues, initialTypes]);
+
+    const getTypeFromKey = (key) => {
+        const keys = key.split('.'); // Split the key into parts (for nested keys)
+    
+        let currentValue = initialTypes;
+    
+        for (let i = 0; i < keys.length; i++) {
+            if (currentValue.hasOwnProperty(keys[i])) {
+                currentValue = currentValue[keys[i]]; // Move deeper into the object
+            } else {
+                return 'Key not found'; // If the key doesn't exist
+            }
+        }
+    
+        return currentValue; // Return the found type (string)
     };
 
     // Recursive function to render inputs for both flat and nested JSON objects
@@ -48,29 +142,46 @@ export default function ZipFileHandler() {
                     </div>
                 );
             } else {
+                const initialType = getTypeFromKey(inputKey);
                 return (
-                    <div key={inputKey} className="mb-2">
-                        <label className="block">{key}:</label>
-                        {/* If number/text else bool */}
-                        <input
-                            type={typeof value === 'number' ? 'number' : 'text'}
-                            value={value !== undefined ? value : ''}
-                            onChange={(e) => handleInputChange(inputKey, e.target.value)}
-                            className="border px-2 py-1"
-                        />
-                    </div>
+                    <>
+                        {initialType === 'number' &&
+                            <div key={inputKey} className="mb-2">
+                                {console.log(key)}
+                                <label className="block">{key}:</label>
+                                <input
+                                    type='text'
+                                    value={value}
+                                    onChange={(e) => handleInputChange(inputKey, e.target.value, 'NUMBER')}
+                                    onBlur={() => handleBlur(inputKey)}
+                                    className="border px-2 py-1"
+                                />
+                            </div>
+                        }
+                        {initialType === 'string' &&
+                            <div key={inputKey} className="mb-2">
+                                <label className="block">{key}:</label>
+                                <input
+                                    type='text'
+                                    value={value}
+                                    onChange={(e) => handleInputChange(inputKey, e.target.value, 'TEXT')}
+                                    className="border px-2 py-1"
+                                />
+                            </div>
+                        }
+                        {initialType === 'boolean' &&
+                            console.log('boolean')
+                        }
+                    </>
                 );
             }
         });
     };
 
-    // Function to handle input changes and update the nested state
-    const handleInputChange = (key, value) => {
-        console.log(typeof value, value)
+    // newval is either val or parsefloated value
+    function updateInputValues(key, newValue) {
         const keys = key.split('.');
-        const newValue = isNaN(value) ? value : parseFloat(value);  // Keep number validation
-        console.log(typeof value, value)
-        
+
         setInputValues((prevState) => {
             let newState = { ...prevState };
             let nestedState = newState;
@@ -93,7 +204,62 @@ export default function ZipFileHandler() {
 
             return newState;  // Return the updated state to trigger re-render
         });
+    }
+
+    // Function to handle input changes and update the nested state
+    const handleInputChange = (key, value, option) => {
+        const regex = /^-?\d*\.?\d*$/
+
+        if (option === 'NUMBER' && regex.test(value)) { // '-', '.', '' go through regex, but parseFloat to NaN
+            updateInputValues(key, value)
+        } else if (option === 'TEXT') {
+            updateInputValues(key, value)
+        } else if (option === 'BOOLEAN') {
+
+        }
     };
+
+    function handleBlur(key) {
+        console.log("Calling handleBlur")
+        const keys = key.split('.');
+    
+        setInputValues((prevState) => {
+            let newState = { ...prevState };
+            let nestedState = newState;
+    
+            // Traverse the object based on the keys
+            keys.forEach((k, index) => {
+                if (index === keys.length - 1) {
+                    // If it's the last key, parse the current value to a float and update
+                    const currentValue = parseFloat(nestedState[k]);
+                    if (!isNaN(currentValue)) {
+                        nestedState[k] = currentValue; // Set the parsed float value
+                    } else {
+                        // Handle the case where the value is not a valid number
+                        nestedState[k] = 0;
+                    }
+                } else {
+                    // Traverse deeper if it's not the last key
+                    nestedState = nestedState[k];
+                }
+            });
+    
+            return newState;  // Return the updated state to trigger re-render
+        });       
+    }
+
+
+    // function handleBlur(key) {
+    //     // When input loses focus, convert it to a number if valid
+    //     if (value === ''){
+    //         setValue(0);
+    //     } else {
+    //         const numberValue = parseFloat(value);
+    
+    //         // Update state with number value if valid, otherwise keep it as is
+    //         setValue(isNaN(numberValue) ? 0 : numberValue);
+    //     }    
+    // };
 
     const handleSaveAndUpload = async () => {
         if (jsonData && zipContent) {
@@ -136,9 +302,20 @@ export default function ZipFileHandler() {
                     >
                         Save and Upload
                     </button>
-                    <pre className="mt-4 p-4 bg-gray-100 rounded-md">
+                    {/* <pre className="mt-4 p-4 bg-gray-100 rounded-md">
                         {JSON.stringify(inputValues, null, 2)}
-                    </pre>
+                    </pre> */}
+                    <div className='flex mt-4 p-4 bg-gray-100 rounded-md'>
+                    <div>
+                        <h1>Initial Types</h1>
+                        <pre>{JSON.stringify(initialTypes, null, 2)}</pre>
+                    </div>
+                    <div>
+                        <h1>Current Input Object</h1>
+                        <pre>{JSON.stringify(inputValues, null, 2)}</pre>
+                    </div>
+                    </div>
+                    <p>{filePath}</p>
                 </div>
             )}
         </div>
