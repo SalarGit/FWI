@@ -44,15 +44,14 @@
 
 import React, { useState } from 'react';
 
-function FileInputWithCustomButton() {
+function FileInputWithCustomButton({ handleZipChange }) {
   // State to manage conditional styling
   const [isSelectingFile, setIsSelectingFile] = useState(false);
-  const [file, setFile] = useState();
 
   // Handle label click event (when label is clicked)
-  const handleLabelClick = () => {
-    setIsSelectingFile(true);
-  };
+  // const handleLabelClick = () => {
+  //   setIsSelectingFile(true);
+  // };
 
 
     // const elem = document.createElement("input");
@@ -71,27 +70,29 @@ function FileInputWithCustomButton() {
     // <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" />
 
 
+  // NOTES: This did some styling
   // Handle file input change event (when a file is selected)
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      setIsSelectingFile(false); // Remove conditional styling when a file is selected
-    } else {
-      setIsSelectingFile(false); // Remove conditional styling if no file is selected
-    }
-  };
+  // const handleFileChange = (event) => {
+  //   if (event.target.files.length > 0) {
+  //     setIsSelectingFile(false); // Remove conditional styling when a file is selected
+  //   } else {
+  //     setIsSelectingFile(false); // Remove conditional styling if no file is selected
+  //   }
+  // };
 
   // Handle blur event (when file dialog is closed)
-  const handleFileBlur = () => {
-    console.log("handleFileBlur triggered");
-    setIsSelectingFile(false); // Remove conditional styling when file dialog is closed
-  };
+  // const handleFileBlur = () => {
+  //   console.log("handleFileBlur triggered");
+  //   setIsSelectingFile(false); // Remove conditional styling when file dialog is closed
+  // };
 
-  function handleFileFocus() {
-    console.log("handleFileFocus triggered");
-  }
+  // function handleFileFocus() {
+  //   console.log("handleFileFocus triggered");
+  // }
 
   return (
-    <label htmlFor="caseFolder" onClick={handleLabelClick}>
+    // <label htmlFor="caseFolder" onClick={handleLabelClick}>
+    <label htmlFor="caseFolder" >
       <div
         className={`absolute right-2 top-2 cursor-pointer rounded bg-[#F1F4FF]
           text-sm font-medium text-[#3561FE] py-[6px] px-3
@@ -101,10 +102,11 @@ function FileInputWithCustomButton() {
       </div>
       <input
         type="file"
+        accept=".zip"
         id="caseFolder"
         name="caseFolder"
         className="peer hidden"
-        onChange={handleFileChange}
+        onChange={handleZipChange}
       />
     </label>
   );

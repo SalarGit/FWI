@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import JSZip from 'jszip';
 
 import '../../../../index.css';
 
@@ -16,20 +17,132 @@ import EditModels from '../../EditModels.jsx';
 import FileInputWithCustomButton from '../../FileInputWithCustomButton.jsx';
 
 import closeBig from '../../../../assets/close-big.png';
+import EditModelData from './EditModelData.jsx';
 
-import { forwardModels, minimisationModels } from '../../../../data.js';
+// import { forwardModels, minimisationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
     const [threads, setThreads] = useState(1);
     const [selecting, setSelecting] = useState(false);
+    
+    // NOTES: Added all states.
+    const [jsonData, setJsonData] = useState(null);
+    const [fileNames, setFileNames] = useState([]);
+    const [inputValues, setInputValues] = useState({});
+    const [initialTypes, setInitialTypes] = useState({});
+    const [zipContent, setZipContent] = useState(null);
+    const [caseId, setCaseId] = useState('');
+    const [filePath, setFilePath] = useState('');  // New state to store file path
+    const [minimisationModels, setMinimisationModels] = useState([]);
+    const [forwardModels, setForwardModels] = useState([]);
 
-    const forwardModelItems = Object.keys(forwardModels);
-    const minimisationModelItems = Object.keys(minimisationModels);
 
     function handleSelecting() {
         setSelecting((prev) => prev ? false : true);
     }
+
+    // NOTE: Added handleZipChange
+    const handleZipChange = async (event) => {
+        const file = event.target.files[0];
+        if (file && file.name.endsWith('.zip')) {
+            setFilePath(file.name);  // Save the file path
+
+            // Double redundant
+            // setJsonData(null);  // Reset jsonData
+            // setInputValues({});  // Clear input values
+            // setInitialTypes({});  // Clear initial types
+
+            const zip = new JSZip();
+            try {
+                const loadedZip = await zip.loadAsync(file);
+                setZipContent(loadedZip); // Save the ZIP content
+    
+                // const jsonFiles = loadedZip.file(/.*\.json$/);  // This returns an array of JSON files
+                // const jsonFileNames = jsonFiles.map(file => file.name);  // Get the names of all JSON files
+    
+                // setFileNames(jsonFileNames);  // Store the JSON file names (add this state if needed)
+                // console.log(jsonFileNames)
+
+                const jsonFileNames = loadedZip.file(/.*\.json$/).map(file => file.name);
+                // .map(file => 
+                //     file.name.replace('input/', '').replace('.json', '')
+                // );
+    
+                setFileNames(jsonFileNames);  // Store the modified array of file names
+
+                
+
+
+                // Categorize files based on their name endings
+                const newMinimisationModels = [];
+                const newForwardModels = [];
+            
+                jsonFileNames.forEach(fileName => {
+                    if (fileName.endsWith('MinimizationInput.json')) {
+                        newMinimisationModels.push(fileName);
+                    } else if (fileName.endsWith('FMInput.json')) {
+                        newForwardModels.push(fileName);
+                    }
+                });
+            
+                // Update the state with the new arrays
+                setMinimisationModels(newMinimisationModels);
+                setForwardModels(newForwardModels);
+
+                // Find the JSON file inside the ZIP
+                const jsonFile = loadedZip.file(/.*\.json$/)?.[0];
+                if (jsonFile) {
+                    const jsonText = await jsonFile.async('text');
+                    const parsedData = JSON.parse(jsonText);
+    
+                    setJsonData(parsedData);  // Update jsonData with new parsed data
+                    setInputValues(parsedData);  // Set new input values for the form
+    
+                    // Reset initialTypes so that it updates based on the new input values
+                    const newInitialTypes = replaceValuesWithTypes(parsedData);
+                    setInitialTypes(newInitialTypes);  // Set types based on the new file
+    
+                } else {
+                    console.error('No JSON file found in the ZIP.');
+                }
+
+                // Reset file input value to allow re-uploading the same file
+                event.target.value = '';  // This ensures the onChange event triggers even for the same file
+
+            } catch (error) {
+                console.error('Error reading zip file:', error);
+            }
+        }
+    };
+
+    // Function to replace values with their types
+    const replaceValuesWithTypes = (obj) => {
+        if (typeof obj === 'object' && obj !== null) {
+            const result = Array.isArray(obj) ? [] : {};
+            for (const key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    const value = obj[key];
+                    if (typeof value === 'object' && value !== null) {
+                        result[key] = replaceValuesWithTypes(value);
+                    } else {
+                        result[key] = typeof value;
+                    }
+                }
+            }
+            return result;
+        } else {
+            return typeof obj;
+        }
+    };
+
+    // Initialize initialTypes when inputValues is populated
+    useEffect(() => {
+        // Only set initialTypes if it's empty, to avoid overwriting it
+        if (Object.keys(initialTypes).length === 0 && Object.keys(inputValues).length > 0) {
+            setInitialTypes(replaceValuesWithTypes(inputValues));
+        }
+    }, [inputValues, initialTypes]);
 
     return (
         // New Run Container
@@ -79,7 +192,7 @@ export default function NewRun({ onClose }) {
                                 directory="" webkitdirectory="" type="file" 
                             /> */}
                             {/* <input className="[appearance:textfield]" type="file" webkitdirectory mozdirectory directory /> */}
-                            <FileInputWithCustomButton />
+                            <FileInputWithCustomButton handleZipChange={handleZipChange}/>
 
                             {/* <label for="caseFolder">
                                 <div className={`absolute right-2 top-2 cursor-pointer rounded bg-[#F1F4FF]
@@ -116,18 +229,33 @@ export default function NewRun({ onClose }) {
                         <div className='flex space-x-4 z-[1]'>
                             <div className='flex flex-col space-y-3 w-1/2'>
                                 <H2 heading="Forward model"/>
-                                <DropdownMenu items={forwardModelItems} edit={true} model="forward">
+                                <DropdownMenu edit={true} model="forward"
+                                    // items={forwardModelItems}
+                                    items={forwardModels}
+                                    jsonData={jsonData} 
+                                    inputValues={inputValues} setInputValues={setInputValues}
+                                    initialTypes={initialTypes}
+                                >
+                                    
+                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
                                     {/* <EditModels model="forward" modelType="Integral" /> */}
                                 </DropdownMenu>
                             </div>
                             <div className='flex flex-col space-y-3 w-1/2'>
                                 <H2 heading="Minimisation model"/>
-                                <DropdownMenu items={minimisationModelItems} edit={true} model="minimisation">
+                                <DropdownMenu edit={true} model="minimization"
+                                    items={minimisationModels}
+                                    jsonData={jsonData} 
+                                    inputValues={inputValues} setInputValues={setInputValues}
+                                    initialTypes={initialTypes}
+                                >
                                 {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimisationModelItems)}> */}
                                 {/* {Object.entries(dataObject).map(([key, value]) => (
                                     <InputModelData title={key} defaultValue={value}/>
                                 ))} */}
+                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
                                     {/* <EditModels model="minimisation" modelType="GradientDescent" /> */}
+                                    {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
                                 </DropdownMenu>
                             </div>
                         </div>
