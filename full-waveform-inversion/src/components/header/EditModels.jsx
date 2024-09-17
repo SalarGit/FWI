@@ -8,7 +8,7 @@ import InputModelDataBlock from "../custom/data/inputmodeldata/InputModelDataBlo
 import Border from "../custom/Border.jsx";
 import BorderTop from "../custom/borders/BorderTop.jsx";
 
-export default function EditModels({ model, modelType }) {
+export default function EditModels({ selectedModel, modelType }) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleClick() {

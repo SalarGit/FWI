@@ -12,14 +12,15 @@ import Chip from '../../../custom/Chip.jsx';
 import AddSubstract from '../../AddSubstract.jsx';
 import DropdownMenu from '../../../custom/dropdownmenus/regular/DropdownMenu.jsx';
 import EditDataMenu from '../../../custom/dropdownmenus/editdata/EditDataMenu.jsx';
-import EditDataDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDataDropdownMenu.jsx';
+import EditDataDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDropdownMenu.jsx';
 import EditModels from '../../EditModels.jsx';
 import FileInputWithCustomButton from '../../FileInputWithCustomButton.jsx';
+import EditDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDropdownMenu.jsx';
 
 import closeBig from '../../../../assets/close-big.png';
 import EditModelData from './EditModelData.jsx';
 
-// import { forwardModels, minimisationModels } from '../../../../data.js';
+// import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose }) {
     const [folder, setFolder] = useState("");
@@ -34,8 +35,23 @@ export default function NewRun({ onClose }) {
     const [zipContent, setZipContent] = useState(null);
     const [caseId, setCaseId] = useState('');
     const [filePath, setFilePath] = useState('');  // New state to store file path
-    const [minimisationModels, setMinimisationModels] = useState([]);
+    const [minimizationModels, setMinimizationModels] = useState([]);
     const [forwardModels, setForwardModels] = useState([]);
+    const [selectedModels, setSelectedModels] = useState({
+        forward:
+        {
+            name: "",
+            jsonData: null,
+            initialTypes: null
+        },
+        minimization:
+        {
+            name: "",
+            jsonData: null,
+            initialTypes: null
+        }
+    })
+    const [isZipProcessed, setIsZipProcessed] = useState(false);
 
 
     function handleSelecting() {
@@ -44,64 +60,77 @@ export default function NewRun({ onClose }) {
 
     // NOTE: Added handleZipChange
     const handleZipChange = async (event) => {
+        console.log("calling handleZipChange")
         const file = event.target.files[0];
         if (file && file.name.endsWith('.zip')) {
             setFilePath(file.name);  // Save the file path
-
-            // Double redundant
-            // setJsonData(null);  // Reset jsonData
-            // setInputValues({});  // Clear input values
-            // setInitialTypes({});  // Clear initial types
+            setIsZipProcessed(false);
 
             const zip = new JSZip();
             try {
                 const loadedZip = await zip.loadAsync(file);
                 setZipContent(loadedZip); // Save the ZIP content
-    
-                // const jsonFiles = loadedZip.file(/.*\.json$/);  // This returns an array of JSON files
-                // const jsonFileNames = jsonFiles.map(file => file.name);  // Get the names of all JSON files
-    
-                // setFileNames(jsonFileNames);  // Store the JSON file names (add this state if needed)
-                // console.log(jsonFileNames)
 
                 const jsonFileNames = loadedZip.file(/.*\.json$/).map(file => file.name);
-                // .map(file => 
-                //     file.name.replace('input/', '').replace('.json', '')
-                // );
     
                 setFileNames(jsonFileNames);  // Store the modified array of file names
 
-                
-
 
                 // Categorize files based on their name endings
-                const newMinimisationModels = [];
+                const newMinimizationModels = [];
                 const newForwardModels = [];
             
                 jsonFileNames.forEach(fileName => {
                     if (fileName.endsWith('MinimizationInput.json')) {
-                        newMinimisationModels.push(fileName);
+                        newMinimizationModels.push(fileName);
                     } else if (fileName.endsWith('FMInput.json')) {
                         newForwardModels.push(fileName);
                     }
                 });
             
                 // Update the state with the new arrays
-                setMinimisationModels(newMinimisationModels);
+                setMinimizationModels(newMinimizationModels);
                 setForwardModels(newForwardModels);
 
                 // Find the JSON file inside the ZIP
-                const jsonFile = loadedZip.file(/.*\.json$/)?.[0];
-                if (jsonFile) {
-                    const jsonText = await jsonFile.async('text');
-                    const parsedData = JSON.parse(jsonText);
-    
-                    setJsonData(parsedData);  // Update jsonData with new parsed data
-                    setInputValues(parsedData);  // Set new input values for the form
+                // const jsonFile = loadedZip.file(/.*\.json$/)?.[0];
+                // console.log("jsonFile:", jsonFile)
+                // const jsonFiles = [loadedZip.file(newForwardModels[0], newMinimizationModels[0])]
+
+                const forwardJson = loadedZip.file(newForwardModels[0])
+                const minimizationJson = loadedZip.file(newMinimizationModels[0])
+
+                if (forwardJson && minimizationJson) {
+                    const forwardText = await forwardJson.async('text')
+                    const minimizationText = await minimizationJson.async('text')
+                    
+                    // const jsonTexts = [await jsonFiles[0].async('text'), await jsonFiles[1].async('text')];
+                    // const parsedDatas = [JSON.parse(jsonTexts[0]), JSON.parse(jsonTexts[1])];
+                    const parsedDatas = [JSON.parse(forwardText), JSON.parse(minimizationText)];
+                    
+                    // setJsonData(parsedDatas[0]);  // Update jsonData with new parsed data
+                    // setInputValues(parsedDatas);  // Set new input values for the form
     
                     // Reset initialTypes so that it updates based on the new input values
-                    const newInitialTypes = replaceValuesWithTypes(parsedData);
-                    setInitialTypes(newInitialTypes);  // Set types based on the new file
+                    const newInitialTypes = [replaceValuesWithTypes(parsedDatas[0]), replaceValuesWithTypes(parsedDatas[1])];
+                    // setInitialTypes(newInitialTypes);  // Set types based on the new file
+
+                    setSelectedModels((prev) => ({
+                        forward:
+                        {
+                            name: newForwardModels[0],
+                            jsonData: parsedDatas[0],
+                            initialTypes: newInitialTypes[0]
+                        },
+                        minimization:
+                        {
+                            name: newMinimizationModels[0],
+                            jsonData: parsedDatas[1],
+                            initialTypes: newInitialTypes[1]
+                        }
+                    }));
+
+                    setIsZipProcessed(true);  // Indicate that ZIP processing is complete
     
                 } else {
                     console.error('No JSON file found in the ZIP.');
@@ -143,6 +172,50 @@ export default function NewRun({ onClose }) {
             setInitialTypes(replaceValuesWithTypes(inputValues));
         }
     }, [inputValues, initialTypes]);
+
+    async function handleModel(modelType, modelName, option, inputValues=undefined) {
+        // console.log("calling bruh with:", modelType, modelName)
+        // Find the JSON file inside the ZIP
+        // const jsonFile = loadedZip.file(/.*\.json$/)?.[0];
+        if (option === "SELECT") {
+            const jsonFile = zipContent.file(modelName)
+            // console.log("jsonFile:", jsonFile)
+    
+            if (jsonFile) {
+                try {
+                    const jsonText = await jsonFile.async('text');
+                    const parsedData = JSON.parse(jsonText);
+                    console.log("parsedData:", parsedData)
+                    // Reset initialTypes so that it updates based on the new input values
+                    const newInitialType = replaceValuesWithTypes(parsedData);
+    
+                    setSelectedModels((prev) => ({
+                        ...prev,
+                        [modelType]: { // Use square brackets to dynamically set the property name
+                            name: modelName, // Adjust these values based on modelType
+                            jsonData: parsedData,
+                            initialTypes: newInitialType
+                        },
+                    }));
+                    // console.log("after calling setSelectedModels:", selectedModels)
+                    // setInitialTypes(newInitialTypes);  // Set types based on the new file
+                } catch (error) {
+                    console.error('Error reading JSON file:', error);
+                }
+    
+            } else {
+                console.error('No JSON file found in the ZIP.');
+            }
+        } else if (option === "EDIT") {
+            setSelectedModels((prev) => ({
+                ...prev,
+                [modelType]: { // Use square brackets to dynamically set the property name
+                    ...prev[modelType],
+                    jsonData: inputValues
+                },
+            }));
+        }
+    }
 
     return (
         // New Run Container
@@ -220,82 +293,86 @@ export default function NewRun({ onClose }) {
                         </div>
                     </div>
 
-                    <BorderTop />
                 
                     {/* Middle Part Container*/}
-                    <div className='flex flex-col space-y-8'>
+                    {isZipProcessed &&
+                        <>
+                        <BorderTop />
+                        <div className='flex flex-col space-y-8'>
 
-                        {/* Models */}
-                        <div className='flex space-x-4 z-[1]'>
-                            <div className='flex flex-col space-y-3 w-1/2'>
-                                <H2 heading="Forward model"/>
-                                <DropdownMenu edit={true} model="forward"
-                                    // items={forwardModelItems}
-                                    items={forwardModels}
-                                    jsonData={jsonData} 
-                                    inputValues={inputValues} setInputValues={setInputValues}
-                                    initialTypes={initialTypes}
-                                >
-                                    
-                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
-                                    {/* <EditModels model="forward" modelType="Integral" /> */}
-                                </DropdownMenu>
-                            </div>
-                            <div className='flex flex-col space-y-3 w-1/2'>
-                                <H2 heading="Minimisation model"/>
-                                <DropdownMenu edit={true} model="minimization"
-                                    items={minimisationModels}
-                                    jsonData={jsonData} 
-                                    inputValues={inputValues} setInputValues={setInputValues}
-                                    initialTypes={initialTypes}
-                                >
-                                {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimisationModelItems)}> */}
-                                {/* {Object.entries(dataObject).map(([key, value]) => (
-                                    <InputModelData title={key} defaultValue={value}/>
-                                ))} */}
-                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
-                                    {/* <EditModels model="minimisation" modelType="GradientDescent" /> */}
-                                    {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
-                                </DropdownMenu>
-                            </div>
-                        </div>
-
-                        {/* Processing Steps */}
-                        <div className='flex flex-col space-y-3'>
-                            <H2 heading="Processing steps"/>
-                            {/* <ClickableChip title="Pre-processing"/> */}
-                            <div className="flex space-x-3">
-                                <Chip title="Pre-Processing" />
-                                <Chip title="Processing" />
-                                <Chip title="Post-Processing" />
-                                {/* <Chip title="Pre-Processing" clickable={true} />
-                                <Chip title="Processing" clickable={true} />
-                                <Chip title="Post-Processing" clickable={true} /> */}
-                            </div>
-                        </div>
-
-                        {/* Threads/Cores */}
-                        <div className='flex flex-col space-y-3'>
-                            <H2 heading="Threads / Cores (parallel only)" />
-
-                            <div className='flex space-x-3'>
-                                <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
-                                <div className='flex items-center justify-center w-12 h-12
-                                    bg-white border border-[#D7DFFF] rounded-xl'
-                                >
-                                    {threads}
+                            {/* Models */}
+                            <div className='flex space-x-4 z-[1]'>
+                                <div className='flex flex-col space-y-3 w-1/2'>
+                                    <H2 heading="Forward model"/>
+                                    <EditDropdownMenu 
+                                        modelType="forward"
+                                        handleModel={handleModel}
+                                        selectedModel={selectedModels.forward}
+                                        items={forwardModels}
+                                    >
+                                        
+                                        {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
+                                        {/* <EditModels model="forward" modelType="Integral" /> */}
+                                    </EditDropdownMenu>
                                 </div>
-                                <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
+                                <div className='flex flex-col space-y-3 w-1/2'>
+                                    <H2 heading="Minimization model"/>
+                                    {/* handleSelectModel, selectedModel, items, model=undefined, width='' */}
+                                    <EditDropdownMenu 
+                                        modelType="minimization"
+                                        handleModel={handleModel}
+                                        selectedModel={selectedModels.minimization}
+                                        items={minimizationModels}
+                                    >
+                                    {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimizationModelItems)}> */}
+                                    {/* {Object.entries(dataObject).map(([key, value]) => (
+                                        <InputModelData title={key} defaultValue={value}/>
+                                    ))} */}
+                                        {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
+                                        {/* <EditModels model="minimization" modelType="GradientDescent" /> */}
+                                        {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
+                                    </EditDropdownMenu>
+                                </div>
+                            </div>
+
+                            {/* Processing Steps */}
+                            <div className='flex flex-col space-y-3'>
+                                <H2 heading="Processing steps"/>
+                                {/* <ClickableChip title="Pre-processing"/> */}
+                                <div className="flex space-x-3">
+                                    <Chip title="Pre-Processing" />
+                                    <Chip title="Processing" />
+                                    <Chip title="Post-Processing" />
+                                    {/* <Chip title="Pre-Processing" clickable={true} />
+                                    <Chip title="Processing" clickable={true} />
+                                    <Chip title="Post-Processing" clickable={true} /> */}
+                                </div>
+                            </div>
+
+                            {/* Threads/Cores */}
+                            <div className='flex flex-col space-y-3'>
+                                <H2 heading="Threads / Cores (parallel only)" />
+
+                                <div className='flex space-x-3'>
+                                    <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
+                                    <div className='flex items-center justify-center w-12 h-12
+                                        bg-white border border-[#D7DFFF] rounded-xl'
+                                    >
+                                        {threads}
+                                    </div>
+                                    <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <BorderTop />
+                        <BorderTop />
 
-                    {/* Lower Part */}
-                    <button className="py-4 bg-[#3561FE] rounded-xl">
-                        <p className="text-center text-white font-semibold">Calculate</p>
-                    </button>
+                        {/* Lower Part */}
+                        <button className="py-4 bg-[#3561FE] rounded-xl">
+                            <p className="text-center text-white font-semibold">Calculate</p>
+                        </button>
+                    </>
+                    }
                 </div>
             </div>
         </>

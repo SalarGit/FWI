@@ -1,4 +1,4 @@
-export default function Menu({ items, onSelect, filter }) {
+export default function Menu({ items, onSelect, filter=undefined}) {
     return (
         // <div className={`absolute left-[0px] right-[0px] top-[60px] ${!isOpen ? 'hidden' : ''}
         <div className={`absolute left-[0px] right-[0px] top-[60px]
@@ -12,7 +12,7 @@ export default function Menu({ items, onSelect, filter }) {
                             className="py-2 px-[10px] text-left rounded-md
                             hover:bg-[#F1F4FF] hover:text-[#3561FE] duration-75" // w-full
                         >
-                            {filter(item)}
+                            {filter === undefined ? item : filter(item)}
                         </button>
                     // </div>
                 ))
