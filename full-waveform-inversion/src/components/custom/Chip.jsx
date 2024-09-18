@@ -3,19 +3,19 @@ import { useState } from "react";
 import check from "../../assets/check.svg";
 import plus from "../../assets/plus.svg";
 
-export default function Chip({ title, disabled=false }) {
+export default function Chip({ selected, handleProcess, title, disabled=false }) {
 
-    const [clicked, setClicked] = useState(true);
+    // const [clicked, setClicked] = useState(true);
 
-    function handleClick() {
-        setClicked((prev) => prev ? false : true);
-    }
+    // function handleClick() {
+    //     setClicked((prev) => prev ? false : true);
+    // }
 
-    const styling = !clicked ? 
+    const styling = !selected ? 
         "flex items-center justify-center h-12 space-x-2 py-[11px] px-[15px] bg-[white] border border-[#D7DFFF] rounded-full text-[#3561FE]" 
     : 
         "flex items-center space-x-2 py-3 px-4 bg-[#F1F4FF] rounded-full text-[#3561FE]";
-    const icon = !clicked ? plus : check;
+    const icon = !selected ? plus : check;
 
     return (
         <>
@@ -25,7 +25,7 @@ export default function Chip({ title, disabled=false }) {
                     <p>{title}</p>
                 </div>
             :
-                <button onClick={handleClick} className={styling}>
+                <button onClick={(e) => handleProcess(title)} className={styling}>
                     <img src={icon} alt="plus.png" />
                     <p>{title}</p>
                 </button>

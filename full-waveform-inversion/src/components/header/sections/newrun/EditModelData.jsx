@@ -7,7 +7,7 @@ import EditButton from '../../../custom/buttons/EditButton';
 // Utility to deep clone the data to avoid direct mutation of selectedModel.jsonData
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
-export default function EditModelData({ handleModel, selectedModel, modelType }) {
+export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, selectedModel, modelType }) {
     const [isOpen, setIsOpen] = useState(false);
     const [formValues, setFormValues] = useState(deepClone(selectedModel.jsonData));  // Local form state
     const [hasSaved, setHasSaved] = useState(false);          // Track if save button was clicked
@@ -15,22 +15,22 @@ export default function EditModelData({ handleModel, selectedModel, modelType })
 
     // Effect to handle resetting formValues when dropdown is closed without saving
     useEffect(() => {
-        if (!isOpen && wasOpen && !hasSaved) {
+        if (!isEditOpen && wasOpen && !hasSaved) {
             // If dropdown is now closed, was previously open, and hasSaved is false, reset formValues
             setFormValues(deepClone(selectedModel.jsonData));
         }
 
         // Update wasOpen to match the latest isOpen value for the next cycle
-        setWasOpen(isOpen);
-    }, [isOpen, wasOpen, hasSaved, selectedModel.jsonData]);
+        setWasOpen(isEditOpen);
+    }, [isEditOpen, wasOpen, hasSaved, selectedModel.jsonData]);
 
     // Reset hasSaved when opening the form
     useEffect(() => {
-        if (isOpen) {
+        if (isEditOpen) {
             setHasSaved(false);  // Reset hasSaved to false when opening the form
             setFormValues(deepClone(selectedModel.jsonData));  // Reset formValues when opening
         }
-    }, [isOpen, selectedModel.jsonData]);
+    }, [isEditOpen, selectedModel.jsonData]);
 
     // useEffect(() => {
     //     if (isOpen) {
@@ -157,8 +157,8 @@ export default function EditModelData({ handleModel, selectedModel, modelType })
                         return (
                             <>
                                 {initialType === 'number' &&
-                                    <div key={inputKey} className="mb-4">
-                                        <label className="block">{key}:</label>
+                                    <div key={inputKey} className="">
+                                        <label className="block mb-3">{key}:</label>
                                         <input
                                             type='text'
                                             value={value}
@@ -194,6 +194,22 @@ export default function EditModelData({ handleModel, selectedModel, modelType })
         );
     };
 
+
+    function handleKeyDown(e) {
+        const isInputElement = e.target.tagName === 'INPUT';
+        const isButtonElement = e.target.tagName === 'BUTTON';
+
+        // Prevent default behavior if in an input field
+        if (isInputElement && e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission on Enter key press inside input fields
+        }
+
+        // Allow default behavior if in a button
+        if (isButtonElement && e.key === 'Enter') {
+            handleSave() // No preventDefault here; let the button's default behavior happen
+        }
+    }
+
     // Save the form values and close the dropdown
     const handleSave = () => {
         // console.log(`handleSave triggered with:
@@ -202,34 +218,36 @@ export default function EditModelData({ handleModel, selectedModel, modelType })
         //     formValues: ${formValues.PMLWidthFactor.x}`)
         handleModel(modelType, selectedModel.name, "EDIT", formValues);  // Save changes to the main state
         setHasSaved(true);  // Mark the form as saved
-        setIsOpen(false);  // Close the dropdown
+        // setIsOpen(false);  // Close the dropdown
+        handleAreOpen(modelType, "EDIT")
     };
 
     const handleCancel = () => {
-        setIsOpen(false);  // Close the dropdown and discard changes
+        // setIsOpen(false);  // Close the dropdown and discard changes
+        handleAreOpen(modelType, "EDIT");  // Close the dropdown and discard changes
     };
 
     return (
         <div>
-            <EditButton title="Edit" absoluteStyling="right-10 top-2" handleClick={() => setIsOpen((prev) => !prev)}
-                conditionalStyling={isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' : 'py-[6px] px-3'}
+            <EditButton title="Edit" absoluteStyling="right-10 top-2" handleClick={() => handleAreOpen(modelType, "EDIT")}
+                conditionalStyling={isEditOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' : 'py-[6px] px-3'}
             />
-            {isOpen &&
+            {isEditOpen &&
                 <div className={`absolute top-[60px] ${modelType === 'forward' ? 'left-0' : 'right-0'}
                     border border-[#D7DFFF] bg-white rounded-xl
                     w-fit h-fit p-[6px]`}
-                >
-                    <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
-                    <div className="flex flex-col space-y-6 w-max max-h-[400px] p-[10px] pb-0 overflow-auto scrollbar-webkit">
-                        {renderInputs(formValues)}  {/* Render inputs from the form state */}
-                        
-                        {/* This is part of the scrollable content */}
-                        <div className="sticky bottom-0 bg-white rounded-t-xl pb-[10px]">
-                            <button type="submit" className="py-4 bg-[#3561FE] rounded-xl w-full ">
-                                <p className="text-white font-semibold">Save</p>
-                            </button>
+                > 
+                    <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} onKeyDown={handleKeyDown}>
+                        <div className="flex flex-col space-y-6 w-max max-h-[400px] p-[10px] pb-0 overflow-auto scrollbar-webkit">
+                            {renderInputs(formValues)}  {/* Render inputs from the form state */}
+                            
+                            {/* This is part of the scrollable content */}
+                            <div className="sticky bottom-0 bg-white rounded-t-xl pb-[10px]">
+                                <button type="submit" className="py-4 bg-[#3561FE] rounded-xl w-full ">
+                                    <p className="text-white font-semibold">Save</p>
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     </form>
                 </div>
             }

@@ -118,7 +118,7 @@ import SelectBox from "../regular/SelectBox.jsx";
 import EditModels from "../../../header/EditModels.jsx";
 import EditModelData from "../../../header/sections/newrun/EditModelData.jsx";
 
-export default function EditDropdownMenu({ handleModel, selectedModel, items, modelType=undefined, width='' }) {
+export default function EditDropdownMenu({ isModelSelectorOpen, isEditOpen, handleAreOpen, handleModel, selectedModel, items, modelType=undefined, width='' }) {
     const [isOpen, setIsOpen] = useState(false);
 
     function handleSetIsOpen() {
@@ -127,7 +127,7 @@ export default function EditDropdownMenu({ handleModel, selectedModel, items, mo
 
     function handleSelectItem(item) {
         handleModel(modelType, item, "SELECT")
-        handleSetIsOpen();
+        handleAreOpen(modelType, "SELECT");
     }
 
     function filter(name) {
@@ -138,9 +138,10 @@ export default function EditDropdownMenu({ handleModel, selectedModel, items, mo
 
     return (
         <div className={`relative ${width}`}>
-            <SelectBox isOpen={isOpen} onOpenClose={handleSetIsOpen} selectedItem={filter(selectedModel.name)}/>
-            {isOpen && <Menu items={items} onSelect={handleSelectItem} filter={modelType ? filter : undefined} />}
-            {modelType && <EditModelData handleModel={handleModel} selectedModel={selectedModel} modelType={modelType} />}
+            {/* <SelectBox isOpen={isOpen} onOpenClose={handleSetIsOpen} selectedItem={filter(selectedModel.name)}/> */}
+            <SelectBox isOpen={isModelSelectorOpen} onOpenClose={() => handleAreOpen(modelType, "SELECT")} selectedItem={filter(selectedModel.name)}/>
+            {isModelSelectorOpen && <Menu items={items} onSelect={handleSelectItem} filter={modelType ? filter : undefined} />}
+            {modelType && <EditModelData isEditOpen={isEditOpen} handleAreOpen={handleAreOpen} handleModel={handleModel} selectedModel={selectedModel} modelType={modelType} />}
 
 
             {/* Menu should only be displayed on {isOpen &&} and not with 'hidden' attribute, since nothing needs to be saved.

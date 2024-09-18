@@ -3,38 +3,28 @@ import JSZip from 'jszip';
 
 import '../../../../index.css';
 
+import H1 from '../../../custom/headings/H1.jsx';
 import H2 from '../../../custom/headings/H2.jsx';
 import UpperPart from '../../../custom/UpperPart.jsx';
-import Border from '../../../custom/Border.jsx';
 import BorderTop from '../../../custom/borders/BorderTop.jsx';
-import EditButton from '../../../custom/buttons/EditButton.jsx';
 import Chip from '../../../custom/Chip.jsx';
 import AddSubstract from '../../AddSubstract.jsx';
-import DropdownMenu from '../../../custom/dropdownmenus/regular/DropdownMenu.jsx';
-import EditDataMenu from '../../../custom/dropdownmenus/editdata/EditDataMenu.jsx';
-import EditDataDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDropdownMenu.jsx';
-import EditModels from '../../EditModels.jsx';
 import FileInputWithCustomButton from '../../FileInputWithCustomButton.jsx';
 import EditDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDropdownMenu.jsx';
 
 import closeBig from '../../../../assets/close-big.png';
-import EditModelData from './EditModelData.jsx';
 
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose }) {
-    const [folder, setFolder] = useState("");
     const [threads, setThreads] = useState(1);
-    const [selecting, setSelecting] = useState(false);
     
     // NOTES: Added all states.
-    const [jsonData, setJsonData] = useState(null);
-    const [fileNames, setFileNames] = useState([]);
-    const [inputValues, setInputValues] = useState({});
-    const [initialTypes, setInitialTypes] = useState({});
+    // Fix caseId and filename
+    // const [inputValues, setInputValues] = useState({});
     const [zipContent, setZipContent] = useState(null);
-    const [caseId, setCaseId] = useState('');
-    const [filePath, setFilePath] = useState('');  // New state to store file path
+    const [zipFileName, setZipFileName] = useState('')
+    const [caseId, setCaseId] = useState([false, '']);
     const [minimizationModels, setMinimizationModels] = useState([]);
     const [forwardModels, setForwardModels] = useState([]);
     const [selectedModels, setSelectedModels] = useState({
@@ -51,19 +41,20 @@ export default function NewRun({ onClose }) {
             initialTypes: null
         }
     })
+    const [genericInput, setGenericInput] = useState({});
     const [isZipProcessed, setIsZipProcessed] = useState(false);
+    const [areOpen, setAreOpen] = useState({forwardModelSelector: false, forwardEdit: false, minimizationModelSelector: false, minimizationEdit: false, });
+    const [runs, setRuns] = useState(["Bruh"]);
+    const [processes, setProcesses] = useState({'Pre-processing': true, 'Processing': true, 'Post-processing': true})
+    const [isCalculating, setIsCalculating] = useState(false);
 
-
-    function handleSelecting() {
-        setSelecting((prev) => prev ? false : true);
-    }
 
     // NOTE: Added handleZipChange
     const handleZipChange = async (event) => {
-        console.log("calling handleZipChange")
         const file = event.target.files[0];
+        
         if (file && file.name.endsWith('.zip')) {
-            setFilePath(file.name);  // Save the file path
+            setZipFileName(file.name);
             setIsZipProcessed(false);
 
             const zip = new JSZip();
@@ -71,10 +62,15 @@ export default function NewRun({ onClose }) {
                 const loadedZip = await zip.loadAsync(file);
                 setZipContent(loadedZip); // Save the ZIP content
 
-                const jsonFileNames = loadedZip.file(/.*\.json$/).map(file => file.name);
-    
-                setFileNames(jsonFileNames);  // Store the modified array of file names
 
+                const genericInputJson = loadedZip.file("input/GenericInput.json")
+                const genericInputText = await genericInputJson.async('text')
+                const parsedGenericInputData = JSON.parse(genericInputText)
+
+                setGenericInput(parsedGenericInputData)
+                setThreads(parsedGenericInputData.threads)
+
+                const jsonFileNames = loadedZip.file(/.*\.json$/).map(file => file.name);
 
                 // Categorize files based on their name endings
                 const newMinimizationModels = [];
@@ -166,12 +162,12 @@ export default function NewRun({ onClose }) {
     };
 
     // Initialize initialTypes when inputValues is populated
-    useEffect(() => {
-        // Only set initialTypes if it's empty, to avoid overwriting it
-        if (Object.keys(initialTypes).length === 0 && Object.keys(inputValues).length > 0) {
-            setInitialTypes(replaceValuesWithTypes(inputValues));
-        }
-    }, [inputValues, initialTypes]);
+    // useEffect(() => {
+    //     // Only set initialTypes if it's empty, to avoid overwriting it
+    //     if (Object.keys(initialTypes).length === 0 && Object.keys(inputValues).length > 0) {
+    //         setInitialTypes(replaceValuesWithTypes(inputValues));
+    //     }
+    // }, [inputValues, initialTypes]);
 
     async function handleModel(modelType, modelName, option, inputValues=undefined) {
         // console.log("calling bruh with:", modelType, modelName)
@@ -217,6 +213,71 @@ export default function NewRun({ onClose }) {
         }
     }
 
+    function handleAreOpen(modelType, option) {
+        let newState = {
+            forwardModelSelector: false,
+            forwardEdit: false,
+            minimizationModelSelector: false,
+            minimizationEdit: false,
+        }
+        
+        const key = option === "SELECT" 
+            ? `${modelType}ModelSelector`
+            : `${modelType}Edit`;
+        console.log(key)
+    
+        setAreOpen((prev) => {
+            return {
+                ...newState,
+                [key]: !prev[key]
+            }
+        });
+    }
+    
+    function handleChangeCaseId(id) {
+        console.log(`handleChangeCaseId called: ${id}`)
+        setCaseId((prev) => {
+            const tmp = [...prev];
+            tmp[1] = id;
+            return tmp;
+        })
+    }
+    
+    function handleCaseId() {
+        console.log(`handleCaseId called: ${caseId}`)
+        
+        if (runs.includes(caseId[1])) {
+            alert(`There is already a run named '${caseId[1]}'. Please enter a new run name.`)
+        } else {
+            setCaseId((prev) => {
+                const tmp = [...prev];
+                tmp[0] = true;
+                return tmp;
+            });
+            setRuns((prev) => {
+                const tmp = [...prev];
+                tmp.push(caseId[1]);
+                return tmp;
+            })
+        }
+    }
+
+    function handleProcess(process) {
+        setProcesses((prev) => ({
+            ...prev,
+            [process]: !prev[process]
+        }))
+    }
+
+    function handleCalculate() {
+        setIsCalculating(true);
+        // Simulate a calculation or asynchronous operation
+        setTimeout(() => {
+            setIsCalculating(false);
+            // Perform further actions here after the calculation is done
+        }, 2000); // Replace with actual calculation duration
+    }
+
     return (
         // New Run Container
         <>
@@ -228,152 +289,242 @@ export default function NewRun({ onClose }) {
                 bg-white border border-[#D7DFFF] rounded-2xl
                 z-30' // Disabled: #B6B7BE
             >
-                <UpperPart heading='New run' styling='p-[26px]'>
+                <div className={`flex items-center justify-between ${caseId[0] ? 'p-[26px]' : 'p-[18px]'}`}>
+                    
+                    {/* {caseId 
+                        ? <H1 heading={caseId} />
+                        : 
+                        <div className='relative'>
+                            <input className='p-2
+                                border border-[#D7DFFF] rounded-xl bg-white'
+                                type='text' placeholder="Enter run name...">
+                            </input>
+                            <button className="absolute top-1 right-4
+                            bg-[#3561FE] rounded-xl p-1 text-center text-white font-semibold"
+                            >
+                                Ok
+                            </button>
+                        </div>
+                    } */}
+
+                    {caseId[0] &&
+                        <H1 heading={caseId[1]} />
+                    }
+                    {!caseId[0] &&
+                        <div className='flex space-x-1'>
+                        <input className='p-2 border border-[#D7DFFF] rounded-xl bg-white'
+                            type='text' 
+                            placeholder="Enter run name..."
+                            onChange={(e) => handleChangeCaseId(e.target.value)}
+                        >
+                        </input>
+                        <button onClick={handleCaseId}
+                            className="p-2 font-semibold text-white bg-[#3561FE] rounded-xl"
+                        >
+                            Ok
+                        </button>
+                    </div>
+                    }
+                    {/* {caseId[0]
+                        ? <H1 heading={caseId[1]} />
+                        : 
+                        <div className='flex space-x-1'>
+                            <input className='p-2 border border-[#D7DFFF] rounded-xl bg-white'
+                                type='text' 
+                                placeholder="Enter run name..."
+                                onChange={(e) => handleChangeCaseId(e.target.value)}
+                            >
+                            </input>
+                            <button onClick={handleCaseId}
+                                className="p-2 font-semibold text-white bg-[#3561FE] rounded-xl" >
+                                Ok
+                            </button>
+                        </div>
+                    } */}
+                    {/* <div className="text-black text-lg font-bold font-['General Sans Variable'] leading-loose">Original input</div> */}
                     <button onClick={onClose}
                         className='hover:bg-[#F1F4FF] duration-200 rounded-md'
                     >
                         <img src={closeBig} alt="close-big.png" />
                     </button>
-                </UpperPart>
-
-                {/* Lower Part Container*/}
-                <div className='flex flex-col space-y-6 m-6'>
-
-                    {/* Upper Part Container*/}
-                    <div className='flex flex-col space-y-3 p-6
-                        bg-[#F1F4FF] rounded-3xl'
-                    >
-                        <H2 heading="Case folder" />
-
-                        {/* Input field */}
-                        <div className='relative'>
-                            {/* className="break-all line-clamp-1" */}
-                            <input type='string' maxLength={15} required value={folder} onChange={(e) => setFolder(e.target.value)}
-                                className="flex items-center justify-between
-                                w-full h-[48px] pl-4 pr-2
-                                border border-[#D7DFFF] rounded-xl"
-                                />
-                            {/* isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' */}
-                            {/* <button
-                                className="absolute right-2 top-2 py-[6px] px-3 
-                                text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]"
-                            >
-                                <p>Select folder</p>
-                            </button> */}
-                            {/* <input className='absolute right-2 top-2 py-[6px] px-3 
-                                text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]' 
-                                directory="" webkitdirectory="" type="file" 
-                            /> */}
-                            {/* <input className="[appearance:textfield]" type="file" webkitdirectory mozdirectory directory /> */}
-                            <FileInputWithCustomButton handleZipChange={handleZipChange}/>
-
-                            {/* <label for="caseFolder">
-                                <div className={`absolute right-2 top-2 cursor-pointer rounded bg-[#F1F4FF]
-                                    text-sm font-medium text-[#3561FE] py-[6px] px-3 
-                                    peer-open:bg-black`
-                                }
-                                    // py-[5px] px-[11px] border border-[#3561FE]
-                                >
-                                    <p>Select folder</p>
-                                </div>
-                                <input type="file" id="caseFolder" name="caseFolder" className='peer hidden' />
-                            </label> */}
-                        </div>
-                        
-                        {/* Data */}
-                        <div className='flex justify-between pt-1'>
-                            <div className='flex space-x-3'>
-                                <p className="text-[#7F7F7F] text-sm font-normal">Grid size:</p>
-                                <p className="text-sm font-normal">64 x 32</p>
-                            </div>
-                            <div className='flex space-x-3'>
-                                <p className="text-[#7F7F7F] text-sm font-normal">Subsurface model:</p>
-                                <p className="text-sm font-normal">temple_64_32</p>
-                            </div>
-                        </div>
-                    </div>
-
-                
-                    {/* Middle Part Container*/}
-                    {isZipProcessed &&
-                        <>
-                        <BorderTop />
-                        <div className='flex flex-col space-y-8'>
-
-                            {/* Models */}
-                            <div className='flex space-x-4 z-[1]'>
-                                <div className='flex flex-col space-y-3 w-1/2'>
-                                    <H2 heading="Forward model"/>
-                                    <EditDropdownMenu 
-                                        modelType="forward"
-                                        handleModel={handleModel}
-                                        selectedModel={selectedModels.forward}
-                                        items={forwardModels}
-                                    >
-                                        
-                                        {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
-                                        {/* <EditModels model="forward" modelType="Integral" /> */}
-                                    </EditDropdownMenu>
-                                </div>
-                                <div className='flex flex-col space-y-3 w-1/2'>
-                                    <H2 heading="Minimization model"/>
-                                    {/* handleSelectModel, selectedModel, items, model=undefined, width='' */}
-                                    <EditDropdownMenu 
-                                        modelType="minimization"
-                                        handleModel={handleModel}
-                                        selectedModel={selectedModels.minimization}
-                                        items={minimizationModels}
-                                    >
-                                    {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimizationModelItems)}> */}
-                                    {/* {Object.entries(dataObject).map(([key, value]) => (
-                                        <InputModelData title={key} defaultValue={value}/>
-                                    ))} */}
-                                        {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
-                                        {/* <EditModels model="minimization" modelType="GradientDescent" /> */}
-                                        {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
-                                    </EditDropdownMenu>
-                                </div>
-                            </div>
-
-                            {/* Processing Steps */}
-                            <div className='flex flex-col space-y-3'>
-                                <H2 heading="Processing steps"/>
-                                {/* <ClickableChip title="Pre-processing"/> */}
-                                <div className="flex space-x-3">
-                                    <Chip title="Pre-Processing" />
-                                    <Chip title="Processing" />
-                                    <Chip title="Post-Processing" />
-                                    {/* <Chip title="Pre-Processing" clickable={true} />
-                                    <Chip title="Processing" clickable={true} />
-                                    <Chip title="Post-Processing" clickable={true} /> */}
-                                </div>
-                            </div>
-
-                            {/* Threads/Cores */}
-                            <div className='flex flex-col space-y-3'>
-                                <H2 heading="Threads / Cores (parallel only)" />
-
-                                <div className='flex space-x-3'>
-                                    <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
-                                    <div className='flex items-center justify-center w-12 h-12
-                                        bg-white border border-[#D7DFFF] rounded-xl'
-                                    >
-                                        {threads}
-                                    </div>
-                                    <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
-                                </div>
-                            </div>
-                        </div>
-
-                        <BorderTop />
-
-                        {/* Lower Part */}
-                        <button className="py-4 bg-[#3561FE] rounded-xl">
-                            <p className="text-center text-white font-semibold">Calculate</p>
-                        </button>
-                    </>
-                    }
                 </div>
+                
+
+                {/* <UpperPart heading='New run' styling='p-[26px]'>
+                    <button onClick={onClose}
+                        className='hover:bg-[#F1F4FF] duration-200 rounded-md'
+                    >
+                        <img src={closeBig} alt="close-big.png" />
+                    </button>
+                </UpperPart> */}
+
+                {caseId[0] && 
+                    <>
+                        <BorderTop />
+                        {/* Lower Part Container */}
+                        
+                        <div className='flex flex-col space-y-6 m-6'>
+
+                            {/* Upper Part Container*/}
+                            <div className='flex flex-col space-y-3 p-6
+                                bg-[#F1F4FF] rounded-3xl'
+                            >
+                                <H2 heading="Case folder" />
+
+                                {/* Input field */}
+                                <div className='relative'>
+                                    {/* className="break-all line-clamp-1" */}
+                                    <input 
+                                        type='string'
+                                        placeholder='Select a folder...'
+                                        value={zipFileName}
+                                        className={`flex items-center justify-between
+                                        w-full h-[48px] pl-4 pr-2
+                                        border border-[#D7DFFF] rounded-xl
+                                        ${!zipFileName ? 'text-[#b6b7be]' : 'text-black'}`}
+                                        readOnly
+                                    />
+                                    {/* isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' */}
+                                    {/* <button
+                                        className="absolute right-2 top-2 py-[6px] px-3 
+                                        text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]"
+                                    >
+                                        <p>Select folder</p>
+                                    </button> */}
+                                    {/* <input className='absolute right-2 top-2 py-[6px] px-3 
+                                        text-sm font-medium text-[#3561FE] rounded bg-[#F1F4FF]' 
+                                        directory="" webkitdirectory="" type="file" 
+                                    /> */}
+                                    {/* <input className="[appearance:textfield]" type="file" webkitdirectory mozdirectory directory /> */}
+                                    <FileInputWithCustomButton handleZipChange={handleZipChange}/>
+
+                                    {/* <label for="caseFolder">
+                                        <div className={`absolute right-2 top-2 cursor-pointer rounded bg-[#F1F4FF]
+                                            text-sm font-medium text-[#3561FE] py-[6px] px-3 
+                                            peer-open:bg-black`
+                                        }
+                                            // py-[5px] px-[11px] border border-[#3561FE]
+                                        >
+                                            <p>Select folder</p>
+                                        </div>
+                                        <input type="file" id="caseFolder" name="caseFolder" className='peer hidden' />
+                                    </label> */}
+                                </div>
+                                
+                                {/* Data */}
+                                <div className='flex justify-between pt-1'>
+                                    <div className='flex space-x-3'>
+                                        <p className="text-[#7F7F7F] text-sm font-normal">Grid size:</p>
+                                        {Object.keys(genericInput).length === 0 
+                                            ? <p className="text-sm font-normal text-[#7F7F7F]">...</p>
+                                            : <p className='text-sm font-normal'>{`${genericInput.ngrid.x} x ${genericInput.ngrid.z}`}</p>
+                                        }
+                                    </div>
+                                    <div className='flex space-x-3'>
+                                        <p className="text-[#7F7F7F] text-sm font-normal">Subsurface model:</p>
+                                        {Object.keys(genericInput).length === 0 
+                                            ? <p className="text-sm font-normal text-[#7F7F7F]">...</p>
+                                            : <p className='text-sm font-normal'>{genericInput.fileName}</p>
+                                        }
+                                        {/* <p className="text-sm font-normal">temple_64_32</p> */}
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                            {/* Middle Part Container*/}
+                            {isZipProcessed &&
+                                <>
+                                    <BorderTop />
+                                    <div className='flex flex-col space-y-8'>
+
+                                        {/* Models */}
+                                        <div className='flex space-x-4 z-[1]'>
+                                            <div className='flex flex-col space-y-3 w-1/2'>
+                                                <H2 heading="Forward model"/>
+                                                <EditDropdownMenu
+                                                    modelType="forward"
+                                                    isModelSelectorOpen={areOpen.forwardModelSelector}
+                                                    isEditOpen={areOpen.forwardEdit}
+                                                    handleAreOpen={handleAreOpen}
+                                                    handleModel={handleModel}
+                                                    selectedModel={selectedModels.forward}
+                                                    items={forwardModels}
+                                                >
+                                                    
+                                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
+                                                    {/* <EditModels model="forward" modelType="Integral" /> */}
+                                                </EditDropdownMenu>
+                                            </div>
+                                            <div className='flex flex-col space-y-3 w-1/2'>
+                                                <H2 heading="Minimization model"/>
+                                                {/* handleSelectModel, selectedModel, items, model=undefined, width='' */}
+                                                <EditDropdownMenu
+                                                    modelType="minimization"
+                                                    isModelSelectorOpen={areOpen.minimizationModelSelector}
+                                                    isEditOpen={areOpen.minimizationEdit}
+                                                    handleAreOpen={handleAreOpen}
+                                                    handleModel={handleModel}
+                                                    selectedModel={selectedModels.minimization}
+                                                    items={minimizationModels}
+                                                >
+                                                {/* <DropdownMenu initialValue="GradientDescent" items={Object.entries(minimizationModelItems)}> */}
+                                                {/* {Object.entries(dataObject).map(([key, value]) => (
+                                                    <InputModelData title={key} defaultValue={value}/>
+                                                ))} */}
+                                                    {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
+                                                    {/* <EditModels model="minimization" modelType="GradientDescent" /> */}
+                                                    {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
+                                                </EditDropdownMenu>
+                                            </div>
+                                        </div>
+
+                                        {/* Processing Steps */}
+                                        <div className='flex flex-col space-y-3'>
+                                            <H2 heading="Processing steps"/>
+                                            {/* <ClickableChip title="Pre-processing"/> */}
+                                            <div className="flex space-x-3">
+                                                <Chip selected={processes["Pre-processing"]} handleProcess={handleProcess} title="Pre-processing" />
+                                                <Chip selected={processes["Processing"]} handleProcess={handleProcess} title="Processing" />
+                                                <Chip selected={processes["Post-processing"]} handleProcess={handleProcess} title="Post-processing" />
+                                                {/* <Chip title="Pre-Processing" clickable={true} />
+                                                <Chip title="Processing" clickable={true} />
+                                                <Chip title="Post-Processing" clickable={true} /> */}
+                                            </div>
+                                        </div>
+
+                                        {/* Threads/Cores */}
+                                        <div className='flex flex-col space-y-3'>
+                                            <H2 heading="Threads / Cores (parallel only)" />
+
+                                            <div className='flex space-x-3'>
+                                                <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
+                                                <div className='flex items-center justify-center w-12 h-12
+                                                    bg-white border border-[#D7DFFF] rounded-xl'
+                                                >
+                                                    {threads}
+                                                </div>
+                                                <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <BorderTop />
+
+                                    {/* Lower Part */}
+                                    <button onClick={handleCalculate}
+                                        disabled={isCalculating}
+                                        className="py-4 bg-[#3561FE] rounded-xl"
+                                    >
+                                        <p className="text-center text-white font-semibold">
+                                            {isCalculating ? 'Calculating...' : 'Calculate'}
+                                        </p>
+                                    </button>
+                                </>
+                            }
+                        </div>
+                    </>
+                }
             </div>
         </>
     )
