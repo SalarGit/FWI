@@ -11,6 +11,7 @@ import Chip from '../../../custom/Chip.jsx';
 import AddSubstract from '../../AddSubstract.jsx';
 import FileInputWithCustomButton from '../../FileInputWithCustomButton.jsx';
 import EditDropdownMenu from '../../../custom/dropdownmenus/editdata/EditDropdownMenu.jsx';
+import * as api from '../../../../api/apiService.js'
 
 import closeBig from '../../../../assets/close-big.png';
 
@@ -48,6 +49,11 @@ export default function NewRun({ onClose }) {
     const [processes, setProcesses] = useState({'Pre-processing': true, 'Processing': true, 'Post-processing': true})
     const [isCalculating, setIsCalculating] = useState(false);
 
+    function filter(name) {
+        return name.replace('input/', '').
+        replace('FMInput.json', '').
+        replace('MinimizationInput.json', '')
+    }
 
     // NOTE: Added handleZipChange
     const handleZipChange = async (event) => {
@@ -93,8 +99,14 @@ export default function NewRun({ onClose }) {
                 // console.log("jsonFile:", jsonFile)
                 // const jsonFiles = [loadedZip.file(newForwardModels[0], newMinimizationModels[0])]
 
-                const forwardJson = loadedZip.file(newForwardModels[0])
-                const minimizationJson = loadedZip.file(newMinimizationModels[0])
+                // const forwardJson = loadedZip.file(newForwardModels[0])
+                // const minimizationJson = loadedZip.file(newMinimizationModels[0])
+
+                const initialForwardModel = `input/${parsedGenericInputData.forward}FMInput.json`
+                const initialMinimizationModel = `input/${parsedGenericInputData.minimization}MinimizationInput.json`
+
+                const forwardJson = loadedZip.file(initialForwardModel)
+                const minimizationJson = loadedZip.file(initialMinimizationModel)
 
                 if (forwardJson && minimizationJson) {
                     const forwardText = await forwardJson.async('text')
@@ -114,13 +126,15 @@ export default function NewRun({ onClose }) {
                     setSelectedModels((prev) => ({
                         forward:
                         {
-                            name: newForwardModels[0],
+                            // name: newForwardModels[0],
+                            name: initialForwardModel,
                             jsonData: parsedDatas[0],
                             initialTypes: newInitialTypes[0]
                         },
                         minimization:
                         {
-                            name: newMinimizationModels[0],
+                            // name: newMinimizationModels[0],
+                            name: initialMinimizationModel,
                             jsonData: parsedDatas[1],
                             initialTypes: newInitialTypes[1]
                         }
@@ -181,7 +195,7 @@ export default function NewRun({ onClose }) {
                 try {
                     const jsonText = await jsonFile.async('text');
                     const parsedData = JSON.parse(jsonText);
-                    console.log("parsedData:", parsedData)
+
                     // Reset initialTypes so that it updates based on the new input values
                     const newInitialType = replaceValuesWithTypes(parsedData);
     
@@ -224,7 +238,6 @@ export default function NewRun({ onClose }) {
         const key = option === "SELECT" 
             ? `${modelType}ModelSelector`
             : `${modelType}Edit`;
-        console.log(key)
     
         setAreOpen((prev) => {
             return {
@@ -235,30 +248,47 @@ export default function NewRun({ onClose }) {
     }
     
     function handleChangeCaseId(id) {
-        console.log(`handleChangeCaseId called: ${id}`)
         setCaseId((prev) => {
             const tmp = [...prev];
             tmp[1] = id;
             return tmp;
         })
     }
+
+    async function caseIdExists() {
+        const { success, caseIds, error } = await api.fetchAllCaseIds();
+
+        if (success) {
+            return caseIds.includes(caseId[1]);
+        } // else
+        return null; // Indicate that an error occurred
+    }
     
-    function handleCaseId() {
-        console.log(`handleCaseId called: ${caseId}`)
-        
-        if (runs.includes(caseId[1])) {
-            alert(`There is already a run named '${caseId[1]}'. Please enter a new run name.`)
+    async function handleConfirmCaseId() {
+        if (caseId === '') {
+            // no caseId entered
+        }
+
+        const caseIdStatus = await caseIdExists();
+
+        if (caseIdStatus === null) {
+            // If there was an error fetching the case IDs, do nothing
+            console.error('Failed to check if case ID exits.');
+            return;
+        } else if (caseIdStatus) {
+            alert(`There is already a case with ID '${caseId[1]}'. Please enter an new case ID.`);
         } else {
             setCaseId((prev) => {
                 const tmp = [...prev];
                 tmp[0] = true;
                 return tmp;
             });
+        
             setRuns((prev) => {
                 const tmp = [...prev];
                 tmp.push(caseId[1]);
                 return tmp;
-            })
+            });
         }
     }
 
@@ -283,13 +313,73 @@ export default function NewRun({ onClose }) {
         }
     }
 
-    function handleCalculate() {
+    async function handleCalculate() {
+        // STEP 1: Stop user from interacting with UI
         setIsCalculating(true);
+
+
         // Simulate a calculation or asynchronous operation
-        setTimeout(() => {
-            setIsCalculating(false);
-            // Perform further actions here after the calculation is done
-        }, 2000); // Replace with actual calculation duration
+        // setTimeout(() => {
+        //     setIsCalculating(false);
+        //     // Perform further actions here after the calculation is done
+        // }, 2000); // Replace with actual calculation duration
+
+        // STEP 2: Update zip with new data
+        // update generic input with new models & upload to zip
+        genericInput.forward = filter(selectedModels.forward.name);
+        genericInput.minimization = filter(selectedModels.minimization.name);
+
+        zipContent.file('input/GenericInput.json', JSON.stringify(genericInput, null, 2));
+        
+        // upload forward model data
+        zipContent.file(selectedModels.forward.name, JSON.stringify(selectedModels.forward.jsonData, null, 2));
+        
+        // upload minimization model data
+        zipContent.file(selectedModels.minimization.name, JSON.stringify(selectedModels.minimization.jsonData, null, 2));
+
+        // STEP 3: POST zip (case) to back-end
+        // Generate the updated zip file as a Blob
+        const updatedZipBlob = await zipContent.generateAsync({ type: 'blob' });
+
+        // const sanitizedCaseId = caseId.replace(/ /g, '-'); // Replace spaces with hyphens
+
+        const sanitizedCaseId = encodeURIComponent(caseId[1])
+
+        const formData = new FormData();
+        formData.append('case', updatedZipBlob, `updated.zip`); // back-end changes file name to caseId
+
+    
+        const { success } = await api.uploadCase(sanitizedCaseId, formData);
+
+        if (success) {
+            // Handle success response
+            onClose();
+        } else {
+            // Handle fail response
+            onClose();
+        }
+
+        // STEP 4: Pre-process
+        if (processes['Pre-processing']) {
+            console.log("Entering pre-process")
+            await api.process('generate_dummy_data', sanitizedCaseId);
+        }
+        
+        // STEP 5: Process
+        if (processes['Processing']) {
+            console.log("Entering process")
+            await api.process('train_minimization_model', sanitizedCaseId);
+        }
+        
+        // STEP 6: Post-Process
+        if (processes['Post-processing']) {
+            console.log("Entering post-process")
+            await api.process('post_process', sanitizedCaseId);
+        }
+        
+        // STEP 7: Update global state with:
+        // - 
+
     }
 
     return (
@@ -332,8 +422,10 @@ export default function NewRun({ onClose }) {
                             onChange={(e) => handleChangeCaseId(e.target.value)}
                         >
                         </input>
-                        <button onClick={handleCaseId}
-                            className="p-2 font-semibold text-white bg-[#3561FE] rounded-xl"
+                        <button onClick={handleConfirmCaseId}
+                            className={`p-2 font-semibold rounded-xl border
+                            ${caseId[1] === '' ? 'text-[#b6b7be] border-[#b6b7be] cursor-not-allowed' : 'text-[#3561FE] border-[#3561FE]'}`}
+                            disabled={caseId[1] === ''}
                         >
                             Ok
                         </button>
@@ -458,6 +550,7 @@ export default function NewRun({ onClose }) {
                                                 <H2 heading="Forward model"/>
                                                 <EditDropdownMenu
                                                     modelType="forward"
+                                                    filter={filter}
                                                     isModelSelectorOpen={areOpen.forwardModelSelector}
                                                     isEditOpen={areOpen.forwardEdit}
                                                     handleAreOpen={handleAreOpen}
@@ -475,6 +568,7 @@ export default function NewRun({ onClose }) {
                                                 {/* handleSelectModel, selectedModel, items, model=undefined, width='' */}
                                                 <EditDropdownMenu
                                                     modelType="minimization"
+                                                    filter={filter}
                                                     isModelSelectorOpen={areOpen.minimizationModelSelector}
                                                     isEditOpen={areOpen.minimizationEdit}
                                                     handleAreOpen={handleAreOpen}

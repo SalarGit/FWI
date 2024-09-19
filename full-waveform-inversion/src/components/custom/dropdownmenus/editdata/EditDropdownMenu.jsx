@@ -110,49 +110,24 @@
 //     )
 // }
 
-import { useState } from "react";
-
-
 import Menu from "../regular/Menu.jsx";
 import SelectBox from "../regular/SelectBox.jsx";
-import EditModels from "../../../header/EditModels.jsx";
 import EditModelData from "../../../header/sections/newrun/EditModelData.jsx";
 
-export default function EditDropdownMenu({ isModelSelectorOpen, isEditOpen, handleAreOpen, handleModel, selectedModel, items, modelType=undefined, width='' }) {
-    const [isOpen, setIsOpen] = useState(false);
-
-    function handleSetIsOpen() {
-        setIsOpen((prevState) => prevState ? false : true);
-    }
+export default function EditDropdownMenu({ isModelSelectorOpen, isEditOpen, handleAreOpen, handleModel, selectedModel, items, filter=undefined, modelType=undefined, width='' }) {
 
     function handleSelectItem(item) {
         handleModel(modelType, item, "SELECT")
         handleAreOpen(modelType, "SELECT");
     }
 
-    function filter(name) {
-        return name.replace('input/', '').
-        replace('FMInput.json', '').
-        replace('MinimizationInput.json', '')
-    }
-
     return (
         <div className={`relative ${width}`}>
-            {/* <SelectBox isOpen={isOpen} onOpenClose={handleSetIsOpen} selectedItem={filter(selectedModel.name)}/> */}
             <SelectBox isOpen={isModelSelectorOpen} onOpenClose={() => handleAreOpen(modelType, "SELECT")} selectedItem={filter(selectedModel.name)}/>
+
             {isModelSelectorOpen && <Menu items={items} onSelect={handleSelectItem} filter={modelType ? filter : undefined} />}
-            {modelType && <EditModelData isEditOpen={isEditOpen} handleAreOpen={handleAreOpen} handleModel={handleModel} selectedModel={selectedModel} modelType={modelType} />}
-
-
-            {/* Menu should only be displayed on {isOpen &&} and not with 'hidden' attribute, since nothing needs to be saved.
-                This way there will be less elements in the DOM. Hidden is used when there is data in the element that needs to
-                be saved for the next time that it is opened. Using && will reset it everytime. */}
-            {/* <Menu items={items} onSelect={handleSelectItem} isOpen={isOpen}/> */}
-            {/* {isOpen && <Menu items={items} onSelect={handleSelectItem} />} */}
-            {/* {edit && <EditModels model={model} modelType={selectedItem} />} */}
             
-            {/* {edit && <EditModelData modelType={model} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
-            {/* {children} */}
+            {modelType && <EditModelData isEditOpen={isEditOpen} handleAreOpen={handleAreOpen} handleModel={handleModel} selectedModel={selectedModel} modelType={modelType} />}
         </div>
     )
 }
