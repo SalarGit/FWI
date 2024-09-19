@@ -17,7 +17,7 @@ import closeBig from '../../../../assets/close-big.png';
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose }) {
-    const [threads, setThreads] = useState(1);
+    // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
     // Fix caseId and filename
@@ -68,7 +68,7 @@ export default function NewRun({ onClose }) {
                 const parsedGenericInputData = JSON.parse(genericInputText)
 
                 setGenericInput(parsedGenericInputData)
-                setThreads(parsedGenericInputData.threads)
+                // setThreads(parsedGenericInputData.threads)
 
                 const jsonFileNames = loadedZip.file(/.*\.json$/).map(file => file.name);
 
@@ -267,6 +267,20 @@ export default function NewRun({ onClose }) {
             ...prev,
             [process]: !prev[process]
         }))
+    }
+
+    function handleThreads(option) {
+        if (option === 'MINUS') {
+            setGenericInput((prev) => ({
+                ...prev,
+                threads: prev.threads - 1
+            }))
+        } else if (option === 'PLUS') {
+            setGenericInput((prev) => ({
+                ...prev,
+                threads: prev.threads + 1
+            }))
+        }
     }
 
     function handleCalculate() {
@@ -498,13 +512,13 @@ export default function NewRun({ onClose }) {
                                             <H2 heading="Threads / Cores (parallel only)" />
 
                                             <div className='flex space-x-3'>
-                                                <AddSubstract type='substract' handleThreads={() => setThreads((threads) => threads - 1)} isDisabled={threads === 1} />
+                                                <AddSubstract type='substract' handleThreads={() => handleThreads("MINUS")} isDisabled={genericInput.threads === 1} />
                                                 <div className='flex items-center justify-center w-12 h-12
                                                     bg-white border border-[#D7DFFF] rounded-xl'
                                                 >
-                                                    {threads}
+                                                    {genericInput.threads}
                                                 </div>
-                                                <AddSubstract type='add' handleThreads={() => setThreads((threads) => threads + 1)} isDisabled={threads === 8} />
+                                                <AddSubstract type='add' handleThreads={() => handleThreads("PLUS")} isDisabled={genericInput.threads === 8} />
                                             </div>
                                         </div>
                                     </div>
