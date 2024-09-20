@@ -49,7 +49,35 @@ export const uploadCase = async (caseId, formData) => {
     }
 };
 
-// Pre-process necessary functions
+
+
+// function handleChunk(chunk) {
+// // This will match each JSON object in the string
+// const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
+
+// if (jsonObjects) {
+//     if (jsonObjects.length > 1) {
+//     console.log(`Found ${jsonObjects.length} chunks.`);
+//     }
+
+//     jsonObjects.forEach((jsonStr, index) => {
+//     try {
+//         // Parse each JSON object and log it
+//         const parsedChunk = JSON.parse(jsonStr);
+//         console.log(`Chunk ${index + 1}:`, parsedChunk);
+//     } catch (error) {
+//         console.error("Error parsing JSON:", error);
+//     }
+//     });
+// } else {
+//     console.log("No valid JSON objects found.");
+// }
+// }
+
+
+// Process necessary functions
+
+
 function processChunkedResponse(response) {
 	const reader = response.body.getReader();
 	const decoder = new TextDecoder();
@@ -68,7 +96,8 @@ function processChunkedResponse(response) {
 		}
 
 		if (chunk.length > 0) {
-			console.log(JSON.parse(chunk));
+            handleChunk(chunk);
+			// console.log("JSOn.parse(chunk):", JSON.parse(chunk));
 		}
 
 		return readChunk();
@@ -77,11 +106,29 @@ function processChunkedResponse(response) {
 	return readChunk();
 }
 
+function handleChunk(chunk) {
+    // This will match each JSON object in the string
+    const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
+  
+    if (jsonObjects) {
+      jsonObjects.forEach((jsonStr) => {
+        try {
+          // Parse each JSON object and log it
+          const parsedChunk = JSON.parse(jsonStr);
+          console.log(parsedChunk);
+        } catch (error) {
+          console.error("Error parsing JSON:", error);
+        }
+      });
+    } else {
+      console.log("No valid JSON objects found.");
+    }
+}
+
 function onChunkedResponseError(err) {
 	console.error(err);
 }
 
-// Pre-process caseId
 export const process = async (phase, caseId) => {
     const response = await fetch(`/cases/${caseId}/process/${phase}`, {
         method: 'GET',

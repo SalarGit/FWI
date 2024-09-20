@@ -40,7 +40,7 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, 
 
             {/* Buttons Container*/}
             <div className='flex space-x-4'>
-                <div className='relative'>
+                {/* <div className='relative'>
                     <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
                         onClick={handleSetRecursiveZipFileHandler}
                         disabled={tableData.length === 0}
@@ -63,7 +63,7 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, 
                     >
                         zipfile handler
                     </button>
-                </div>
+                </div> */}
                 {/* Border inside, force height */}
                 <div className='relative'>
                     <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
