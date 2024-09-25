@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import JSZip from 'jszip';
 
 import '../../../../index.css';
+
+import { SessionContext } from '../../../../store/session-context.jsx';
 
 import H1 from '../../../custom/headings/H1.jsx';
 import H2 from '../../../custom/headings/H2.jsx';
@@ -17,7 +19,8 @@ import closeBig from '../../../../assets/close-big.png';
 
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
-export default function NewRun({ onClose }) {
+export default function NewRun({ onClose, encodeSpaces }) {
+    const { addRunToSession, setCurrentRun } = useContext(SessionContext);
     // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
@@ -259,7 +262,7 @@ export default function NewRun({ onClose }) {
         const { success, caseIds, error } = await api.fetchAllCaseIds();
 
         if (success) {
-            return caseIds.includes(caseId[1]);
+            return caseIds.includes(encodeSpaces(caseId[1]));
         } // else
         return null; // Indicate that an error occurred
     }
@@ -286,7 +289,7 @@ export default function NewRun({ onClose }) {
         
             setRuns((prev) => {
                 const tmp = [...prev];
-                tmp.push(caseId[1]);
+                tmp.push(1[1]);
                 return tmp;
             });
         }
@@ -312,6 +315,8 @@ export default function NewRun({ onClose }) {
             }))
         }
     }
+
+    
 
     async function handleCalculate() {
         // STEP 1: Stop user from interacting with UI
@@ -341,9 +346,9 @@ export default function NewRun({ onClose }) {
         // Generate the updated zip file as a Blob
         const updatedZipBlob = await zipContent.generateAsync({ type: 'blob' });
 
-        // const sanitizedCaseId = caseId.replace(/ /g, '-'); // Replace spaces with hyphens
-
-        const sanitizedCaseId = encodeURIComponent(caseId[1])
+        // const sanitizedCaseId = encodeURIComponent(caseId[1])
+        
+        const sanitizedCaseId = encodeSpaces(caseId[1]);
 
         const formData = new FormData();
         formData.append('case', updatedZipBlob, `updated.zip`); // back-end changes file name to caseId
@@ -358,6 +363,16 @@ export default function NewRun({ onClose }) {
             // Handle fail response
             onClose();
         }
+
+        // Note: SHOULD THESE STEPS ONLY HAPPEN AFTER ALL PROCESS WORKED?
+        // if answer is yes, then I need some screen that loads while user is waiting
+        // STEP 7: Update global state with:
+        // - Update sessionRuns
+        addRunToSession(caseId[1]); // from api? (no, all data is alrdy in the state. calling api is inefficient)
+        // or I just have an array of caseId's and then the RunTab.jsx component gets all data with API using cases/{caseId}
+
+        // - Update currentRun
+        setCurrentRun(caseId[1]); // from caseId state
 
         // STEP 4: Pre-process
         if (processes['Pre-processing']) {
@@ -376,10 +391,6 @@ export default function NewRun({ onClose }) {
             console.log("Entering post-process")
             await api.process('post_process', sanitizedCaseId);
         }
-        
-        // STEP 7: Update global state with:
-        // - 
-
     }
 
     return (
