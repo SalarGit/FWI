@@ -40,7 +40,7 @@ export default function Settings() {
                     <Model model="forward" modelType="Integral" />
                     <BorderLeft />
                     {/* <div className="border-l border-[#D7DFFF]" /> */}
-                    <Model model="minimisation" modelType="ConjugateGradient" />
+                    <Model model="minimization" modelType="ConjugateGradient" />
                 </div>
                 
                 {/* PROCESSING STEPS container */}

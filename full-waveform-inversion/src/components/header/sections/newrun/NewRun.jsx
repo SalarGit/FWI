@@ -20,7 +20,7 @@ import closeBig from '../../../../assets/close-big.png';
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose, encodeSpaces }) {
-    const { addRunToSession, setCurrentRun } = useContext(SessionContext);
+    const { sessionRuns, addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
     // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
@@ -51,6 +51,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
     const [runs, setRuns] = useState(["Bruh"]);
     const [processes, setProcesses] = useState({'Pre-processing': true, 'Processing': true, 'Post-processing': true})
     const [isCalculating, setIsCalculating] = useState(false);
+    
 
     function filter(name) {
         return name.replace('input/', '').
@@ -364,39 +365,167 @@ export default function NewRun({ onClose, encodeSpaces }) {
             onClose();
         }
 
+        // API
+        async function processChunkedResponse(response, process) {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            
+            function readChunk() {
+                return reader.read().then(appendChunks);
+            }
+            
+            function appendChunks(result) {
+                const chunk = decoder
+                    .decode(result.value || new Uint8Array(), { stream: !result.done })
+                    .trim();
+        
+                if (result.done) {
+                    return;
+                }
+        
+                if (chunk.length > 0 && chunk.includes('progress')) {
+                    handleChunk(chunk, process);
+
+                    // console.log("JSON.parse(chunk):", JSON.parse(chunk));
+                }
+        
+                return readChunk();
+            }
+        
+            return readChunk();
+        }
+        
+        function handleChunk(chunk, process) {
+            // This will match each JSON object in the string
+            const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
+          
+            if (jsonObjects) {
+                jsonObjects.forEach((jsonStr) => {
+                    try {
+                    // Parse each JSON object and log it
+                    const parsedChunk = JSON.parse(jsonStr);
+                    const progressInfo = parsedChunk.progress;
+                    const progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 100;
+
+                    // handleProgress(process, progressPercentage);
+                    // setProgress((prev) => [
+                    //     prev[0], // Keep the existing boolean value
+                    //     {
+                    //         ...prev[1], // Keep the existing progress object
+                    //         [process]: progressPercentage, // Update process only
+                    //     },
+                    // ]);
+                    
+                    updateProgressingRun(caseId[1], process, progressPercentage);
+                    
+
+                    console.log(progressPercentage)
+                    } catch (error) {
+                    console.error("Error parsing JSON:", error);
+                    }
+                });
+            } else {
+              console.log("No valid JSON objects found.");
+            }
+        }
+        
+        function onChunkedResponseError(err, process) {
+            return { error: `Failed to run ${process}: ${err}` };
+        }
+        
+        // const process = async (phase, caseId) => {
+        //     const response = await fetch(`/cases/${caseId}/process/${phase}`, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Accept': 'application/json',
+        //         },
+        //     }).then(processChunkedResponse)
+        //     .catch(onChunkedResponseError);
+        // }
+
+        const process = async (phase, caseId, process) => {
+            try {
+                const response = await fetch(`/cases/${caseId}/process/${phase}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                    },
+                });
+                await processChunkedResponse(response, process); // Ensure you await this function
+                return { error: null };  // Return null error on success
+            } catch (err) {
+                return onChunkedResponseError(err, process);  // Return the error object on failure
+            }
+        };
+
+        // console.log('setting progress to true')
+        // setProgress((prev) => [true, prev[1]]);
+
+        
         // Note: SHOULD THESE STEPS ONLY HAPPEN AFTER ALL PROCESS WORKED?
         // if answer is yes, then I need some screen that loads while user is waiting
         // STEP 7: Update global state with:
         // - Update sessionRuns
-        addRunToSession(caseId[1]); // from api? (no, all data is alrdy in the state. calling api is inefficient)
-        // or I just have an array of caseId's and then the RunTab.jsx component gets all data with API using cases/{caseId}
+        const sessionRun = {
+            [caseId[1]]: {
+                'Pre-processing': processes['Pre-processing'],
+                'Processing': processes['Processing'],
+                'Post-processing': processes['Post-processing'],
+            }
+        }
+
+        const progressingRun = {
+            [caseId[1]]: {
+                'Pre-processing': [processes['Pre-processing'], 0],
+                'Processing': [processes['Processing'], 0],
+                'Post-processing': [processes['Post-processing'], 0],
+            }  
+        }
+
+
+        addRunToSession(sessionRun);
 
         // - Update currentRun
-        setCurrentRun(caseId[1]); // from caseId state
+        handleCurrentRun(caseId[1]); // from caseId state
+
+        // add to progressing runs
+        addProgressingRun(progressingRun)
 
         // STEP 4: Pre-process
         if (processes['Pre-processing']) {
             console.log("Entering pre-process")
-            await api.process('generate_dummy_data', sanitizedCaseId);
-        }
-        
-        // STEP 5: Process
-        if (processes['Processing']) {
-            console.log("Entering process")
-            await api.process('train_minimization_model', sanitizedCaseId);
-        }
-        
-        // STEP 6: Post-Process
-        if (processes['Post-processing']) {
-            console.log("Entering post-process")
-            await api.process('post_process', sanitizedCaseId);
+
+            const { error } = await process('generate_dummy_data', sanitizedCaseId, 'Pre-processing');
+
+            if (error !== null ) {console.log(`Pre-processing error : ${error}`)};
+
+            // STEP 5: Process
+            if (processes['Processing']) {
+                console.log("Entering process")
+                await process('train_minimization_model', sanitizedCaseId, 'Processing');
+
+                    // STEP 6: Post-Process
+                if (processes['Post-processing']) {
+                    console.log("Entering post-process")
+                    await process('post_process', sanitizedCaseId), 'Post-processing';
+                }
+            }
+            // done progressing so remove from progressing runs
+            removeProgressingRun(caseId[1]);
         }
     }
 
     return (
         // New Run Container
         <>
-            {/* Blur background */}
+            {/* {!progress[0] ? 
+            console.log('progress[0] is false, but counts as true')
+            :
+            console.log('progress[0] is true, but counts as false')
+            }
+            {!progress[0] ?
+            <> */}
+            {/* Blur background
             <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
             
             {/* Main container */}
@@ -438,7 +567,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                             ${caseId[1] === '' ? 'text-[#b6b7be] border-[#b6b7be] cursor-not-allowed' : 'text-[#3561FE] border-[#3561FE]'}`}
                             disabled={caseId[1] === ''}
                         >
-                            Ok
+                            Confirm
                         </button>
                     </div>
                     }
@@ -645,6 +774,13 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     </>
                 }
             </div>
+            {/* </>
+            :
+            <div className='flex flex-col space-y-2 bg-black text-white'>
+                <p>{Math.floor(progress[1]['Pre-processing'])}%</p>
+                <p>{Math.floor(progress[1]['Processing'])}%</p>
+                <p>{Math.floor(progress[1]['Post-processing'])}%</p>
+            </div>} */}
         </>
     )
 }

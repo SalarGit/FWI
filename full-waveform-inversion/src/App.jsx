@@ -10,10 +10,12 @@ import Output from './components/IO/Output.jsx';
 import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 import RunTab from './components/runtab/RunTab.jsx';
+// import ProgressionBar from './components/custom/progressionbar/ProgressionBar.jsx';
 
 function App() {
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
+    const [progress, setProgress] = useState([false, {'Pre-processing': 0, 'Processing': 0, 'Post-processing': 0}])
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
@@ -37,13 +39,15 @@ function App() {
             >
                 <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} />
                 {addingNewRun &&
-                    <NewRun onClose={handleSetAddingNewRun} encodeSpaces={encodeSpaces} />
+                    <NewRun onClose={handleSetAddingNewRun} encodeSpaces={encodeSpaces} progress={progress} setProgress={setProgress} />
                 }
                 {historyOfRuns &&
                     <HistoryOfRuns onClose={handleSetHistoryOfRuns} />
                 }
 
-                <RunTab decodeSpaces={decodeSpaces} />
+                <RunTab progress={progress} setProgress={setProgress}/>
+
+                {/* <ProgressionBar className='absolute right-8 bottom-8' /> */}
 
                 <div className='flex flex-col space-y-6'>
                     <Settings />

@@ -96,7 +96,7 @@ function processChunkedResponse(response) {
 		}
 
 		if (chunk.length > 0) {
-            handleChunk(chunk);
+            console.log(handleChunk(chunk));
 			// console.log("JSOn.parse(chunk):", JSON.parse(chunk));
 		}
 
@@ -115,7 +115,7 @@ function handleChunk(chunk) {
         try {
           // Parse each JSON object and log it
           const parsedChunk = JSON.parse(jsonStr);
-          console.log(parsedChunk);
+          return(parsedChunk);
         } catch (error) {
           console.error("Error parsing JSON:", error);
         }
