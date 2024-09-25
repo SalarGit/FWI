@@ -12,22 +12,22 @@ export const SessionContext = createContext({
     removeProgressingRun: () => {},
 });
 
-function sessionRunsReducer(state, action) {
-    return state;
-}
+// function sessionRunsReducer(state, action) {
+//     return state;
+// }
 
-function progressingRunsReducer(state, action) {
-    return state;
-}
+// function progressingRunsReducer(state, action) {
+//     return state;
+// }
 
-function currentRunReducer(state, action) {
-    return state;
-}
+// function currentRunReducer(state, action) {
+//     return state;
+// }
 
 export default function SessionContextProvider({ children }) {
-    const [sessionRunsState, sessionRunsDispatch] = useReducer(sessionRunsReducer, {});
-    const [progressingRunsState, progressingRunsDispatch] = useReducer(progressingRunsReducer, {});
-    const [currentRunState, currentRunDispatch] = useReducer(currentRunReducer, '');
+    // const [sessionRunsState, sessionRunsDispatch] = useReducer(sessionRunsReducer, {});
+    // const [progressingRunsState, progressingRunsDispatch] = useReducer(progressingRunsReducer, {});
+    // const [currentRunState, currentRunDispatch] = useReducer(currentRunReducer, '');
 
     const [sessionRuns, setSessionRuns] = useState({});
     const [progressingRuns, setProgressingRuns] = useState({});
