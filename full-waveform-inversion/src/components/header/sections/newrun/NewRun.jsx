@@ -419,7 +419,9 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     updateProgressingRun(caseId[1], process, progressPercentage);
                     
 
-                    console.log(progressPercentage)
+                    // console.log(progressPercentage)
+                    // console.log(progressInfo)
+                    console.log(parsedChunk)
                     } catch (error) {
                     console.error("Error parsing JSON:", error);
                     }

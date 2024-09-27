@@ -11,9 +11,9 @@ import BorderTop from "../custom/borders/BorderTop.jsx";
 export default function EditModels({ selectedModel, modelType }) {
     const [isOpen, setIsOpen] = useState(false);
 
-    function handleClick() {
-        setIsOpen((prev) => prev ? false : true);
-    }
+    // function handleClick() {
+    //     setIsOpen((prev) => prev ? false : true);
+    // }
 
     let editMenu = null;
 
@@ -60,7 +60,7 @@ export default function EditModels({ selectedModel, modelType }) {
 
     return (
         <div>
-            <EditButton title="Edit" absoluteStyling="right-10 top-2" handleClick={handleClick}
+            <EditButton title="Edit" absoluteStyling="right-10 top-2" handleClick={() => setIsOpen((prev) => !prev)}
                 conditionalStyling={isOpen ? 'border border-[#3561FE] py-[5px] px-[11px]' : 'py-[6px] px-3'}
             />
             <EditDataMenu model={model} isOpen={isOpen}>
