@@ -6,10 +6,13 @@ import hourglass from '../../../assets/hourglass.svg';
 import pin from '../../../assets/pin.svg';
 import seperator from '../../../assets/seperator.svg';
 
+import ProgressBar from './ProgressBar.jsx';
+
 export default function ProgressModal() {
     const { sessionRuns, progressingRuns } = useContext(SessionContext);
     const [minimized, setMinimized] = useState(false);
     const [remaining, setRemaining] = useState([0, 0]); // remaining out of total
+    const [timeElapsed, setTimeElapsed] = useState(0); // elapsed time in seconds
 
     const progressingRunsLength = Object.keys(progressingRuns).length;
 
@@ -54,41 +57,72 @@ export default function ProgressModal() {
         }
     }, [progressingRunsLength]);
 
+    // Start the timer when the modal is rendered
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeElapsed((prev) => prev + 1); // Increment elapsed time by 1 second every second
+        }, 1000);
+
+        // Clean up the interval when the modal is removed
+        return () => clearInterval(interval);
+    }, []);
+
+    // Helper function to format time in seconds into minutes and seconds
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}m ${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}s`;
+    }
+
     return (
         <>
             {/* progressingRuns */}
             {/* {Object.keys(sessionRuns).length > 0 && */}
             {progressingRunsLength > 0 &&
+            // {true &&
                 <>
                     {!minimized ? 
                         <>
-                    
-                            
-                                <div className='absolute z-[49] bottom-7 right-8 w-[470px] h-[266px] p-3 pt-6
+                                <div className='absolute z-[49] bottom-7 right-8 w-[470px] p-3 pt-6
                                     bg-white rounded-2xl border border-[#D7DFFF]
                                     flex flex-col'
                                 >
-                                {/* header */}
-                                <div className="mb-[22px] relative flex items-center justify-center space-x-1">
-                                    <img src={hourglass} alt={hourglass} />
-                                    <p className="font-medium uppercase">CALCULATING...</p>
-                                    <button onClick={handleMinimize}
-                                        className="absolute right-0 flex items-center justify-center
-                                        size-12 rounded-xl hover:bg-[#f1f4ff]"
-                                    >
-                                        <img src={pin} alt="pin.svg" />
-                                    </button>
-                                </div>
+                                    {/* header */}
+                                    <div className="mb-[22px] relative flex items-center justify-center space-x-1">
+                                        <img src={hourglass} alt={hourglass} />
+                                        <p className="font-medium uppercase">CALCULATING...</p>
+                                        <button onClick={handleMinimize}
+                                            className="absolute right-0 flex items-center justify-center
+                                            size-12 rounded-xl hover:bg-[#f1f4ff]"
+                                        >
+                                            <img src={pin} alt="pin.svg" />
+                                        </button>
+                                    </div>
 
-                                {/* data */}
-                                <div className='mb-9 flex justify-between'>
-                                    {minimized ? 'true': 'false'}
-                                </div>
+                                    {/* data */}
+                                    <div className='mb-9 flex h-[68px]'>
+                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                            <p className='text-[#7f7f7f] text-sm font-medium'>Time Elapsed</p>
+                                            <p className='font-semibold'>{formatTime(timeElapsed)}</p>
+                                        </div>
+                                        <div className='border-r border-[#d7dfff]'></div>
+                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                            <p className='text-[#7f7f7f] text-sm font-medium'>Time Remaining</p>
+                                            <p className='font-semibold'>0m 47s</p>
+                                        </div>
+                                        <div className='border-r border-[#d7dfff]'></div>
+                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                            <p className='text-[#7f7f7f] text-sm font-medium'>CPU Usage</p>
+                                            <p className='font-semibold'>25%</p>
+                                        </div>
+                                    </div>
 
-                                {/* progression bars */}
-                                <div className='flex flex-col space-y-3'>
-
-                                </div>
+                                    {/* progression bars */}
+                                    <div className='flex flex-col space-y-3'>
+                                        {Object.keys(progressingRuns).map((progressingRunCaseId) => (
+                                            <ProgressBar caseId={progressingRunCaseId}/>
+                                        ))}
+                                    </div>
                                 </div>
                             
                         </>

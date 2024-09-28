@@ -59,17 +59,106 @@ export default function SessionContextProvider({ children }) {
         //     ...prev,
         //     [process]: percentage
         // })),
-        addProgressingRun: (run) => setProgressingRuns((prev) => ({
+        addProgressingRun: (run) => setProgressingRuns((prev) => {
+            console.log(`addProgressingRun: ${run}`);
+        
+            return ({
+            
             ...prev, // Spread existing runs
             ...run
-        })),
-        updateProgressingRun: (caseId, process, percentage) => setProgressingRuns((prev) => ({
-            ...prev,
-            [caseId]: {
-                ...prev[caseId],
-                [process]: [prev[caseId][process][0], percentage], // Update only the number
-            },
-        })),
+        })}),
+        updateProgressingRun: (caseId, process, currentCount, totalCount) => {
+            // First, check if currentCount or totalCount are undefined
+            if ((currentCount === undefined || totalCount === undefined) && process !== 'Post-processing') {
+                // Do nothing and simply return, avoiding the state update
+                console.log(`updateProgressingRun, UNDEFINED UNDEFINED in ${process}`)
+                return;
+            }
+        
+            // Now we can safely call setProgressingRuns
+            setProgressingRuns((prev) => {
+                if (process === 'Pre-processing') {
+                    // console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`);
+                    const updatedProgress = Math.floor((currentCount / totalCount) * 13);
+                    console.log(`updatedProgress: ${updatedProgress}`)
+        
+                    return {
+                        ...prev,
+                        [caseId]: {
+                            ...prev[caseId],
+                            progress: updatedProgress
+                        }
+                    };
+                }  else if (process === 'Processing') {
+                    // console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`)
+                    const updatedProgress = Math.floor(((currentCount / totalCount) * 85) + 13);
+                    console.log(`updatedProgress: ${updatedProgress}`)
+                    return {
+                        ...prev,
+                        [caseId]: {
+                            ...prev[caseId],
+                            progress: updatedProgress
+                        }
+                    }
+                } else if (process === 'Post-processing') {
+                    console.log(`updateProgressingRun ${caseId}, ${process}. From ${prev[caseId].progress} to ${prev[caseId].progress + 1}`)
+                    const updatedProgress = prev[caseId].progress + 1;
+                    console.log(`updatedProgress: ${updatedProgress}`)
+                    return {
+                        ...prev,
+                        [caseId]: {
+                            ...prev[caseId],
+                            progress: updatedProgress
+                        }
+                    }
+                } 
+            });
+        },
+        updateProgressingRunOld: (caseId, process, currentCount, totalCount) => setProgressingRuns((prev) => {
+            if (process === 'Pre-processing') {
+                console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`)
+                const updatedProgress = (currentCount / totalCount) * 13;
+                return {
+                    ...prev,
+                    [caseId]: {
+                        ...prev[caseId],
+                        progress: updatedProgress
+                    }
+                }
+            } else if (process === 'Processing') {
+                console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`)
+                const updatedProgress = ((currentCount / totalCount) * 85) + 13;
+                return {
+                    ...prev,
+                    [caseId]: {
+                        ...prev[caseId],
+                        progress: updatedProgress
+                    }
+                }
+            } else if (process === 'Post-processing') {
+                console.log(`updateProgressingRun ${caseId}, ${process}`)
+                const updatedProgress = prev[caseId].progress + 1;
+                console.log(`updatedProgress: ${updatedProgress}`)
+                return {
+                    ...prev,
+                    [caseId]: {
+                        ...prev[caseId],
+                        progress: updatedProgress
+                    }
+                }
+            }
+        }),
+        // updateProgressingRun: (caseId, process, percentage) => setProgressingRuns((prev) => (
+        //     if (process === 'Pre-processing') {
+        //         return {
+        //         ...prev,
+        //         [caseId]: {
+        //             ...prev[caseId],
+        //             [process]: [prev[caseId][process][0], percentage], // Update only the number
+        //         },
+        //     }
+        // }
+        // )),
         // updateProgressingRun: (caseId, process, percentage) => setProgressingRuns((prev) => ({
         //     ...prev, // Spread the previous state
         //     [caseId]: {

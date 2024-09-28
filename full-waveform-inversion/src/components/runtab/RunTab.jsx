@@ -32,8 +32,7 @@ export default function RunTab() {
                                     {console.log('progressingRuns:', progressingRuns)}
                                     {console.log('progressingRuns.caseId:', progressingRuns[caseId])} */}
                                     {/* {console.log('% straight from context:', progressingRuns[caseId]['Pre-processing'][1])} */}
-                                    <p>Pre-processing: {Math.floor(progressingRuns[caseId]['Pre-processing'][1])}%</p>
-                                    <p>Processing: {Math.floor(progressingRuns[caseId]['Processing'][1])}%. Post-processing: {Math.floor(progressingRuns[caseId]['Post-processing'][1])}%</p>
+                                    <p>Progress: {progressingRuns[caseId].progress}%</p>
                                 </div>
                             ) : (
                                 ''

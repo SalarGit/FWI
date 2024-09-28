@@ -129,8 +129,8 @@ function onChunkedResponseError(err) {
 	console.error(err);
 }
 
-export const process = async (phase, caseId) => {
-    const response = await fetch(`/cases/${caseId}/process/${phase}`, {
+export const process = async (endpoint, caseId) => {
+    const response = await fetch(`/cases/${caseId}/process/${endpoint}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

@@ -20,7 +20,7 @@ import closeBig from '../../../../assets/close-big.png';
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose, encodeSpaces }) {
-    const { sessionRuns, addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
+    const { progressingRuns, addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
     // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
@@ -378,15 +378,19 @@ export default function NewRun({ onClose, encodeSpaces }) {
                 const chunk = decoder
                     .decode(result.value || new Uint8Array(), { stream: !result.done })
                     .trim();
-        
+                
                 if (result.done) {
                     return;
                 }
         
+                console.log(`chunk: ${chunk}`)
                 if (chunk.length > 0 && chunk.includes('progress')) {
                     handleChunk(chunk, process);
-
                     // console.log("JSON.parse(chunk):", JSON.parse(chunk));
+                } else if (process === 'Post-processing'){ // post-process doesn't report progress, it only reports start and end
+                    console.log(`else if process === Post-processing`)
+                    updateProgressingRun(caseId[1], process) 
+                    // NOTE: extract cpu usage from post-processing chunk and send it to updateprogressingrun
                 }
         
                 return readChunk();
@@ -396,7 +400,8 @@ export default function NewRun({ onClose, encodeSpaces }) {
         }
         
         function handleChunk(chunk, process) {
-            // This will match each JSON object in the string
+            // This will match each JSON object in the string'
+            console.log(chunk);
             const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
           
             if (jsonObjects) {
@@ -405,7 +410,19 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     // Parse each JSON object and log it
                     const parsedChunk = JSON.parse(jsonStr);
                     const progressInfo = parsedChunk.progress;
-                    const progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 100;
+                    let progressPercentage;
+                    if (process === 'Pre-processing') {
+                        // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 15; // assume pre-processing is 14% of total
+                        updateProgressingRun(caseId[1], process, progressInfo.current_count, progressInfo.total_count)
+                    } else if (process === 'Processing') {
+                        // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 83;  // assume processing is 84% of total
+                        updateProgressingRun(caseId[1], process, progressInfo.current_count, progressInfo.total_count)
+                        // updateProgressingRun(caseId[1], progressPercentage + 14)
+                    } 
+                    // else if (process === 'Post-processing') {
+                        
+                    //     // updateProgressingRun(caseId[1], progressingRuns.caseId[1] + 1)
+                    // }
 
                     // handleProgress(process, progressPercentage);
                     // setProgress((prev) => [
@@ -421,7 +438,8 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
                     // console.log(progressPercentage)
                     // console.log(progressInfo)
-                    console.log(parsedChunk)
+                    // console.log(parsedChunk)
+                    // console.log(jsonStr)
                     } catch (error) {
                     console.error("Error parsing JSON:", error);
                     }
@@ -435,8 +453,8 @@ export default function NewRun({ onClose, encodeSpaces }) {
             return { error: `Failed to run ${process}: ${err}` };
         }
         
-        // const process = async (phase, caseId) => {
-        //     const response = await fetch(`/cases/${caseId}/process/${phase}`, {
+        // const process = async (endpoint, caseId) => {
+        //     const response = await fetch(`/cases/${caseId}/process/${endpoint}`, {
         //         method: 'GET',
         //         headers: {
         //             'Accept': 'application/json',
@@ -445,9 +463,9 @@ export default function NewRun({ onClose, encodeSpaces }) {
         //     .catch(onChunkedResponseError);
         // }
 
-        const process = async (phase, caseId, process) => {
+        const process = async (endpoint, caseId, process) => {
             try {
-                const response = await fetch(`/cases/${caseId}/process/${phase}`, {
+                const response = await fetch(`/cases/${caseId}/process/${endpoint}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -478,9 +496,10 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
         const progressingRun = {
             [caseId[1]]: {
-                'Pre-processing': [processes['Pre-processing'], 0],
-                'Processing': [processes['Processing'], 0],
-                'Post-processing': [processes['Post-processing'], 0],
+                'Pre-processing': processes['Pre-processing'],
+                'Processing': processes['Processing'],
+                'Post-processing': processes['Post-processing'],
+                progress: 0
             }  
         }
 
@@ -497,19 +516,27 @@ export default function NewRun({ onClose, encodeSpaces }) {
         if (processes['Pre-processing']) {
             console.log("Entering pre-process")
 
+            
+            console.time("Pre-processing Time");
             const { error } = await process('generate_dummy_data', sanitizedCaseId, 'Pre-processing');
+            console.timeEnd("Pre-processing Time");
+            
 
             if (error !== null ) {console.log(`Pre-processing error : ${error}`)};
 
             // STEP 5: Process
             if (processes['Processing']) {
                 console.log("Entering process")
+                console.time("Processing Time");
                 await process('train_minimization_model', sanitizedCaseId, 'Processing');
+                console.timeEnd("Processing Time");
 
                     // STEP 6: Post-Process
                 if (processes['Post-processing']) {
                     console.log("Entering post-process")
-                    await process('post_process', sanitizedCaseId), 'Post-processing';
+                    console.time("Post-processing Time");
+                    await process('post_process', sanitizedCaseId, 'Post-processing');
+                    console.timeEnd("Post-processing Time");
                 }
             }
             // done progressing so remove from progressing runs
