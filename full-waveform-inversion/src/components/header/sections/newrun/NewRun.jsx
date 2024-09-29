@@ -389,7 +389,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     // console.log("JSON.parse(chunk):", JSON.parse(chunk));
                 } else if (process === 'Post-processing'){ // post-process doesn't report progress, it only reports start and end
                     console.log(`else if process === Post-processing`)
-                    updateProgressingRun(caseId[1], process) 
+                    updateProgressingRun(caseId[1], process)
                     // NOTE: extract cpu usage from post-processing chunk and send it to updateprogressingrun
                 }
         
@@ -400,8 +400,11 @@ export default function NewRun({ onClose, encodeSpaces }) {
         }
         
         function handleChunk(chunk, process) {
+            if (process === 'Pre-processing') {
+                const parsedChunk = JSON.parse(chunk);
+                // get cpu usage here
+            }
             // This will match each JSON object in the string'
-            console.log(chunk);
             const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
           
             if (jsonObjects) {
