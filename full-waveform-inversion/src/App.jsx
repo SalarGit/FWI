@@ -13,6 +13,8 @@ import RunTab from './components/runtab/RunTab.jsx';
 import ProgressModal from './components/custom/progressmodal/ProgressModal.jsx';
 
 function App() {
+    
+
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
 

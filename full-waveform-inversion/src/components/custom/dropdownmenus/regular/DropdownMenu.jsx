@@ -20,7 +20,7 @@ export default function DropdownMenu({ items, width='' }) {
     }
 
     return (
-        <div className={`relative ${width}`}>
+        <div className={`relative ${width} z-50`}>
             <SelectBox isOpen={isOpen} onOpenClose={handleSetIsOpen} selectedItem={selectedItem}/>
             {isOpen && <Menu items={items} onSelect={handleSelectItem}/>}
             {/* {model && <EditModels selectedModel={selectedModel} modelType={model} />} */}

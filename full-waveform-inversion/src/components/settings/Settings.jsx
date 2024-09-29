@@ -1,3 +1,7 @@
+import { useContext } from 'react';
+
+import { SessionContext } from '../../store/session-context.jsx';
+
 import H1 from '../custom/headings/H1.jsx';
 import H2 from '../custom/headings/H2.jsx';
 
@@ -9,7 +13,7 @@ import BorderTop from '../custom/borders/BorderTop.jsx';
 import BorderLeft from '../custom/borders/BorderLeft.jsx';
 
 export default function Settings() {
-    const globalCond = true;
+    const { currentRun, sessionRuns } = useContext(SessionContext);
 
     return (
         // Settings Container
@@ -29,7 +33,8 @@ export default function Settings() {
                     <H2 heading="case folder" styling='uppercase'/>
                     {/* Used to be a div element. IDK why. Prob bc I didn't know semantics. */}
                     <p className="text-lg font-medium break-all line-clamp-2">
-                        /Users/Username/Documents/Work/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/
+                        {currentRun ? currentRun : '-'}
+                        {/* /Users/Username/Documents/Work/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/ */}
                     </p>
                 </div>
             
@@ -37,10 +42,10 @@ export default function Settings() {
                 <div className="flex justify-between border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[538px]"
                 >
-                    <Model model="forward" modelType="Integral" />
+                    <Model model="forward" modelType={currentRun ? sessionRuns[currentRun].forwardModel : '-'} />
                     <BorderLeft />
                     {/* <div className="border-l border-[#D7DFFF]" /> */}
-                    <Model model="minimization" modelType="ConjugateGradient" />
+                    <Model model="minimization" modelType={currentRun ? sessionRuns[currentRun].minimizationModel : '-'} />
                 </div>
                 
                 {/* PROCESSING STEPS container */}
@@ -52,9 +57,15 @@ export default function Settings() {
 
                     {/* Processes container */}
                     <div className="flex space-x-3">
-                        <Chip title="Pre-Processing" disabled={true}/>
-                        <Chip title="Processing" disabled={true}/>
-                        <Chip title="Post-Processing" disabled={true}/>
+                        {currentRun ? 
+                            sessionRuns[currentRun].processingSteps.map((step) => (
+                                <Chip title={step} disabled={true}/>
+                            ))
+                        :
+                            <p className='text-lg font-medium'>-</p>
+                        }
+                        {/* <Chip title="Processing" disabled={true}/>
+                        <Chip title="Post-Processing" disabled={true}/> */}
                     </div>
                 </div>
 
@@ -64,7 +75,7 @@ export default function Settings() {
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"
                 >
                     <H2 heading="threads/cores:" styling='uppercase'/>
-                    <p className="text-lg font-medium">1</p>
+                    <p className="text-lg font-medium">{currentRun ? sessionRuns[currentRun].threads : '-'}</p>
                 </div>
 
             </div>

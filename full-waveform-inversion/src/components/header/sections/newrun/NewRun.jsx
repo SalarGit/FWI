@@ -20,7 +20,7 @@ import closeBig from '../../../../assets/close-big.png';
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose, encodeSpaces }) {
-    const { progressingRuns, addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
+    const { addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
     // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
@@ -383,14 +383,18 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     return;
                 }
         
-                console.log(`chunk: ${chunk}`)
-                if (chunk.length > 0 && chunk.includes('progress')) {
+                // console.log(`chunk: ${chunk}`)
+                // if (chunk.length > 0 && chunk.includes('progress')) {
+                //     handleChunk(chunk, process);
+                //     // console.log("JSON.parse(chunk):", JSON.parse(chunk));
+                // } else if (process === 'Post-processing'){ // post-process doesn't report progress, it only reports start and end
+                //     console.log(`else if process === Post-processing`)
+                //     updateProgressingRun(caseId[1], process)
+                //     // NOTE: extract cpu usage from post-processing chunk and send it to updateprogressingrun
+                // }
+
+                if (chunk.length > 0) {
                     handleChunk(chunk, process);
-                    // console.log("JSON.parse(chunk):", JSON.parse(chunk));
-                } else if (process === 'Post-processing'){ // post-process doesn't report progress, it only reports start and end
-                    console.log(`else if process === Post-processing`)
-                    updateProgressingRun(caseId[1], process)
-                    // NOTE: extract cpu usage from post-processing chunk and send it to updateprogressingrun
                 }
         
                 return readChunk();
@@ -400,8 +404,9 @@ export default function NewRun({ onClose, encodeSpaces }) {
         }
         
         function handleChunk(chunk, process) {
-            if (process === 'Pre-processing') {
+            if (process === 'Post-processing') {
                 const parsedChunk = JSON.parse(chunk);
+                updateProgressingRun(caseId[1], process)
                 // get cpu usage here
             }
             // This will match each JSON object in the string'
@@ -410,41 +415,47 @@ export default function NewRun({ onClose, encodeSpaces }) {
             if (jsonObjects) {
                 jsonObjects.forEach((jsonStr) => {
                     try {
-                    // Parse each JSON object and log it
-                    const parsedChunk = JSON.parse(jsonStr);
-                    const progressInfo = parsedChunk.progress;
-                    let progressPercentage;
-                    if (process === 'Pre-processing') {
-                        // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 15; // assume pre-processing is 14% of total
-                        updateProgressingRun(caseId[1], process, progressInfo.current_count, progressInfo.total_count)
-                    } else if (process === 'Processing') {
-                        // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 83;  // assume processing is 84% of total
-                        updateProgressingRun(caseId[1], process, progressInfo.current_count, progressInfo.total_count)
-                        // updateProgressingRun(caseId[1], progressPercentage + 14)
-                    } 
-                    // else if (process === 'Post-processing') {
-                        
-                    //     // updateProgressingRun(caseId[1], progressingRuns.caseId[1] + 1)
-                    // }
+                        // Parse each JSON object and log it
+                        const parsedChunk = JSON.parse(jsonStr);
 
-                    // handleProgress(process, progressPercentage);
-                    // setProgress((prev) => [
-                    //     prev[0], // Keep the existing boolean value
-                    //     {
-                    //         ...prev[1], // Keep the existing progress object
-                    //         [process]: progressPercentage, // Update process only
-                    //     },
-                    // ]);
-                    
-                    updateProgressingRun(caseId[1], process, progressPercentage);
-                    
+                        if (parsedChunk.progress) {
+                            const progressInfo = parsedChunk.progress;
+                            // let progressPercentage;
 
-                    // console.log(progressPercentage)
-                    // console.log(progressInfo)
-                    // console.log(parsedChunk)
-                    // console.log(jsonStr)
+                            if (process === 'Pre-processing') {
+                                // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 15; // assume pre-processing is 14% of total
+                                updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
+                            } else if (process === 'Processing') {
+                                // progressPercentage = (progressInfo.current_count / progressInfo.total_count) * 83;  // assume processing is 84% of total
+                                updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
+                                // updateProgressingRun(caseId[1], progressPercentage + 14)
+                            } 
+                            // else if (process === 'Post-processing') {
+                                
+                            //     // updateProgressingRun(caseId[1], progressingRuns.caseId[1] + 1)
+                            // }
+
+                            // handleProgress(process, progressPercentage);
+                            // setProgress((prev) => [
+                            //     prev[0], // Keep the existing boolean value
+                            //     {
+                            //         ...prev[1], // Keep the existing progress object
+                            //         [process]: progressPercentage, // Update process only
+                            //     },
+                            // ]);
+                            
+                            // updateProgressingRun(caseId[1], process, progressPercentage);
+                            
+
+                            // console.log(progressPercentage)
+                            // console.log(progressInfo)
+                            // console.log(parsedChunk)
+                            // console.log(jsonStr)
+                        } else if (process === 'Post-processing') {
+                            updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage)
+                        }
                     } catch (error) {
-                    console.error("Error parsing JSON:", error);
+                        console.error("Error parsing JSON:", error);
                     }
                 });
             } else {
@@ -491,17 +502,22 @@ export default function NewRun({ onClose, encodeSpaces }) {
         // - Update sessionRuns
         const sessionRun = {
             [caseId[1]]: {
-                'Pre-processing': processes['Pre-processing'],
-                'Processing': processes['Processing'],
-                'Post-processing': processes['Post-processing'],
+                forwardModel: genericInput.forward,
+                minimizationModel: genericInput.minimization,
+                forwardData: selectedModels.forward.jsonData,
+                minimizationData: selectedModels.minimization.jsonData,
+                processingSteps: [
+                    processes['Pre-processing'] && 'Pre-processing',
+                    processes['Processing'] && 'Processing',
+                    processes['Post-processing'] && 'Post-processing',
+                ].filter(Boolean), // filter(Boolean) removes any falsy values (a.k.a. if the steps that weren't selected)
+                threads: genericInput.threads,
+                // add output when processing is done
             }
         }
 
         const progressingRun = {
             [caseId[1]]: {
-                'Pre-processing': processes['Pre-processing'],
-                'Processing': processes['Processing'],
-                'Post-processing': processes['Post-processing'],
                 progress: 0
             }  
         }
@@ -510,6 +526,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
         addRunToSession(sessionRun);
 
         // - Update currentRun
+        console.log(`handleCurrentRun(caseId[1]): ${caseId[1]}`);
         handleCurrentRun(caseId[1]); // from caseId state
 
         // add to progressing runs
@@ -557,13 +574,13 @@ export default function NewRun({ onClose, encodeSpaces }) {
             }
             {!progress[0] ?
             <> */}
-            {/* Blur background
-            <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
+            {/* Blur background */}
+            <div className='fixed right-0 top-0 w-screen h-screen z-[49] bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
             
             {/* Main container */}
             <div className='absolute w-[604px] mt-[72px] right-[56px]
                 bg-white border border-[#D7DFFF] rounded-2xl
-                z-30' // Disabled: #B6B7BE
+                z-50' // Disabled: #B6B7BE
             >
                 <div className={`flex items-center justify-between ${caseId[0] ? 'p-[26px]' : 'p-[18px]'}`}>
                     

@@ -4,12 +4,14 @@ import { SessionContext } from "../../../store/session-context";
 
 import hourglass from '../../../assets/hourglass.svg';
 import pin from '../../../assets/pin.svg';
+import pinFilled from '../../../assets/pinFilled.svg';
 import seperator from '../../../assets/seperator.svg';
 
 import ProgressBar from './ProgressBar.jsx';
 
 export default function ProgressModal() {
-    const { sessionRuns, progressingRuns } = useContext(SessionContext);
+    const { progressingRuns, cpuUsage } = useContext(SessionContext);
+    
     const [minimized, setMinimized] = useState(false);
     const [remaining, setRemaining] = useState([0, 0]); // remaining out of total
     const [timeElapsed, setTimeElapsed] = useState(0); // elapsed time in seconds
@@ -32,40 +34,55 @@ export default function ProgressModal() {
         });
     }
 
-    // Track changes in progressingRuns and update remaining out of total accordingly
     useEffect(() => {
-        // This effect will run whenever progressingRuns and minimized changes. ANd checks whetehr mminimized is true
-        // to update state.
-        if (minimized) {
-            // if (progressingRunsLength === 0) {
-            //     handleMinimize();
-            // } 
-            // else {
-                setRemaining((prev) => {
-                    const prevRemaining = prev[0];
-                    const prevTotal = prev[1];
-        
-                    if (progressingRunsLength > prevRemaining) {
-                        // new run started
-                        return [prevRemaining + 1, prevTotal + 1];
-                    } else if (progressingRunsLength < prevRemaining) {
-                        // run finished
-                        return [prevRemaining - 1, prevTotal];
-                    }
-                })
-            // }
+        if (progressingRunsLength === 0 && minimized) {
+            // Set minimized to false when progressingRunsLength becomes 0
+            setMinimized(false);
+            setRemaining([0, 0]); // Reset remaining runs if needed
+        } else if (minimized) {
+            setRemaining((prev) => {
+                const prevRemaining = prev[0];
+                const prevTotal = prev[1];
+    
+                if (progressingRunsLength > prevRemaining) {
+                    // new run started
+                    return [prevRemaining + 1, prevTotal + 1];
+                } else if (progressingRunsLength < prevRemaining) {
+                    // run finished
+                    return [prevRemaining - 1, prevTotal];
+                }
+                return prev; // Return previous state if no change
+            });
         }
-    }, [progressingRunsLength]);
+    }, [progressingRunsLength, minimized]);
 
     // Start the timer when the modal is rendered
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeElapsed((prev) => prev + 1); // Increment elapsed time by 1 second every second
-        }, 1000);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setTimeElapsed((prev) => prev + 1); // Increment elapsed time by 1 second every second
+    //     }, 1000);
 
-        // Clean up the interval when the modal is removed
+    //     // Clean up the interval when the modal is removed
+    //     return () => clearInterval(interval);
+    // }, []);
+
+    useEffect(() => {
+        let interval = null; // Initialize the interval variable
+
+        if (progressingRunsLength > 0) {
+            // Start the timer when progressingRunsLength > 0
+            interval = setInterval(() => {
+                setTimeElapsed((prev) => prev + 1); // Increment elapsed time by 1 second every second
+            }, 1000);
+        } else {
+            // Stop the timer when progressingRunsLength <= 0
+            clearInterval(interval);
+            setTimeElapsed(0); // Optional: Reset timeElapsed when the timer stops
+        }
+
+        // Clean up the interval when the component unmounts or when progressingRunsLength changes
         return () => clearInterval(interval);
-    }, []);
+    }, [progressingRunsLength]); // Dependency on progressingRunsLength
 
     // Helper function to format time in seconds into minutes and seconds
     function formatTime(seconds) {
@@ -78,71 +95,89 @@ export default function ProgressModal() {
         <>
             {/* progressingRuns */}
             {/* {Object.keys(sessionRuns).length > 0 && */}
+            {/* {true && */}
             {progressingRunsLength > 0 &&
-            // {true &&
                 <>
                     {!minimized ? 
                         <>
-                                <div className='absolute z-[49] bottom-7 right-8 w-[470px] p-3 pt-6
-                                    bg-white rounded-2xl border border-[#D7DFFF]
-                                    flex flex-col'
-                                >
-                                    {/* header */}
-                                    <div className="mb-[22px] relative flex items-center justify-center space-x-1">
-                                        <img src={hourglass} alt={hourglass} />
-                                        <p className="font-medium uppercase">CALCULATING...</p>
-                                        <button onClick={handleMinimize}
-                                            className="absolute right-0 flex items-center justify-center
-                                            size-12 rounded-xl hover:bg-[#f1f4ff]"
-                                        >
-                                            <img src={pin} alt="pin.svg" />
-                                        </button>
-                                    </div>
+                            <div className='absolute z-[47] bottom-7 right-8 w-[470px] p-3 pt-6
+                                bg-white rounded-2xl border border-[#D7DFFF]
+                                flex flex-col'
+                            >
+                                {/* header */}
+                                <div className="mb-[22px] relative flex items-center justify-center space-x-1">
+                                    <img src={hourglass} alt={hourglass} />
+                                    <p className="font-medium uppercase">CALCULATING...</p>
+                                    <button onClick={handleMinimize}
+                                        className="absolute right-0 flex items-center justify-center
+                                        size-12 rounded-xl hover:bg-[#f1f4ff]"
+                                    >
+                                        <img src={pin} alt="pin.svg" />
+                                    </button>
+                                </div>
 
-                                    {/* data */}
-                                    <div className='mb-9 flex h-[68px]'>
-                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                            <p className='text-[#7f7f7f] text-sm font-medium'>Time Elapsed</p>
-                                            <p className='font-semibold'>{formatTime(timeElapsed)}</p>
-                                        </div>
-                                        <div className='border-r border-[#d7dfff]'></div>
-                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                            <p className='text-[#7f7f7f] text-sm font-medium'>Time Remaining</p>
-                                            <p className='font-semibold'>0m 47s</p>
-                                        </div>
-                                        <div className='border-r border-[#d7dfff]'></div>
-                                        <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                            <p className='text-[#7f7f7f] text-sm font-medium'>CPU Usage</p>
-                                            <p className='font-semibold'>25%</p>
-                                        </div>
+                                {/* data */}
+                                <div className='mb-9 flex h-[68px]'>
+                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                        <p className='text-[#7f7f7f] text-sm font-medium'>Time Elapsed</p>
+                                        <p className='font-semibold'>{formatTime(timeElapsed)}</p>
                                     </div>
-
-                                    {/* progression bars */}
-                                    <div className='flex flex-col space-y-3'>
-                                        {Object.keys(progressingRuns).map((progressingRunCaseId) => (
-                                            <ProgressBar caseId={progressingRunCaseId}/>
-                                        ))}
+                                    <div className='border-r border-[#d7dfff]'></div>
+                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                        <p className='text-[#7f7f7f] text-sm font-medium'>Remaining Runs</p>
+                                        <p className='font-semibold'>{progressingRunsLength}</p> {/* -1 because cpu_usage is a key */}
+                                    </div>
+                                    {/* <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                        <p className='text-[#7f7f7f] text-sm font-medium'>Time Remaining</p>
+                                        <p className='font-semibold'>0m 47s</p>
+                                    </div> */}
+                                    <div className='border-r border-[#d7dfff]'></div>
+                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
+                                        <p className='text-[#7f7f7f] text-sm font-medium'>CPU Usage</p>
+                                        <p className='font-semibold'>{cpuUsage}%</p>
                                     </div>
                                 </div>
+
+                                {/* progression bars */}
+                                <div className='flex flex-col space-y-3'>
+                                    {Object.keys(progressingRuns).map((progressingRunCaseId) => (
+                                        <ProgressBar caseId={progressingRunCaseId}/>
+                                    ))}
+                                </div>
+                            </div>
                             
                         </>
                     :
-                        <div className='absolute z-[49] bottom-7 right-8 w-[203px] h-[158px] p-3
+                        <div className='absolute z-[47] bottom-7 right-8 w-[203px] h-[158px] p-3
                             bg-white rounded-2xl border border-[#D7DFFF]
                             flex flex-col'
                         >
                             {/* header */}
-                            <p className="mb-1 text-center text-sm font-medium text-[#7f7f7f]">Remaining</p>
+                            <div className="relative mb-1">
+                                <p className="text-center text-sm font-medium text-[#7f7f7f]">Remaining</p>
+                                <button onClick={handleMinimize}
+                                    className="absolute -right-[6px] -top-[6px] flex items-center justify-center
+                                    size-8 rounded-xl hover:bg-[#f1f4ff]"
+                                >
+                                    <img src={pinFilled} alt="pinFilled.svg" />
+                                </button>
+                            </div>
 
                             {/* data */}
                             <div className="mb-[14px] flex items-center justify-center space-x-4">
                                 <p className="font-semibold">{remaining[0]} of {remaining[1]}</p>
                                 {/* <p className="text-[#d7dfff]">/</p> */}
                                 <img src={seperator} alt="seperator.svg" />
-                                <p className="font-semibold">0m 47s</p>
+                                <p className="font-semibold">{formatTime(timeElapsed)}</p>
                             </div>
 
                             {/* average progress */}
+                            <div className="flex flex-col space-y-3 bg-[#f4f6fb] p-3">
+                                
+                                
+                                {/* bar */}
+                                <ProgressBar />
+                            </div>
                         </div>
                     }
                 </>

@@ -1,10 +1,13 @@
-import { createContext, useState, useReducer } from 'react';
+import { createContext, useState } from 'react';
+
+import * as api from '../api/apiService.js'
 
 export const SessionContext = createContext({
     // These default values won't be used. They are just meant for better auto-completion.
     sessionRuns: {},
-    currentRun: {},
+    currentRun: '',
     progressingRuns: {},
+    cpuUsage: 0,
     addRunToSession: () => {},
     handleCurrentRun: () => {},
     addProgressingRun: () => {},
@@ -33,6 +36,7 @@ export default function SessionContextProvider({ children }) {
     const [progressingRuns, setProgressingRuns] = useState({});
 
     const [currentRun, setCurrentRun] = useState('')
+    const [cpuUsage, setCpuUsage] = useState(0);
     // const [currentRun, setCurrentRun] = useState(
     //     {
     //         caseId: '',
@@ -47,18 +51,18 @@ export default function SessionContextProvider({ children }) {
         sessionRuns,
         currentRun,
         progressingRuns,
-        // progress,
-        // addRunToSession: (caseId) => Runs((prev) => [...prev, caseId]),
+        cpuUsage,
         addRunToSession: (run) => setSessionRuns((prev) => ({
             ...prev,
             ...run
         })),
         // handleCurrentRun needs to call API and get all data needed and put it in currentRun
-        handleCurrentRun: (caseId) => setCurrentRun(caseId),
-        // handleProgress: (process, percentage) => setProgress((prev) => ({
-        //     ...prev,
-        //     [process]: percentage
-        // })),
+        // handleCurrentRun: (caseId) => setCurrentRun(caseId),
+        handleCurrentRun: (caseId) => setCurrentRun((prev) => {
+            console.log(`handleCurrentRun in session-context: ${caseId}`);
+        
+            return (caseId)
+        }),
         addProgressingRun: (run) => setProgressingRuns((prev) => {
             console.log(`addProgressingRun: ${run}`);
         
@@ -67,52 +71,57 @@ export default function SessionContextProvider({ children }) {
             ...prev, // Spread existing runs
             ...run
         })}),
-        updateProgressingRun: (caseId, process, currentCount, totalCount) => {
+        updateProgressingRun: (caseId, process, cpuUsage, currentCount, totalCount) => {
             // First, check if currentCount or totalCount are undefined
             if ((currentCount === undefined || totalCount === undefined) && process !== 'Post-processing') {
                 // Do nothing and simply return, avoiding the state update
                 console.log(`updateProgressingRun, UNDEFINED UNDEFINED in ${process}`)
                 return;
             }
-        
+
             // Now we can safely call setProgressingRuns
             setProgressingRuns((prev) => {
                 if (process === 'Pre-processing') {
                     // console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`);
                     const updatedProgress = Math.floor((currentCount / totalCount) * 13);
-                    console.log(`updatedProgress: ${updatedProgress}`)
+                    // console.log(`updatedProgress: ${updatedProgress}`)
         
                     return {
                         ...prev,
                         [caseId]: {
                             ...prev[caseId],
-                            progress: updatedProgress
+                            progress: updatedProgress,
                         }
+                        // cpuUsage
                     };
                 }  else if (process === 'Processing') {
                     // console.log(`updateProgressingRun ${caseId}, ${process}, ${currentCount}, ${totalCount}`)
                     const updatedProgress = Math.floor(((currentCount / totalCount) * 85) + 13);
-                    console.log(`updatedProgress: ${updatedProgress}`)
+                    // console.log(`updatedProgress: ${updatedProgress}`)
                     return {
                         ...prev,
                         [caseId]: {
                             ...prev[caseId],
-                            progress: updatedProgress
+                            progress: updatedProgress,
                         }
+                        // cpuUsage
                     }
                 } else if (process === 'Post-processing') {
                     console.log(`updateProgressingRun ${caseId}, ${process}. From ${prev[caseId].progress} to ${prev[caseId].progress + 1}`)
                     const updatedProgress = prev[caseId].progress + 1;
-                    console.log(`updatedProgress: ${updatedProgress}`)
+                    // console.log(`updatedProgress: ${updatedProgress}`)
                     return {
                         ...prev,
                         [caseId]: {
                             ...prev[caseId],
-                            progress: updatedProgress
+                            progress: updatedProgress,
                         }
+                        // cpuUsage
                     }
                 } 
             });
+
+            setCpuUsage(Math.floor(cpuUsage));
         },
         updateProgressingRunOld: (caseId, process, currentCount, totalCount) => setProgressingRuns((prev) => {
             if (process === 'Pre-processing') {
@@ -138,7 +147,7 @@ export default function SessionContextProvider({ children }) {
             } else if (process === 'Post-processing') {
                 console.log(`updateProgressingRun ${caseId}, ${process}`)
                 const updatedProgress = prev[caseId].progress + 1;
-                console.log(`updatedProgress: ${updatedProgress}`)
+                // console.log(`updatedProgress: ${updatedProgress}`)
                 return {
                     ...prev,
                     [caseId]: {
@@ -148,24 +157,6 @@ export default function SessionContextProvider({ children }) {
                 }
             }
         }),
-        // updateProgressingRun: (caseId, process, percentage) => setProgressingRuns((prev) => (
-        //     if (process === 'Pre-processing') {
-        //         return {
-        //         ...prev,
-        //         [caseId]: {
-        //             ...prev[caseId],
-        //             [process]: [prev[caseId][process][0], percentage], // Update only the number
-        //         },
-        //     }
-        // }
-        // )),
-        // updateProgressingRun: (caseId, process, percentage) => setProgressingRuns((prev) => ({
-        //     ...prev, // Spread the previous state
-        //     [caseId]: {
-        //         ...prev[caseId], // Keep the existing properties of the specified run
-        //         [process]: percentage, // Update the specified process with the new percentage
-        //     },
-        // })),
         removeProgressingRun: (caseId) => setProgressingRuns((prev) => {
             const { [caseId]: _, ...stillProgressingRuns } = prev; // Destructure to omit the caseId
             return stillProgressingRuns; // Return the new object without the removed run

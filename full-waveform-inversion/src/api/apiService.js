@@ -138,3 +138,27 @@ export const process = async (endpoint, caseId) => {
     }).then(processChunkedResponse)
     .catch(onChunkedResponseError);
 }
+
+
+// Fetch settings for a specific case ID and settings name
+export const fetchCaseSettings = async (caseId, name) => {
+    try {
+        const response = await fetch(`/cases/${caseId}/settings/${name}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error);
+        }
+
+        return { success: true, settings, forward: result.forward, minimization: result.minimization, threads: result.threads };
+    } catch (error) {
+        console.error(`Failed to fetch settings for case '${caseId}' with name '${name}':`, error.message);
+        return { success: false };
+    }
+};
