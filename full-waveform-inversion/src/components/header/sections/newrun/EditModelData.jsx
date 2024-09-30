@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import JSZip from 'jszip';
 
 import EditButton from '../../../custom/buttons/EditButton';
+import H3 from '../../../custom/headings/H3';
 
 // Utility to deep clone the data to avoid direct mutation of selectedModel.jsonData
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
@@ -88,7 +89,7 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
         } else if (option === 'TEXT') {
             updateFormValues(key, value);
         } else if (option === 'BOOLEAN') {
-            // Handle boolean (not implemented in your original code)
+            updateFormValues(key, value);
         }
     };
 
@@ -148,45 +149,51 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
                         // Recursive call for nested objects
                         return (
                             <div key={inputKey} className="col-span-2">
-                                <div className="text-sm font-medium col-span-2">{key}</div>
+                                <div className="text-sm font-medium col-span-2 mb-4">{key}</div>
                                 <div>{renderInputs(value, inputKey)}</div>
                             </div>
                         );
                     } else {
                         const initialType = getTypeFromKey(inputKey);
                         return (
-                            <>
+                            <div key={inputKey} className='flex flex-col space-y-3'>
+                                <label className="text-[#7f7f7f] font-medium">{key}:</label>
                                 {initialType === 'number' &&
-                                    <div key={inputKey} className="">
-                                        <label className="block mb-3">{key}:</label>
-                                        <input
-                                            type='text'
-                                            value={value}
-                                            onChange={(e) => handleInputChange(inputKey, e.target.value, 'NUMBER')}
-                                            onBlur={() => handleBlur(inputKey)}
-                                            className="h-[48px] py-3 px-4
-                                            rounded-xl border border-[#D7DFFF] 
-                                            text-sm font-normal"
-                                        />
-                                    </div>
+                                    <input
+                                        type='text'
+                                        value={value}
+                                        onChange={(e) => handleInputChange(inputKey, e.target.value, 'NUMBER')}
+                                        onBlur={() => handleBlur(inputKey)}
+                                        className="h-[48px] py-3 px-4
+                                        rounded-xl border border-[#D7DFFF] 
+                                        text-sm font-normal"
+                                    />
                                 }
                                 {initialType === 'string' &&
-                                    <div key={inputKey} className="mb-4">
-                                        <label className="block">{key}:</label>
-                                        <input
-                                            type='text'
-                                            value={value}
-                                            onChange={(e) => handleInputChange(inputKey, e.target.value, 'TEXT')}
-                                            className="h-[48px] py-3 px-4
-                                            rounded-xl border border-[#D7DFFF] 
-                                            text-sm font-normal"
-                                        />
-                                    </div>
+                                    <input
+                                        type='text'
+                                        value={value}
+                                        onChange={(e) => handleInputChange(inputKey, e.target.value, 'TEXT')}
+                                        className="h-[48px] py-3 px-4
+                                        rounded-xl border border-[#D7DFFF] 
+                                        text-sm font-normal"
+                                    />
                                 }
                                 {initialType === 'boolean' &&
-                                    console.log('boolean')
+                                    <div className='h-full flex items-center'>
+                                        <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
+                                            <input
+                                                type='checkbox'
+                                                id='check'
+                                                checked={value}
+                                                className='sr-only peer'
+                                                onChange={() => handleInputChange(inputKey, !value, 'BOOLEAN')}
+                                            />
+                                            <span className='absolute left-1 top-1 w-6 h-6 bg-white rounded-full peer-checked:left-6 transition-all duration-500' />
+                                        </label>
+                                    </div>
                                 }
-                            </>
+                            </div>
                         );
                     }
                 })}

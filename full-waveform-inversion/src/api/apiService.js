@@ -1,3 +1,18 @@
+// function encodeSpaces(caseId) {
+//     return caseId.replace(/ /g, '__SPACE__');
+// }
+
+// function decodeSpaces(encodedString) {
+//     return encodedString.replace(/__SPACE__/g, ' ');
+// }
+
+function encodeSpaces(caseId) {
+    return caseId.replace(/ /g, '-');
+}
+function decodeSpaces(caseId) {
+    return caseId.replace(/-/g, ' ');
+}
+
 // Fetch all case IDs
 export const fetchAllCaseIds = async () => {
     try {
@@ -13,8 +28,11 @@ export const fetchAllCaseIds = async () => {
         if (!response.ok) {
             throw new Error(result.error);
         }
+        
+        // Decode all case IDs before returning
+        const caseIds = result.map(caseId => decodeSpaces(caseId));
 
-        return { success: true, caseIds: result };
+        return { success: true, caseIds };
     } catch (error) {
         console.error('Failed to fetch case IDs:', error.message);
         return { success: false };
@@ -23,9 +41,11 @@ export const fetchAllCaseIds = async () => {
 
 // Post caseId
 export const uploadCase = async (caseId, formData) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
         // Send the updated zip file to the API
-        const response = await fetch(`/cases/${caseId}`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}`, {
             method: 'POST',
             body: formData,
             headers: {
@@ -130,7 +150,9 @@ function onChunkedResponseError(err) {
 }
 
 export const process = async (endpoint, caseId) => {
-    const response = await fetch(`/cases/${caseId}/process/${endpoint}`, {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
+    const response = await fetch(`/cases/${sanitizedCaseId}/process/${endpoint}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -142,8 +164,10 @@ export const process = async (endpoint, caseId) => {
 
 // Fetch settings for a specific case ID and settings name
 export const fetchCaseSettings = async (caseId, name) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
-        const response = await fetch(`/cases/${caseId}/settings/${name}`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}/settings/${name}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

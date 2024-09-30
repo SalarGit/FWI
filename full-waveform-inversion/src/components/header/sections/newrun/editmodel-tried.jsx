@@ -196,7 +196,7 @@ export default function EditModelData({ modelType, selectedItem, handleSelectedF
             setFormValues(selectedItem.jsonData);  // Reset form values when dropdown is opened
         }
     }, [isOpen, selectedItem.jsonData]);
-    console.log("check whether formValues is reset onclose or onopen")
+    // console.log("check whether formValues is reset onclose or onopen")
 
     // newval is either val or parsefloated value
     function updateFormValues(key, newValue) {
@@ -330,7 +330,7 @@ export default function EditModelData({ modelType, selectedItem, handleSelectedF
                                     </div>
                                 }
                                 {initialType === 'boolean' &&
-                                    console.log('boolean')
+                                    // console.log('boolean')
                                 }
                             </>
                         );

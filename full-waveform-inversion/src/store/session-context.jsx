@@ -59,12 +59,12 @@ export default function SessionContextProvider({ children }) {
         // handleCurrentRun needs to call API and get all data needed and put it in currentRun
         // handleCurrentRun: (caseId) => setCurrentRun(caseId),
         handleCurrentRun: (caseId) => setCurrentRun((prev) => {
-            console.log(`handleCurrentRun in session-context: ${caseId}`);
+            // console.log(`handleCurrentRun in session-context: ${caseId}`);
         
             return (caseId)
         }),
         addProgressingRun: (run) => setProgressingRuns((prev) => {
-            console.log(`addProgressingRun: ${run}`);
+            // console.log(`addProgressingRun: ${run}`);
         
             return ({
             
@@ -107,7 +107,6 @@ export default function SessionContextProvider({ children }) {
                         // cpuUsage
                     }
                 } else if (process === 'Post-processing') {
-                    console.log(`updateProgressingRun ${caseId}, ${process}. From ${prev[caseId].progress} to ${prev[caseId].progress + 1}`)
                     const updatedProgress = prev[caseId].progress + 1;
                     // console.log(`updatedProgress: ${updatedProgress}`)
                     return {

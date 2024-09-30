@@ -251,19 +251,24 @@ export default function NewRun({ onClose, encodeSpaces }) {
         });
     }
     
-    function handleChangeCaseId(id) {
-        setCaseId((prev) => {
-            const tmp = [...prev];
-            tmp[1] = id;
-            return tmp;
-        })
+    function handleChangeCaseId(caseId) {
+        const isValid = caseId === '' || /^[A-Za-z0-9 ]+$/.test(caseId);
+        console.log(`${caseId} isValid: ${isValid}`)
+
+        if (isValid) {
+            setCaseId((prev) => {
+                const tmp = [...prev];
+                tmp[1] = caseId;
+                return tmp;
+            })
+        }
     }
 
     async function caseIdExists() {
         const { success, caseIds, error } = await api.fetchAllCaseIds();
 
         if (success) {
-            return caseIds.includes(encodeSpaces(caseId[1]));
+            return caseIds.includes(caseId[1]);
         } // else
         return null; // Indicate that an error occurred
     }
@@ -347,15 +352,15 @@ export default function NewRun({ onClose, encodeSpaces }) {
         // Generate the updated zip file as a Blob
         const updatedZipBlob = await zipContent.generateAsync({ type: 'blob' });
 
+        // const sanitizedCaseId = encodeSpaces(caseId[1]);
+
         // const sanitizedCaseId = encodeURIComponent(caseId[1])
-        
-        const sanitizedCaseId = encodeSpaces(caseId[1]);
 
         const formData = new FormData();
         formData.append('case', updatedZipBlob, `updated.zip`); // back-end changes file name to caseId
 
     
-        const { success } = await api.uploadCase(sanitizedCaseId, formData);
+        const { success } = await api.uploadCase(caseId[1], formData);
 
         if (success) {
             // Handle success response
@@ -478,8 +483,11 @@ export default function NewRun({ onClose, encodeSpaces }) {
         // }
 
         const process = async (endpoint, caseId, process) => {
+            const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+            console.log(`sanitizedCaseId: ${sanitizedCaseId}`);
+
             try {
-                const response = await fetch(`/cases/${caseId}/process/${endpoint}`, {
+                const response = await fetch(`/cases/${sanitizedCaseId}/process/${endpoint}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -526,7 +534,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
         addRunToSession(sessionRun);
 
         // - Update currentRun
-        console.log(`handleCurrentRun(caseId[1]): ${caseId[1]}`);
+        // console.log(`handleCurrentRun(caseId[1]): ${caseId[1]}`);
         handleCurrentRun(caseId[1]); // from caseId state
 
         // add to progressing runs
@@ -538,7 +546,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
             
             console.time("Pre-processing Time");
-            const { error } = await process('generate_dummy_data', sanitizedCaseId, 'Pre-processing');
+            const { error } = await process('generate_dummy_data', caseId[1], 'Pre-processing');
             console.timeEnd("Pre-processing Time");
             
 
@@ -548,20 +556,23 @@ export default function NewRun({ onClose, encodeSpaces }) {
             if (processes['Processing']) {
                 console.log("Entering process")
                 console.time("Processing Time");
-                await process('train_minimization_model', sanitizedCaseId, 'Processing');
+                await process('train_minimization_model', caseId[1], 'Processing');
                 console.timeEnd("Processing Time");
 
                     // STEP 6: Post-Process
                 if (processes['Post-processing']) {
                     console.log("Entering post-process")
                     console.time("Post-processing Time");
-                    await process('post_process', sanitizedCaseId, 'Post-processing');
+                    await process('post_process', caseId[1], 'Post-processing');
                     console.timeEnd("Post-processing Time");
                 }
             }
-            // done progressing so remove from progressing runs
-            removeProgressingRun(caseId[1]);
         }
+
+        // update sessionRuns[caseId[1]] with output
+
+        // done progressing so remove from progressing runs
+        removeProgressingRun(caseId[1]);
     }
 
     return (
@@ -608,6 +619,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                         <input className='p-2 border border-[#D7DFFF] rounded-xl bg-white'
                             type='text' 
                             placeholder="Enter run name..."
+                            value={caseId[1]}
                             onChange={(e) => handleChangeCaseId(e.target.value)}
                         >
                         </input>

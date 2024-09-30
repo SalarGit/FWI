@@ -22,7 +22,7 @@ export default function InputModelData({title, defaultValue}) {
 
     // const handleInputChange = (event) => {
     function handleInputChange(value, option) {
-        console.log("Entered handleInputChange with", typeof value, value)
+        // console.log("Entered handleInputChange with", typeof value, value)
         const regex = /^-?\d*\.?\d*$/
         // This regex allows:
         // Numbers with or without decimal points
@@ -41,7 +41,7 @@ export default function InputModelData({title, defaultValue}) {
         if (option === 'NUMBER') {
             if (regex.test(value) || value === '') {
                 setValue(value); // Update input value as a string
-                console.log("Value is now", value)
+                // console.log("Value is now", value)
             }
         }
         else if (option === 'TEXT') {
@@ -50,7 +50,7 @@ export default function InputModelData({title, defaultValue}) {
     }
     
     function handleBlur() {
-        console.log("Entered handleBlur with", typeof value, value)
+        // console.log("Entered handleBlur with", typeof value, value)
         // When input loses focus, convert it to a number if valid
         if (value === ''){
             setValue(0);
@@ -119,7 +119,7 @@ export default function InputModelData({title, defaultValue}) {
                 </div>
             }
             {inputType === 'bool' && 
-                <div className="flex flex-col space-y-5">
+                <div className="flex flex-col space-y-3">
                     <H3>{title}:</H3>
                     <label htmlFor='check' className="relative w-[52px] h-8 cursor-pointer bg-[#d7dfff] rounded-full has-[:checked]:bg-[#3561FE] transition-all duration-500">
                         <input type='checkbox' id='check' checked={value} className='sr-only peer' onChange={handleBool}/>

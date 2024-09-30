@@ -1,14 +1,14 @@
-<!-- <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.50016 2.33325C5.37055 2.33325 2.8335 4.87031 2.8335 7.99992C2.8335 11.1295 5.37055 13.6666 8.50016 13.6666C11.6298 13.6666 14.1668 11.1295 14.1668 7.99992C14.1668 4.87031 11.6298 2.33325 8.50016 2.33325ZM0.833496 7.99992C0.833496 3.76574 4.26598 0.333252 8.50016 0.333252C12.7343 0.333252 16.1668 3.76574 16.1668 7.99992C16.1668 12.2341 12.7343 15.6666 8.50016 15.6666C4.26598 15.6666 0.833496 12.2341 0.833496 7.99992Z" fill="url(#paint0_angular_879_1794)"/>
-<defs>
-<radialGradient id="paint0_angular_879_1794" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8.50016 7.99992) rotate(90) scale(6.66667)">
-<stop stop-color="#808080"/>
-<stop offset="1" stop-color="white"/>
-</radialGradient>
-</defs>
-</svg> -->
+<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.50016 2.33325C5.37055 2.33325 2.8335 4.87031 2.8335 7.99992C2.8335 11.1295 5.37055 13.6666 8.50016 13.6666C11.6298 13.6666 14.1668 11.1295 14.1668 7.99992C14.1668 4.87031 11.6298 2.33325 8.50016 2.33325ZM0.833496 7.99992C0.833496 3.76574 4.26598 0.333252 8.50016 0.333252C12.7343 0.333252 16.1668 3.76574 16.1668 7.99992C16.1668 12.2341 12.7343 15.6666 8.50016 15.6666C4.26598 15.6666 0.833496 12.2341 0.833496 7.99992Z" fill="url(#paint0_angular_879_1794)"/>
+  <defs>
+    <radialGradient id="paint0_angular_879_1794" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8.50016 7.99992) rotate(90) scale(6.66667)">
+      <stop stop-color="#808080"/>
+      <stop offset="1" stop-color="white"/>
+    </radialGradient>
+  </defs>
+</svg>
 
-
+<!-- 
 <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path fillRule="evenodd" clipRule="evenodd" d="M8.50016 2.33325C5.37055 2.33325 2.8335 4.87031 2.8335 7.99992C2.8335 11.1295 5.37055 13.6666 8.50016 13.6666C11.6298 13.6666 14.1668 11.1295 14.1668 7.99992C14.1668 4.87031 11.6298 2.33325 8.50016 2.33325ZM0.833496 7.99992C0.833496 3.76574 4.26598 0.333252 8.50016 0.333252C12.7343 0.333252 16.1668 3.76574 16.1668 7.99992C16.1668 12.2341 12.7343 15.6666 8.50016 15.6666C4.26598 15.6666 0.833496 12.2341 0.833496 7.99992Z" fill="url(#paint0_angular_879_1794)" />
   <defs>
@@ -17,4 +17,4 @@
       <stop offset="1" stopColor="white" />
     </radialGradient>
   </defs>
-</svg>
+</svg> -->

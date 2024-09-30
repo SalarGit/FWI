@@ -218,7 +218,7 @@ export default function NewRun({ onClose }) {
     return (
         // New Run Container
         <>
-            {console.log(selectedFiles)}
+            {/* {console.log(selectedFiles)} */}
             {/* Blur background */}
             <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px] transition-all duration-500' />
             
@@ -301,7 +301,7 @@ export default function NewRun({ onClose }) {
                         <div className='flex space-x-4 z-[1]'>
                             <div className='flex flex-col space-y-3 w-1/2'>
                                 <H2 heading="Forward model"/>
-                                {console.log(selectedFiles.forward)}
+                                {/* {console.log(selectedFiles.forward)} */}
                                 <DropdownMenu edit={true} model="forward"
                                     // items={forwardModelItems}
                                     selectedItem={selectedFiles.forward} handleSelectedFiles={handleSelectedFiles}

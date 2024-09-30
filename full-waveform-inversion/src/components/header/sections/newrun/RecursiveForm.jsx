@@ -842,7 +842,7 @@ export default function RecursiveForm() {
 // that onBlur only fires when it's a number or unchanged.
 // https://www.youtube.com/shorts/9YokM9rp0c4
     const handleBlur = (key, value) => {
-        console.log(`Entered handleBlur: ${value}`)
+        // console.log(`Entered handleBlur: ${value}`)
         // When input loses focus, convert it to a number if valid
         const numberValue = parseFloat(value);
     

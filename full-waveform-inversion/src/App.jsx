@@ -13,8 +13,6 @@ import RunTab from './components/runtab/RunTab.jsx';
 import ProgressModal from './components/custom/progressmodal/ProgressModal.jsx';
 
 function App() {
-    
-
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
 
@@ -25,12 +23,8 @@ function App() {
         setHistoryOfRuns((prevState) => prevState ? false : true);
     }
 
-    function decodeSpaces(encodedString) {
-        return encodedString.replace(/__SPACE__/g, ' ');
-    }
-
     function encodeSpaces(caseId) {
-        return caseId.replace(/ /g, '__SPACE__');
+        return caseId.replace(/ /g, '-');
     }
 
     return (
