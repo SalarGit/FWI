@@ -1,5 +1,6 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+
+import { SessionContext } from '../../../../store/session-context';
 
 import { tableHeaders, tableData, historyOutputTypes } from '../../../../data';
 
@@ -17,12 +18,25 @@ import ModelParametersHOR from './ModelParametersHOR';
 import ResidualFieldHOR from './ResidualFieldHOR';
 import ResidualGraphHOR from './ResidualGraphHOR';
 import QualityMetricsHOR from './QualityMetricsHOR';
+import * as api from '../../../../api/apiService.js';
 
-export default function HistoryOfRuns({ onClose }) {
+export default  function HistoryOfRuns({ onClose }) {
+    const { historyOfRuns, updateHistoryOfRuns } = useContext(SessionContext);
+
     const [selectedRuns, setSelectedRuns] = useState([]);
     const [selectedOutputType, setSelectedOutputType] = useState(historyOutputTypes[0]);
     const [checkboxStatus, setCheckboxStatus] = useState({selectAll: true, clear: false})
     const [expandedRun, setExpandedRun] = useState(null);
+
+    // useEffect that runs only on component mount
+    useEffect(() => {
+        async function getHistory() {
+            const { successHistory, history } = await api.fetchHistoryOfRuns();
+            updateHistoryOfRuns(history);
+        }
+        
+        getHistory();
+    }, []); // Empty dependency array to run the effect only on mount
 
     function handleSelectRun(run) {
         setSelectedRuns((prevSelectedRuns) => {
@@ -271,7 +285,7 @@ export default function HistoryOfRuns({ onClose }) {
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
                                                                     <p className='text-base font-semibold'>Forward model parameters</p>
-                                                                    <ModelParameters/>
+                                                                    <ModelParametersHOR />
                                                                 </div>
                                                             </div>
                                                             <div className='flex space-x-6 h-[250px] w-1/2 p-6 
@@ -285,7 +299,7 @@ export default function HistoryOfRuns({ onClose }) {
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
                                                                     <p className='text-base font-semibold'>Forward model parameters</p>
-                                                                    <ModelParameters/>
+                                                                    <ModelParametersHOR />
                                                                 </div>
                                                             </div>
                                                         </div>

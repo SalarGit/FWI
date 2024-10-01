@@ -40,8 +40,32 @@ export const fetchAllCaseIds = async () => {
     }
 };
 
-// Input API
-// Post caseId
+export const fetchHistoryLength = async () => {
+    try {
+        const response = await fetch('/cases', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+        
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error);
+        }
+        
+        // Decode all case IDs before returning
+        const historyLength = result.length;
+
+        return { success: true, historyLength };
+    } catch (error) {
+        console.error('Failed to fetch history length:', error.message);
+        return { success: false };
+    }
+};
+
+// Upload a case folder
 export const uploadCase = async (caseId, formData) => {
     const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
 
@@ -68,6 +92,74 @@ export const uploadCase = async (caseId, formData) => {
         console.error(`Failed to upload case '${caseId}': ${error.message}`)
         
         return { success: false };
+    }
+};
+
+// Download a case folder as a ZIP file
+export const downloadCaseFolder = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
+    try {
+        const response = await fetch(`/cases/${sanitizedCaseId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/zip', // Expecting a ZIP file response
+            },
+        });
+
+        if (!response.ok) {
+            const result = await response.json(); // Attempt to parse error response
+            throw new Error(result.error || `Failed to download case folder for case ID: ${caseId}`);
+        }
+
+        // Convert response into a Blob (binary large object) for the ZIP file
+        const zipBlob = await response.blob();
+
+        // Create an object URL for the ZIP blob
+        const downloadUrl = URL.createObjectURL(zipBlob);
+
+        // This code triggers a download, might come in handy for <HistoryOfRuns>
+        // const link = document.createElement('a');
+        // link.href = downloadUrl;
+        // link.download = `${caseId}.zip`; // Set default file name
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
+
+        return { successDownload: true, downloadUrl };
+    } catch (error) {
+        console.error(`Failed to download case folder for case ID '${caseId}':`, error.message);
+        return { successDownload: false };
+    }
+};
+
+// Fetch the input chi image for a given caseId
+export const fetchInputChiImage = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
+    try {
+        const response = await fetch(`/cases/${sanitizedCaseId}/input/.png`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/png', // Expecting a PNG image
+            },
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.error || 'Failed to fetch the input chi image');
+        }
+
+        // Convert response into a Blob (binary large object)
+        const imageBlob = await response.blob();
+
+        // Create an object URL for the image blob
+        const input = URL.createObjectURL(imageBlob);
+
+        return { successInputChi: true, input };
+    } catch (error) {
+        console.error(`Failed to fetch input chi image for case '${caseId}':`, error.message);
+        return { successInputChi: false };
     }
 };
 
@@ -194,8 +286,10 @@ export const fetchCaseSettings = async (caseId, name) => {
 
 // Fetch chi_estimate.png for a specific case ID (says chi_estimate.png but gets Result.png)
 export const fetchChiEstimateImage = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
-        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/chi_estimate.png`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}/output/chi_estimate.png`, {
             method: 'GET',
             headers: {
                 'Accept': 'image/png', // Expecting an image response
@@ -214,10 +308,10 @@ export const fetchChiEstimateImage = async (caseId) => {
         // Create an object URL for the image to be used in the browser
         const result = URL.createObjectURL(imageBlob);
 
-        return { success: true, result }; // Return the image URL to be used for display
+        return { successChiEstimate: true, result }; // Return the image URL to be used for display
     } catch (error) {
         console.error(`Failed to fetch Result.png (chi estimate) for case '${caseId}': ${error.message}`);
-        return { success: false };
+        return { successChiEstimate: false };
     }
 };
 
@@ -225,8 +319,10 @@ export const fetchChiEstimateImage = async (caseId) => {
 
 // Fetch chi_difference.png for a specific case ID
 export const fetchChiDifferenceImage = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
-        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/chi_difference.png`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}/output/chi_difference.png`, {
             method: 'GET',
             headers: {
                 'Accept': 'image/png', // Expecting an image response
@@ -245,17 +341,19 @@ export const fetchChiDifferenceImage = async (caseId) => {
         // Create an object URL for the image to be used in the browser
         const chiDifference = URL.createObjectURL(imageBlob);
 
-        return { success: true, chiDifference }; // Return the image URL to be used for display
+        return { successChiDifference: true, chiDifference }; // Return the image URL to be used for display
     } catch (error) {
         console.error(`Failed to fetch chi_difference.png for case '${caseId}': ${error.message}`);
-        return { success: false };
+        return { successChiDifference: false };
     }
 };
 
 // Fetch residual.png for a specific case ID
 export const fetchResidualImage = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
-        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/residual.png`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}/output/residual.png`, {
             method: 'GET',
             headers: {
                 'Accept': 'image/png', // Expecting an image response
@@ -274,17 +372,19 @@ export const fetchResidualImage = async (caseId) => {
         // Create an object URL for the image to be used in the browser
         const residual = URL.createObjectURL(imageBlob);
 
-        return { success: true, residual }; // Return the image URL to be used for display
+        return { successResidual: true, residual }; // Return the image URL to be used for display
     } catch (error) {
         console.error(`Failed to fetch residual.png for case '${caseId}': ${error.message}`);
-        return { success: false };
+        return { successResidual: false };
     }
 };
 
 // Fetch performance metrics for a specific case ID
 export const fetchPerformanceMetrics = async (caseId) => {
+    const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
     try {
-        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/performance`, {
+        const response = await fetch(`/cases/${sanitizedCaseId}/output/performance`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json', // Expecting a JSON response
@@ -292,15 +392,80 @@ export const fetchPerformanceMetrics = async (caseId) => {
         });
 
         // Parse the JSON response
-        const performanceMetrics = await response.json();
+        const metrics = await response.json();
 
         if (!response.ok) {
             throw new Error(result.error || `Failed to fetch performance metrics for case ${caseId}`);
         }
 
-        return { success: true, performanceMetrics }; // Return the performance data
+        return { successMetrics: true, metrics }; // Return the performance data
     } catch (error) {
         console.error(`Failed to fetch performance metrics for case '${caseId}': ${error.message}`);
-        return { success: false };
+        return { successMetrics: false };
+    }
+};
+
+
+
+// Fetch history of runs
+export const fetchHistoryOfRuns = async () => {
+    // No need to sanitize caseId, this will be done in api calls called below.
+
+    try {
+        // fetch all caseIds
+        const { success, caseIds } = await fetchAllCaseIds();
+
+        if (!success) {
+            // Explicitly throw an error if fetching caseIds fails
+            throw new Error("Failed to fetch case IDs");
+        }
+
+        const caseDataPromises = caseIds.map(async (caseId) => {
+            const { input } = await fetchInputChiImage(caseId);
+            const { result } = await fetchChiEstimateImage(caseId);
+            const { chiDifference } = await fetchChiDifferenceImage(caseId);
+            const { residual } = await fetchResidualImage(caseId);
+            const { metrics } = await fetchPerformanceMetrics(caseId);
+            const { downloadUrl } = await downloadCaseFolder(caseId);
+        
+            return { 
+                caseId, 
+                data: { input, result, chiDifference, residual, metrics, downloadUrl }
+            };
+        });
+        
+        const caseDataArray = await Promise.all(caseDataPromises);
+        
+        // Convert array of case data into the history object
+        let history = {};
+        caseDataArray.forEach(({ caseId, data }) => {
+            history[caseId] = data;
+        });
+
+        // let caseDataPromises;
+
+        // caseDataPromises = caseIds.map(async (caseId) => {
+        //     const { input } = await fetchInputChiImage(caseId);
+        //     const { result } = await fetchChiEstimateImage(caseId);
+        //     const { chiDifference } = await fetchChiDifferenceImage(caseId);
+        //     const { residual } = await fetchResidualImage(caseId);
+        //     const { metrics } = await fetchPerformanceMetrics(caseId);
+        //     const { downloadUrl } = await downloadCaseFolder(caseId)
+
+        //     history = {
+        //         ...history,
+        //         [caseId]: {input, result, chiDifference, residual, metrics, downloadUrl}
+        //     };
+        // });
+        
+        // Wait for all promises to resolve
+        // await Promise.all(caseDataPromises);
+
+        console.log("All data fetched successfully:", history);
+        return {successHistory: true, history};
+
+    } catch (error) {
+        console.error(`Failed to fetch history of runs:`, error.message);
+        return { successHistory: false};
     }
 };

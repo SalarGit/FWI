@@ -1,23 +1,27 @@
-import { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
-import { tableData } from '../../data.js';
+import { SessionContext } from '../../store/session-context.jsx';
+
 
 import '../../index.css';
 import logo from '../../assets/fwi-logo.png';
 import NewRun from './sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './sections/historyofruns/HistoryOfRuns.jsx';
+import * as api from '../../api/apiService.js';
 
-export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, handleSetZipFileHandler, handleSetRecursiveForm, handleSetRecursiveZipFileHandler }) {
+export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }) {
     // const [addingNewRun, setAddingNewRun] = useState(false);
     // const [historyOfRuns, setHistoryOfRuns] = useState(false);
-
+    
     // function handleSetAddingNewRun() {
-    //     setAddingNewRun((prevState) => prevState ? false : true);
-    // }
-    // function handleSetHistoryOfRuns() {
-    //     setHistoryOfRuns((prevState) => prevState ? false : true);
-    // }
-    // const styling = addingNewRun ? 'backdrop-blur' : '';
+        //     setAddingNewRun((prevState) => prevState ? false : true);
+        // }
+        // function handleSetHistoryOfRuns() {
+            //     setHistoryOfRuns((prevState) => prevState ? false : true);
+            // }
+            // const styling = addingNewRun ? 'backdrop-blur' : '';
+            
+    const { historyLength, updateHistoryOfRuns } = useContext(SessionContext);
 
     return (
         // Header Container
@@ -68,7 +72,7 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns, 
                 <div className='relative'>
                     <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
                         onClick={handleSetHistoryOfRuns}
-                        disabled={tableData.length === 0}
+                        disabled={historyLength === 0}
                     >
                         History of runs
                     </button>

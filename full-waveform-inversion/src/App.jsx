@@ -11,10 +11,12 @@ import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 import RunTab from './components/runtab/RunTab.jsx';
 import ProgressModal from './components/custom/progressmodal/ProgressModal.jsx';
+import * as api from './api/apiService.js'
 
 function App() {
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
+    const [binary, setBinary] = useState(true);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
@@ -33,6 +35,7 @@ function App() {
                 px-14 py-8 h-[1080px] scrollbar-webkit'
             >
                 <Header handleSetAddingNewRun={handleSetAddingNewRun} handleSetHistoryOfRuns={handleSetHistoryOfRuns} />
+
                 {addingNewRun &&
                     <NewRun onClose={handleSetAddingNewRun} encodeSpaces={encodeSpaces} />
                 }

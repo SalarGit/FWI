@@ -518,7 +518,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     processes['Post-processing'] && 'Post-processing',
                 ].filter(Boolean), // filter(Boolean) removes any falsy values (a.k.a. if the steps that weren't selected)
                 threads: genericInput.threads,
-                processed: false
+                processed: false,
                 // add output when processing is done
             }
         }
@@ -585,22 +585,21 @@ export default function NewRun({ onClose, encodeSpaces }) {
         //     }
         // }
         
-        // 3 .png in imageUrl form
-        const { result } = await api.fetchChiEstimateImage(caseId[1]);
-        const { chiDifference } = await api.fetchChiDifferenceImage(caseId[1]);
-        const { residual } = await api.fetchResidualImage(caseId[1]);
+        // 4 .png in imageUrl form
+        const { successInputChi, input } = await api.fetchInputChiImage(caseId[1]);
+        const { successChiEstimate, result } = await api.fetchChiEstimateImage(caseId[1]);
+        const { successChiDifference, chiDifference } = await api.fetchChiDifferenceImage(caseId[1]);
+        const { successResidual, residual } = await api.fetchResidualImage(caseId[1]);
         // json
-        const { performanceMetrics } = await api.fetchPerformanceMetrics(caseId[1]);
+        const { successMetrics, metrics } = await api.fetchPerformanceMetrics(caseId[1]);
 
-        console.log(`result: ${result}`);
-        console.log(`chiDifference: ${chiDifference}`);
-        console.log(`residual: ${residual}`);
-        console.log(`performanceMetrics: ${performanceMetrics}`);
-
-        // update sessionRuns[caseId[1]] with output
-        updateSessionRun(caseId[1], result, chiDifference, residual, performanceMetrics);
-
-        // done progressing so remove from progressing runs
+        if (successInputChi && successChiEstimate && successChiDifference && successResidual && successMetrics) { // success
+            // update sessionRuns[caseId[1]] with output if success
+            updateSessionRun(caseId[1], input, result, chiDifference, residual, metrics);
+            // might have to setCurrentRun to '' or any other run in sessionRuns list because now a run is selected that doesnt have output,
+            // but is still in sessionRuns lol
+        } 
+        // removeProgressingRun either way, but dont updateSessionRun if no success
         removeProgressingRun(caseId[1]);
     }
 

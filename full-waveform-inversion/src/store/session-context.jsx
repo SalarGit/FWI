@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 import * as api from '../api/apiService.js'
 
@@ -9,6 +9,8 @@ export const SessionContext = createContext({
     outputType: '',
     progressingRuns: {},
     cpuUsage: 0,
+    historyLength: 0,
+    historyOfRuns: {},
     addRunToSession: () => {},
     updateSessionRun: () => {},
     handleCurrentRun: () => {},
@@ -16,6 +18,7 @@ export const SessionContext = createContext({
     addProgressingRun: () => {},
     updateProgressingRun: () => {},
     removeProgressingRun: () => {},
+    updateHistoryOfRuns: () => {},
 });
 
 // function sessionRunsReducer(state, action) {
@@ -41,6 +44,25 @@ export default function SessionContextProvider({ children }) {
     const [currentRun, setCurrentRun] = useState('')
     const [outputType, setOutputType] = useState('Output values')
     const [cpuUsage, setCpuUsage] = useState(0);
+    const [historyOfRuns, setHistoryOfRuns] = useState({});
+    const [historyLength, setHistoryLength] = useState(0);
+
+    // Function to fetch history length
+    async function fetchHistoryLength() {
+        const { success, historyLength } = await api.fetchHistoryLength();
+        return success ? historyLength : 0; // Return fetched history length or 0
+    }
+
+    // Effect to fetch and set history length
+    useEffect(() => {
+        const getHistoryLength = async () => {
+            const length = await fetchHistoryLength(); // Await the fetchHistoryLength function
+            setHistoryLength(length); // Set the fetched history length in state
+        };
+
+        getHistoryLength(); // Call the async function
+    }, []); // Empty dependency array to run only on mount
+
     // const [currentRun, setCurrentRun] = useState(
     //     {
     //         caseId: '',
@@ -57,19 +79,33 @@ export default function SessionContextProvider({ children }) {
         outputType,
         progressingRuns,
         cpuUsage,
-        addRunToSession: (run) => setSessionRuns((prev) => ({
-            ...prev,
-            ...run
-        })),
+        historyOfRuns,
+        historyLength,
+        // addRunToSession: (run) => setSessionRuns((prev) => ({
+        //     ...prev,
+        //     ...run
+        // })),
+        addRunToSession: async (run) => {
+            // Update session runs
+            setSessionRuns((prev) => ({
+                ...prev,
+                ...run
+            }));
+
+            // Fetch & set history length
+            const length = await fetchHistoryLength(); 
+            setHistoryLength(length); 
+        },
         // updateSessionRun(caseId, resultImgUrl, chiDifferenceImageUrl, residualImageUrl, performanceMetricJson);
-        updateSessionRun: (caseId, result, chiDifference, residual, performanceMetrics) => setSessionRuns((prev) => ({
+        updateSessionRun: (caseId, input, result, chiDifference, residual, metrics) => setSessionRuns((prev) => ({
             ...prev,
             [caseId]: {
                 ...prev[caseId],
+                input,
                 result,
                 chiDifference,
                 residual,
-                performanceMetrics,
+                metrics,
                 processed: true
             }
         })),
@@ -177,7 +213,8 @@ export default function SessionContextProvider({ children }) {
         removeProgressingRun: (caseId) => setProgressingRuns((prev) => {
             const { [caseId]: _, ...stillProgressingRuns } = prev; // Destructure to omit the caseId
             return stillProgressingRuns; // Return the new object without the removed run
-        })
+        }),
+        updateHistoryOfRuns: (history) => setHistoryOfRuns(history)
     }
 
     return <SessionContext.Provider value={ctxValue}>
