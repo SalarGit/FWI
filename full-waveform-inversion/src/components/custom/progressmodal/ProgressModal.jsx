@@ -132,7 +132,7 @@ export default function ProgressModal() {
         setIsDragging(true);
     }
 
-    function drop(event) {
+    function handleDrop(event) {
         event.preventDefault();
         var data = event.dataTransfer.getData("text");
         event.target.appendChild(document.getElementById(data));
@@ -173,8 +173,8 @@ export default function ProgressModal() {
             {/* progressingRuns */}
             {/* {Object.keys(sessionRuns).length > 0 && */}
             {/* {true && */}
-            {/* {progressingRunsLength > 0 && */}
-            {true &&
+            {/* {true && */}
+            {progressingRunsLength > 0 &&
                 <>
                     {!minimized ? 
                         <>
@@ -229,7 +229,7 @@ export default function ProgressModal() {
                                 </div>
                             </div>
                             
-                            <div id='destination1' 
+                            {/* <div id='destination1' 
                                 onDragOver={(event) => allowDrop(event)}
                                 onDrop={(event) => drop(event)}
                                 className={`absolute z-[46] top-9 left-[30px] rounded-2xl border border-[#D7DFFF]
@@ -264,7 +264,20 @@ export default function ProgressModal() {
                                     ${!isDragging && 'destination4' !== destination ? 'hidden pointer-events-none' : ''}
                                     ${'destination4' === destination ? 'border-0' : ''}
                                 `}
-                            />
+                            /> */}
+
+                            {destinations.map((destinationObj) => (
+                                <div id={destinationObj.id}
+                                    key={destinationObj.id}
+                                    onDragOver={(event) => allowDrop(event)}
+                                    onDrop={(event) => handleDrop(event)}
+                                    className={`absolute z-[46] ${destinationObj.styles} rounded-2xl border border-[#D7DFFF]
+                                        ${minimized ? 'w-[203px] h-[158px]' : 'w-[470px] h-[240px]'}
+                                        ${!isDragging && destinationObj.id !== destination ? 'hidden pointer-events-none' : ''}
+                                        ${destinationObj.id === destination ? 'border-0' : ''}
+                                    `}
+                                />
+                            ))}
 
 
                             {/* {isDragging && */}
@@ -317,7 +330,7 @@ export default function ProgressModal() {
                                 <ProgressBar />
                             </div>
                         </div>
-                            <div id='destination1' 
+                            {/* <div id='destination1' 
                                 onDragOver={(event) => allowDrop(event)}
                                 onDrop={(event) => drop(event)}
                                 className={`absolute z-[46] top-9 left-[30px] rounded-2xl border border-[#D7DFFF] w-[203px] h-[158px]
@@ -348,7 +361,19 @@ export default function ProgressModal() {
                                 ${!isDragging && 'destination4' !== destination ? 'hidden pointer-events-none' : ''}
                                 ${'destination4' === destination ? 'border-0' : ''}
                                 `}
-                            />
+                            /> */}
+
+                            {destinations.map((destinationObj) => (
+                                <div id={destinationObj.id}
+                                    key={destinationObj.id}
+                                    onDragOver={(event) => allowDrop(event)}
+                                    onDrop={(event) => handleDrop(event)}
+                                    className={`absolute z-[46] ${destinationObj.styles} rounded-2xl border border-[#D7DFFF] w-[203px] h-[158px]
+                                        ${!isDragging && destinationObj.id !== destination ? 'hidden pointer-events-none' : ''}
+                                        ${destinationObj.id === destination ? 'border-0' : ''}
+                                    `}
+                                />
+                            ))}
                             </>
 
                     }

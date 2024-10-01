@@ -13,6 +13,7 @@ function decodeSpaces(caseId) {
     return caseId.replace(/-/g, ' ');
 }
 
+
 // Fetch all case IDs
 export const fetchAllCaseIds = async () => {
     try {
@@ -39,6 +40,7 @@ export const fetchAllCaseIds = async () => {
     }
 };
 
+// Input API
 // Post caseId
 export const uploadCase = async (caseId, formData) => {
     const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
@@ -183,6 +185,122 @@ export const fetchCaseSettings = async (caseId, name) => {
         return { success: true, settings, forward: result.forward, minimization: result.minimization, threads: result.threads };
     } catch (error) {
         console.error(`Failed to fetch settings for case '${caseId}' with name '${name}':`, error.message);
+        return { success: false };
+    }
+};
+
+
+// Output API
+
+// Fetch chi_estimate.png for a specific case ID (says chi_estimate.png but gets Result.png)
+export const fetchChiEstimateImage = async (caseId) => {
+    try {
+        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/chi_estimate.png`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/png', // Expecting an image response
+            },
+        });
+
+        if (!response.ok) {
+            // Attempt to parse the error response if not 200 OK
+            const result = await response.json();
+            throw new Error(result.error || `Failed to fetch result (chi estimate) image for case ${caseId}`);
+        }
+
+        // Convert response into a Blob (binary large object, typically for images)
+        const imageBlob = await response.blob();
+
+        // Create an object URL for the image to be used in the browser
+        const result = URL.createObjectURL(imageBlob);
+
+        return { success: true, result }; // Return the image URL to be used for display
+    } catch (error) {
+        console.error(`Failed to fetch Result.png (chi estimate) for case '${caseId}': ${error.message}`);
+        return { success: false };
+    }
+};
+
+
+
+// Fetch chi_difference.png for a specific case ID
+export const fetchChiDifferenceImage = async (caseId) => {
+    try {
+        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/chi_difference.png`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/png', // Expecting an image response
+            },
+        });
+
+        if (!response.ok) {
+            // Attempt to parse the error response if not 200 OK
+            const result = await response.json();
+            throw new Error(result.error || `Failed to fetch chi_difference image for case ${caseId}`);
+        }
+
+        // Convert response into a Blob (binary large object, typically for images)
+        const imageBlob = await response.blob();
+
+        // Create an object URL for the image to be used in the browser
+        const chiDifference = URL.createObjectURL(imageBlob);
+
+        return { success: true, chiDifference }; // Return the image URL to be used for display
+    } catch (error) {
+        console.error(`Failed to fetch chi_difference.png for case '${caseId}': ${error.message}`);
+        return { success: false };
+    }
+};
+
+// Fetch residual.png for a specific case ID
+export const fetchResidualImage = async (caseId) => {
+    try {
+        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/residual.png`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'image/png', // Expecting an image response
+            },
+        });
+
+        if (!response.ok) {
+            // Attempt to parse the error response if not 200 OK
+            const result = await response.json();
+            throw new Error(result.error || `Failed to fetch residual image for case ${caseId}`);
+        }
+
+        // Convert response into a Blob (binary large object, typically for images)
+        const imageBlob = await response.blob();
+
+        // Create an object URL for the image to be used in the browser
+        const residual = URL.createObjectURL(imageBlob);
+
+        return { success: true, residual }; // Return the image URL to be used for display
+    } catch (error) {
+        console.error(`Failed to fetch residual.png for case '${caseId}': ${error.message}`);
+        return { success: false };
+    }
+};
+
+// Fetch performance metrics for a specific case ID
+export const fetchPerformanceMetrics = async (caseId) => {
+    try {
+        const response = await fetch(`/cases/${encodeSpaces(caseId)}/output/performance`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json', // Expecting a JSON response
+            },
+        });
+
+        // Parse the JSON response
+        const performanceMetrics = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || `Failed to fetch performance metrics for case ${caseId}`);
+        }
+
+        return { success: true, performanceMetrics }; // Return the performance data
+    } catch (error) {
+        console.error(`Failed to fetch performance metrics for case '${caseId}': ${error.message}`);
         return { success: false };
     }
 };

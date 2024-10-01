@@ -20,7 +20,7 @@ import closeBig from '../../../../assets/close-big.png';
 // import { forwardModels, minimizationModels } from '../../../../data.js';
 
 export default function NewRun({ onClose, encodeSpaces }) {
-    const { addRunToSession, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
+    const { addRunToSession, updateSessionRun, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
     // const [threads, setThreads] = useState(1);
     
     // NOTES: Added all states.
@@ -253,7 +253,6 @@ export default function NewRun({ onClose, encodeSpaces }) {
     
     function handleChangeCaseId(caseId) {
         const isValid = caseId === '' || /^[A-Za-z0-9 ]+$/.test(caseId);
-        console.log(`${caseId} isValid: ${isValid}`)
 
         if (isValid) {
             setCaseId((prev) => {
@@ -484,7 +483,6 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
         const process = async (endpoint, caseId, process) => {
             const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
-            console.log(`sanitizedCaseId: ${sanitizedCaseId}`);
 
             try {
                 const response = await fetch(`/cases/${sanitizedCaseId}/process/${endpoint}`, {
@@ -520,6 +518,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     processes['Post-processing'] && 'Post-processing',
                 ].filter(Boolean), // filter(Boolean) removes any falsy values (a.k.a. if the steps that weren't selected)
                 threads: genericInput.threads,
+                processed: false
                 // add output when processing is done
             }
         }
@@ -569,7 +568,37 @@ export default function NewRun({ onClose, encodeSpaces }) {
             }
         }
 
+
+        // const sessionRun = {
+        //     [caseId[1]]: {
+        //         forwardModel: genericInput.forward,
+        //         minimizationModel: genericInput.minimization,
+        //         forwardData: selectedModels.forward.jsonData,
+        //         minimizationData: selectedModels.minimization.jsonData,
+        //         processingSteps: [
+        //             processes['Pre-processing'] && 'Pre-processing',
+        //             processes['Processing'] && 'Processing',
+        //             processes['Post-processing'] && 'Post-processing',
+        //         ].filter(Boolean), // filter(Boolean) removes any falsy values (a.k.a. if the steps that weren't selected)
+        //         threads: genericInput.threads,
+        //         // add output when processing is done
+        //     }
+        // }
+        
+        // 3 .png in imageUrl form
+        const { result } = await api.fetchChiEstimateImage(caseId[1]);
+        const { chiDifference } = await api.fetchChiDifferenceImage(caseId[1]);
+        const { residual } = await api.fetchResidualImage(caseId[1]);
+        // json
+        const { performanceMetrics } = await api.fetchPerformanceMetrics(caseId[1]);
+
+        console.log(`result: ${result}`);
+        console.log(`chiDifference: ${chiDifference}`);
+        console.log(`residual: ${residual}`);
+        console.log(`performanceMetrics: ${performanceMetrics}`);
+
         // update sessionRuns[caseId[1]] with output
+        updateSessionRun(caseId[1], result, chiDifference, residual, performanceMetrics);
 
         // done progressing so remove from progressing runs
         removeProgressingRun(caseId[1]);

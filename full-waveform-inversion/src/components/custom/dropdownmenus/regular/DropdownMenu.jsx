@@ -1,21 +1,25 @@
-import { useState } from "react";
+import React, { useState, useContext } from 'react';
 
+import { SessionContext } from '../../../../store/session-context.jsx';
 
 import Menu from "./Menu.jsx";
 import SelectBox from "./SelectBox.jsx";
-import EditModels from "../../../header/EditModels.jsx";
-import EditModelData from "../../../header/sections/newrun/EditModelData.jsx";
+// import EditModels from "../../../header/EditModels.jsx";
+// import EditModelData from "../../../header/sections/newrun/EditModelData.jsx";
 
-export default function DropdownMenu({ items, width='' }) {
+export default function DropdownMenu({ items, selectedItem, updateItem, width='' }) {
+    const { currentRun, sessionRuns } = useContext(SessionContext);
+
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(items[0]);
+    // const [selectedItem, setSelectedItem] = useState(items[0]);
 
     function handleSetIsOpen() {
         setIsOpen((prevState) => prevState ? false : true);
     }
 
     function handleSelectItem(item) {
-        setSelectedItem(item);
+        // setSelectedItem(item);
+        updateItem(item);
         handleSetIsOpen();
     }
 

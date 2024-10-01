@@ -18,6 +18,13 @@ export default {
   plugins: [
     function ({addUtilities}) {
         const newUtilities = {
+            '.animate-spin-counterclockwise': {
+              animation: 'spin-counterclockwise 1s linear infinite',
+            },
+            '@keyframes spin-counterclockwise': {
+              '0%': { transform: 'rotate(0deg)' },
+              '100%': { transform: 'rotate(-360deg)' },
+            },
             ".scrollbar-thin" : {
                 // Specifically for firefox, bc firefox doesn't allow much customization
                 // scrollbarWidth : "thin",
@@ -26,7 +33,7 @@ export default {
             },
             ".scrollbar-webkit": {
                 "&::-webkit-scrollbar" : {
-                    width: "8px"
+                  width: "8px"
                 },
                 // "&::webkit-scrollbar-button": {
                 //     display: "none"
@@ -39,15 +46,15 @@ export default {
                 //     background: "black"
                 // },
                 "&::-webkit-scrollbar-thumb" : {
-                    background: "#c0c0c0",
-                    borderRadius: "20px",
-                    // borderRight: "solid 2px transparent",
-                    // backgroundClip: "padding-box",
-                    // border: "1px solid white"
+                  background: "#c0c0c0",
+                  borderRadius: "20px",
+                  // borderRight: "solid 2px transparent",
+                  // backgroundClip: "padding-box",
+                  // border: "1px solid white"
                 },
                 "&::-webkit-scrollbar-thumb:hover" : {
-                    background: "#888888"
-                  }
+                  background: "#888888"
+                }
             }
         }
         addUtilities(newUtilities, ["responsive", "hover"])

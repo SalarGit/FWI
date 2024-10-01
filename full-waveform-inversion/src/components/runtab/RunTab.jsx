@@ -21,10 +21,10 @@ export default function RunTab() {
                         >
                             <p>{caseId}</p>
                             {progressingRuns.hasOwnProperty(caseId) && currentRun === caseId &&
-                                <img className="animate-spin" src={loadingSelected} alt="loadingSelected.png" />
+                                <img className="animate-spin-counterclockwise" src={loadingSelected} alt="loadingSelected.png" />
                             }
                             {progressingRuns.hasOwnProperty(caseId) && currentRun !== caseId &&
-                                <img className="animate-spin" src={loadingUnselected} alt="loadingUnselected.png" />
+                                <img className="animate-spin-counterclockwise" src={loadingUnselected} alt="loadingUnselected.png" />
                             }
                         </button>
                     )}

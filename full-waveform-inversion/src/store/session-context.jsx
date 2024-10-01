@@ -6,10 +6,13 @@ export const SessionContext = createContext({
     // These default values won't be used. They are just meant for better auto-completion.
     sessionRuns: {},
     currentRun: '',
+    outputType: '',
     progressingRuns: {},
     cpuUsage: 0,
     addRunToSession: () => {},
+    updateSessionRun: () => {},
     handleCurrentRun: () => {},
+    handleOutputType: () => {},
     addProgressingRun: () => {},
     updateProgressingRun: () => {},
     removeProgressingRun: () => {},
@@ -36,6 +39,7 @@ export default function SessionContextProvider({ children }) {
     const [progressingRuns, setProgressingRuns] = useState({});
 
     const [currentRun, setCurrentRun] = useState('')
+    const [outputType, setOutputType] = useState('Output values')
     const [cpuUsage, setCpuUsage] = useState(0);
     // const [currentRun, setCurrentRun] = useState(
     //     {
@@ -50,11 +54,24 @@ export default function SessionContextProvider({ children }) {
     const ctxValue = {
         sessionRuns,
         currentRun,
+        outputType,
         progressingRuns,
         cpuUsage,
         addRunToSession: (run) => setSessionRuns((prev) => ({
             ...prev,
             ...run
+        })),
+        // updateSessionRun(caseId, resultImgUrl, chiDifferenceImageUrl, residualImageUrl, performanceMetricJson);
+        updateSessionRun: (caseId, result, chiDifference, residual, performanceMetrics) => setSessionRuns((prev) => ({
+            ...prev,
+            [caseId]: {
+                ...prev[caseId],
+                result,
+                chiDifference,
+                residual,
+                performanceMetrics,
+                processed: true
+            }
         })),
         // handleCurrentRun needs to call API and get all data needed and put it in currentRun
         // handleCurrentRun: (caseId) => setCurrentRun(caseId),
@@ -63,6 +80,7 @@ export default function SessionContextProvider({ children }) {
         
             return (caseId)
         }),
+        handleOutputType: (selectedOutputType) => setOutputType(selectedOutputType),
         addProgressingRun: (run) => setProgressingRuns((prev) => {
             // console.log(`addProgressingRun: ${run}`);
         

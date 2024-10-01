@@ -331,7 +331,7 @@ export default function NewRun({ onClose }) {
                                     {/* <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/> */}
                                     {/* <EditModels model="minimization" modelType="GradientDescent" /> */}
                                     {/* {edit && <EditModelData model={selectedItem} jsonData={jsonData} inputValues={inputValues} setInputValues={setInputValues} initialTypes={initialTypes}/>} */}
-                                </DropdownMenu>
+                                </Menu>
                             </div>
                         </div>
 
