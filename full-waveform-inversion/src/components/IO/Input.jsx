@@ -21,7 +21,7 @@ export default function Input() {
             <UpperPart heading={"Original input"}/>
 
             {imgSource === undefined ?
-                <EmptyGraph version='original' />
+                <EmptyGraph />
             :
                 <div className='size-full flex items-center justify-center'>
                     <img src={imgSource} alt="input.png"

@@ -34,7 +34,6 @@ export default function Output() {
             output = sessionRuns[currentRun]?.chiDifference;
         } else if (outputType === 'Residual graph') {
             output = sessionRuns[currentRun]?.residual;
-            // size = 'w-[776px] h-[407px]'
         } else if (outputType === 'Quality metrics') {
             output = 'Quality metrics'
         }
@@ -112,7 +111,7 @@ export default function Output() {
 
             {/* check if sessionRuns[currentRun]?.result !== undefined works as well */}
             {output === null ?
-                <EmptyGraph version='reconstructed' />
+                <EmptyGraph />
                 :
                 output
                 // <div className='size-full flex items-center justify-center'>

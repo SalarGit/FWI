@@ -6,10 +6,10 @@ import velocity from "../../assets/velocity.png";
 import velocityCompare from "../../assets/velocity-compare.png";
 import defaultIO from "../../assets/default-io.png";
 
-export default function EmptyGraph({ version, padding='pt-[54px]' }) {
+export default function EmptyGraph({ padding='pt-[54px]' }) {
     return (
         // Graphs Container
-        <div className={`flex justify-evenly ${version === 'compare' ? 'p-6' : 'pt-[54px]'}`}>
+        <div className={`flex justify-evenly pt-[54px]`}>
             {/* Chi values */}
             {/* {version === 'compare' ?
                 <>

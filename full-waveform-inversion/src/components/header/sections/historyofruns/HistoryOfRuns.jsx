@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 
 import { SessionContext } from '../../../../store/session-context';
 
-import { tableData, historyOutputTypes } from '../../../../data';
+import { tableData } from '../../../../data';
 
 import checkWhite from '../../../../assets/check-white.png';
 import dropdown from '../../../../assets/dropdown.png';
@@ -24,9 +24,10 @@ export default  function HistoryOfRuns({ onClose }) {
     const { historyOfRuns, updateHistoryOfRuns } = useContext(SessionContext);
 
     const [selectedRuns, setSelectedRuns] = useState([]);
-    const [selectedOutputType, setSelectedOutputType] = useState(historyOutputTypes[0]);
+    const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default could also be put in useEffect with historyOutputTypes[0]
     const [checkboxStatus, setCheckboxStatus] = useState({selectAll: true, clear: false})
     const [expandedRun, setExpandedRun] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const tableHeaders = [
         // "Select",
@@ -36,7 +37,17 @@ export default  function HistoryOfRuns({ onClose }) {
         "Minimization model",
         "Threads",
         "Case folder"
-    ]
+    ];
+    const historyOutputTypes = [
+        'Overview',
+        'Residual field',
+        'Residual graph',
+        'Quality metrics'
+    ];
+
+    {console.log(selectedRuns)}
+    const isDisabled = selectedRuns.length === 0;
+    {console.log(isDisabled ? 'true' : 'false')}
 
     // useEffect that runs only on component mount
     useEffect(() => {
@@ -46,6 +57,7 @@ export default  function HistoryOfRuns({ onClose }) {
         }
         
         getHistory();
+        setLoading(false);
     }, []); // Empty dependency array to run the effect only on mount
 
     function handleSelectRun(run) {
@@ -86,21 +98,30 @@ export default  function HistoryOfRuns({ onClose }) {
         })      
     }
 
-    function handleSelectOptions(option) {
-        if (option === 'SELECT ALL') {
-            setSelectedRuns(Object.keys(historyOfRuns)) // tableData should become all caseIds
-            setCheckboxStatus({
-                selectAll: false,
-                clear: true
-            })
-        }
-        else if (option === 'CLEAR') {
-            setSelectedRuns([])
-            setCheckboxStatus({
-                selectAll: true,
-                clear: false
-            })
-        }
+    // function handleSelectOptions(option) {
+    //     if (option === 'SELECT ALL') {
+    //         setSelectedRuns(Object.keys(historyOfRuns)) // tableData should become all caseIds
+    //         setCheckboxStatus({
+    //             selectAll: false,
+    //             clear: true
+    //         })
+    //     }
+    //     else if (option === 'CLEAR') {
+    //         setSelectedRuns([])
+    //         setCheckboxStatus({
+    //             selectAll: true,
+    //             clear: false
+    //         })
+    //     }
+    // }
+
+    function handleAll() {
+        if (selectedRuns.length === Object.keys(historyOfRuns).length) { // if all are selected
+            // deselect all
+            setSelectedRuns([]);
+            return;
+        } // else select all
+        setSelectedRuns(Object.keys(historyOfRuns))
     }
 
     function handleSelectOutputType(outputType) {
@@ -110,6 +131,10 @@ export default  function HistoryOfRuns({ onClose }) {
                 return outputType;
             }
         });
+    }
+
+    async function handleDownload() {
+        await api.downloadCaseFolders(selectedRuns);
     }
 
     const th = 'text-start text-sm font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
@@ -136,37 +161,40 @@ export default  function HistoryOfRuns({ onClose }) {
                         {/* px-6 py-[26px]  */}
                         {/* <div className='absolute  -full flex items-center justify-center'> This way 'X' button becomes unclickable */}
                         <div className='absolute left-1/2 transform -translate-x-1/2'>
-                            <div className='flex items-center space-x-1
+                            <div className='relative flex items-center space-x-1
                                 p-[6px] rounded-xl bg-[#F4F6FB]'
                             >
                                 {historyOutputTypes.map((outputType) =>
-                                    <button className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}`}
-                                        onClick={() => setSelectedOutputType(outputType)}
-                                    >
-                                        {outputType}
-                                    </button> 
+                                // uncomment parent div and remove title prop in button for custom tooltip (custom tooltip needs to be styled)
+                                // <div className='relative group'>
+                                    <> 
+                                        <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
+                                            ${isDisabled ? 'cursor-not-allowed' : ''}`}
+                                            onClick={() => setSelectedOutputType(outputType)}
+                                            disabled={isDisabled}
+                                        >
+                                            {outputType}
+                                        </button>
+
+                                        {/* uncomment for custom tooltip */}
+                                        {/* <span className={`absolute z-50 bg-gray-800 text-white text-xs rounded py-1 px-2 -top-8 left-1/2 transform -translate-x-1/2 transition-opacity duration-200 opacity-0 pointer-events-none 
+                                            ${isDisabled ? 'group-hover:opacity-100' : ''}`}
+                                        >
+                                            You need to select at least 1 run.
+                                        </span>
+
+                                        <div className={`group ${isDisabled ? 'pointer-events-none' : ''}`} /> */}
+                                    </>
+                                // </div>
                                 )}
                             </div>
-                            {/* BRUH */}
-                            {/* {selectedRuns.map((run) => 
-                                <div>{run[0]}</div>
-                            )} */}
-                            
-                            {/* <div className='pl-[500px] relative'>
-                                <input type='checkbox' className='peer
-                                    appearance-none size-4 border-2 border-black rounded cursor-pointer
-                                    hover:border-[#3561FE] checked:bg-[#3561FE] checked:border-[#3561FE]'
-                                />
-                                <img src={checkWhite} alt="check-white.png" 
-                                    className='absolute top-0 left-0 hidden peer-checked:block'
-                                />
-                            </div> */}
                         </div>
                         <div className='flex space-x-6 items-center'>
                             <button className={`px-4 py-[10px] border rounded-xl 
                                 ${selectedRuns.length === 0 ? 'border-[#B6B7BE] text-[#B6B7BE] cursor-not-allowed' : 'border-[#3561fe] text-[#3561fe]'}`}
+                                onClick={handleDownload}
                                 disabled={selectedRuns.length === 0}
-                                title='Download all selected runs'
+                                title={isDisabled ? 'You need to select at least 1 run.' : undefined}
                             >
                                 Download
                             </button>
@@ -192,16 +220,31 @@ export default  function HistoryOfRuns({ onClose }) {
                                     <thead className='sticky z-30 top-0 bg-white'>
                                         <tr>
                                             {/* select options */}
-                                            <th className={`py-[12px] px-2 bg-white 
+                                            {/* <th className={`py-[12px] px-2 bg-white 
                                                 text-start text-sm font-medium text-[#808080]
                                                 border-b border-[#808080]
                                                 flex justify-center -mt-1`}
-                                            >
-                                                <div>
+                                                > */}
+                                            <th className={th}>
+                                                <div className='flex items-center justify-center'>
+                                                    <label className="relative inline-flex items-center cursor-pointer">
+                                                        <input type="checkbox" className={`appearance-none size-[20px] border-2 rounded
+                                                            peer cursor-pointer hover:border-[#3561FE] checked:bg-[#3561FE] checked:border-[#3561FE]`}
+                                                            checked={selectedRuns.length === Object.keys(historyOfRuns).length && Object.keys(historyOfRuns).length > 0}
+                                                            // handleAll -> select/deselect
+                                                            onChange={handleAll}
+                                                        />
+                                                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none
+                                                        opacity-0 peer-checked:opacity-100">
+                                                            <img src={checkWhite} alt="check-white.png" />
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                {/* <div>
                                                     <button className={`p-1 ${checkboxStatus.selectAll ? 'text-[#3561FE]' : 'cursor-not-allowed text-[#808080]'}`}
                                                         onClick={() => handleSelectOptions('SELECT ALL')}
                                                         disabled={selectedRuns.length === tableData.length}
-                                                        title='Select all runs in the overview'
+                                                        title='Select all runs.'
                                                     >
                                                         Select all
                                                     </button>
@@ -210,11 +253,11 @@ export default  function HistoryOfRuns({ onClose }) {
                                                         // onClick={() => setSelectedRuns([])}
                                                         onClick={() => handleSelectOptions('CLEAR')}
                                                         disabled={selectedRuns.length === 0}
-                                                        title='Deselect all runs in the overview'
+                                                        title='Deselect all runs.'
                                                     >
                                                         Clear
                                                     </button>
-                                                </div>
+                                                </div> */}
                                             </th>
 
                                             {/* headers */}
@@ -260,7 +303,6 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 {/* data */}
                                                 {/* {Array.from({ length: 6 }, (_, i) => (
                                                 ))} */}
-                                                {console.log(selectedRuns)}
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{caseId}</td>
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].ngrid.x} x {historyOfRuns[caseId].ngrid.z}</td>
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].forward}</td>
@@ -336,15 +378,15 @@ export default  function HistoryOfRuns({ onClose }) {
                         }
                         {
                             selectedOutputType === 'Residual field' &&
-                            <ResidualFieldHOR />
+                            <ResidualFieldHOR selectedRuns={selectedRuns} />
                         }
                         {
                             selectedOutputType === 'Residual graph' &&
-                            <ResidualGraphHOR />
+                            <ResidualGraphHOR selectedRuns={selectedRuns} />
                         }
                         {
                             selectedOutputType === 'Quality metrics' &&
-                            <QualityMetricsHOR />
+                            <QualityMetricsHOR selectedRuns={selectedRuns} />
                         }
                         {/* <table className='table-auto'>
                             <thead>

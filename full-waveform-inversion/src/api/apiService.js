@@ -1,3 +1,5 @@
+import JSZip from 'jszip';
+
 // function encodeSpaces(caseId) {
 //     return caseId.replace(/ /g, '__SPACE__');
 // }
@@ -95,7 +97,45 @@ export const uploadCase = async (caseId, formData) => {
     }
 };
 
-// Download a case folder as a ZIP file
+// Download a case folder as a ZIP file (returns downloadUrl)
+// export const downloadCaseFolder = async (caseId) => {
+//     const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
+
+//     try {
+//         const response = await fetch(`/cases/${sanitizedCaseId}`, {
+//             method: 'GET',
+//             headers: {
+//                 'Accept': 'application/zip', // Expecting a ZIP file response
+//             },
+//         });
+
+//         if (!response.ok) {
+//             const result = await response.json(); // Attempt to parse error response
+//             throw new Error(result.error || `Failed to download case folder for case ID: ${caseId}`);
+//         }
+
+//         // Convert response into a Blob (binary large object) for the ZIP file
+//         const zipBlob = await response.blob();
+
+//         // Create an object URL for the ZIP blob
+//         const downloadUrl = URL.createObjectURL(zipBlob);
+
+//         // This code triggers a download, might come in handy for <HistoryOfRuns>
+//         // const link = document.createElement('a');
+//         // link.href = downloadUrl;
+//         // link.download = `${caseId}.zip`; // Set default file name
+//         // document.body.appendChild(link);
+//         // link.click();
+//         // document.body.removeChild(link);
+
+//         return { successDownload: true, downloadUrl };
+//     } catch (error) {
+//         console.error(`Failed to download case folder for case ID '${caseId}':`, error.message);
+//         return { successDownload: false };
+//     }
+// };
+
+// Download a case fodler as a ZIP file (returns zipBlob)
 export const downloadCaseFolder = async (caseId) => {
     const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
 
@@ -115,21 +155,61 @@ export const downloadCaseFolder = async (caseId) => {
         // Convert response into a Blob (binary large object) for the ZIP file
         const zipBlob = await response.blob();
 
-        // Create an object URL for the ZIP blob
-        const downloadUrl = URL.createObjectURL(zipBlob);
-
-        // This code triggers a download, might come in handy for <HistoryOfRuns>
-        // const link = document.createElement('a');
-        // link.href = downloadUrl;
-        // link.download = `${caseId}.zip`; // Set default file name
-        // document.body.appendChild(link);
-        // link.click();
-        // document.body.removeChild(link);
-
-        return { successDownload: true, downloadUrl };
+        return { successDownload: true, zipBlob };
     } catch (error) {
         console.error(`Failed to download case folder for case ID '${caseId}':`, error.message);
         return { successDownload: false };
+    }
+};
+
+// Download several case folders as nested ZIPs
+export const downloadCaseFolders = async (caseIds) => {
+    try {
+        // Check if there is only one caseId
+        if (caseIds.length === 1) {
+            // Directly call downloadCaseFolder and handle the single download
+            const { successDownload, zipBlob } = await downloadCaseFolder(caseIds[0]);
+            if (successDownload) {
+                const downloadUrl = URL.createObjectURL(zipBlob);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = `${encodeSpaces(caseIds[0])}.zip`; // Download directly as caseId.zip
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(downloadUrl);
+            }
+            return; // Exit the function
+        }
+
+        const zip = new JSZip();
+        const zipPromises = caseIds.map(async (caseId) => {
+            const { successDownload, zipBlob } = await downloadCaseFolder(caseId);
+            if (successDownload) {
+                const zipFileName = `${encodeSpaces(caseId)}.zip`; // Use caseId as the filename
+                zip.file(zipFileName, zipBlob); // Add the individual zip to the parent zip
+            }
+        });
+
+        await Promise.all(zipPromises); // Wait for all downloads to complete
+
+        // Generate the parent ZIP file
+        const parentZipBlob = await zip.generateAsync({ type: 'blob' });
+
+        // Trigger the download for the parent ZIP file
+        const downloadUrl = URL.createObjectURL(parentZipBlob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = 'case_folders.zip'; // Name of the parent zip file
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Clean up the object URL
+        URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+        // Maybe display browser alert?
+        console.error(`Failed to download case folders: ${error.message}`);
     }
 };
 
@@ -423,10 +503,10 @@ export const fetchHistoryOfRuns = async () => {
         const caseDataPromises = caseIds.map(async (caseId) => {
             const { input } = await fetchInputChiImage(caseId);
             const { result } = await fetchChiEstimateImage(caseId);
-            const { chiDifference } = await fetchChiDifferenceImage(caseId);
+            const { chiDifference } = await fetchChiDifferenceImage(caseId); // residual field
             const { residual } = await fetchResidualImage(caseId);
             const { metrics } = await fetchPerformanceMetrics(caseId);
-            const { downloadUrl } = await downloadCaseFolder(caseId);
+            // const { downloadUrl } = await downloadCaseFolder(caseId);
 
             // fetch GenericData settingsfile
             const { settings } =  await fetchCaseSettings(caseId, 'GenericInput');
@@ -446,7 +526,7 @@ export const fetchHistoryOfRuns = async () => {
 
             return { 
                 caseId, 
-                data: { forward, minimization, forwardData, minimizationData, threads, ngrid, input, result, chiDifference, residual, metrics, downloadUrl, caseFolder: '/' + encodeSpaces(caseId) } // result is not used in current design. Can use if I have enough time.
+                data: { forward, minimization, forwardData, minimizationData, threads, ngrid, input, result, chiDifference, residual, metrics, caseFolder: '/' + encodeSpaces(caseId) } // result is not used in current design. Can use if I have enough time.
             };
         });
         
