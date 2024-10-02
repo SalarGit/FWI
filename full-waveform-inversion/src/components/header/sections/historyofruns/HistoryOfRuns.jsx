@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 
 import { SessionContext } from '../../../../store/session-context';
 
-import { tableHeaders, tableData, historyOutputTypes } from '../../../../data';
+import { tableData, historyOutputTypes } from '../../../../data';
 
 import checkWhite from '../../../../assets/check-white.png';
 import dropdown from '../../../../assets/dropdown.png';
@@ -27,6 +27,16 @@ export default  function HistoryOfRuns({ onClose }) {
     const [selectedOutputType, setSelectedOutputType] = useState(historyOutputTypes[0]);
     const [checkboxStatus, setCheckboxStatus] = useState({selectAll: true, clear: false})
     const [expandedRun, setExpandedRun] = useState(null);
+
+    const tableHeaders = [
+        // "Select",
+        "Run name" ,
+        "Grid size",
+        "Forward model",
+        "Minimization model",
+        "Threads",
+        "Case folder"
+    ]
 
     // useEffect that runs only on component mount
     useEffect(() => {

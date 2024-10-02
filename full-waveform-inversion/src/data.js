@@ -179,7 +179,7 @@ export const tableHeaders = [
     "Run name" ,
     "Grid size",
     "Forward model",
-    "Minimisation model",
+    "Minimization model",
     "Threads",
     "Case folder"
 ]

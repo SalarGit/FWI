@@ -256,7 +256,7 @@ export const process = async (endpoint, caseId) => {
 }
 
 
-// Fetch settings for a specific case ID and settings name
+// Fetch file for a specific case ID and file name
 export const fetchCaseSettings = async (caseId, name) => {
     const sanitizedCaseId = encodeURIComponent(encodeSpaces(caseId));
 
@@ -268,16 +268,16 @@ export const fetchCaseSettings = async (caseId, name) => {
             },
         });
 
-        const result = await response.json();
+        const settings = await response.json();
 
         if (!response.ok) {
-            throw new Error(result.error);
+            throw new Error(settings.error);
         }
 
-        return { success: true, settings, forward: result.forward, minimization: result.minimization, threads: result.threads };
+        return { successCaseSettings: true, settings };
     } catch (error) {
         console.error(`Failed to fetch settings for case '${caseId}' with name '${name}':`, error.message);
-        return { success: false };
+        return { successCaseSettings: false };
     }
 };
 
@@ -427,10 +427,26 @@ export const fetchHistoryOfRuns = async () => {
             const { residual } = await fetchResidualImage(caseId);
             const { metrics } = await fetchPerformanceMetrics(caseId);
             const { downloadUrl } = await downloadCaseFolder(caseId);
-        
+
+            // fetch GenericData settingsfile
+            const { settings } =  await fetchCaseSettings(caseId, 'GenericInput');
+            
+            // const { ngrid, forward, minimization, threads } = settings;
+            // const { x, z } = ngrid;
+            const { ngrid, forward, minimization, threads } = settings ?? {}; // falls back to empty object if settings is undefined or null (a.k.a. when fetchCaseSettings fails)
+
+            // fetch {forward model} settingsfile
+            const { settings: forwardData  } = await fetchCaseSettings(caseId, `${forward}FMInput`)
+            const { settings: minimizationData  } = await fetchCaseSettings(caseId, `${minimization}MinimizationInput`)
+
+            // forward parameters
+            // fetch {minimization model} settingsfile
+            // minimization parameters
+            
+
             return { 
                 caseId, 
-                data: { input, result, chiDifference, residual, metrics, downloadUrl }
+                data: { forward, minimization, forwardData, minimizationData, threads, ngrid, input, result, chiDifference, residual, metrics, downloadUrl, caseFolder: '/' + encodeSpaces(caseId) } // result is not used in current design. Can use if I have enough time.
             };
         });
         
