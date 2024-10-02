@@ -88,7 +88,7 @@ export default  function HistoryOfRuns({ onClose }) {
 
     function handleSelectOptions(option) {
         if (option === 'SELECT ALL') {
-            setSelectedRuns(tableData)
+            setSelectedRuns(Object.keys(historyOfRuns)) // tableData should become all caseIds
             setCheckboxStatus({
                 selectAll: false,
                 clear: true
@@ -227,11 +227,12 @@ export default  function HistoryOfRuns({ onClose }) {
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    {tableData.map((run, runIndex) =>
-                                        <React.Fragment key={runIndex}>
+                                    {/* run -> caseId. so run = historyOfRuns[caseId] */}
+                                    {Object.keys(historyOfRuns).map((caseId) =>
+                                        <React.Fragment key={caseId}>
                                             <tr>
                                                 {/* checkbox */}
-                                                <td className={`${td} ${selectedRuns.includes(run) ? 'bg-[#F1F4FF]' : ''}`}>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''}`}>
                                                     <div className='flex items-center justify-center'>
                                                         <label className="relative inline-flex items-center cursor-pointer">
                                                             {/* If the user manually checks a checkbox, it will check. If the user clicks 'Select all', I have to
@@ -239,8 +240,8 @@ export default  function HistoryOfRuns({ onClose }) {
                                                             to 'selectedRuns'. It doesn't actually check all the runs in the table.*/}
                                                             <input type="checkbox" className={`appearance-none size-[20px] border-2 rounded
                                                                 peer cursor-pointer hover:border-[#3561FE] checked:bg-[#3561FE] checked:border-[#3561FE]`}
-                                                                checked={selectedRuns.includes(run)}
-                                                                onChange={() => handleSelectRun(run)}
+                                                                checked={selectedRuns.includes(caseId)}
+                                                                onChange={() => handleSelectRun(caseId)}
                                                             />
                                                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none
                                                             opacity-0 peer-checked:opacity-100">
@@ -251,26 +252,36 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 </td>
 
                                                 {/* data */}
-                                                {run.map((data, dataIndex) =>
+                                                {/* {run.map((data, dataIndex) =>
                                                     // <span>
                                                         <td key={dataIndex} className={`${td} ${selectedRuns.includes(run) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === runIndex ? 'text-[#3561FE]' : ''}`}>{data}</td>
                                                     // </span>
-                                                )}
+                                                )} */}
+                                                {/* data */}
+                                                {/* {Array.from({ length: 6 }, (_, i) => (
+                                                ))} */}
+                                                {console.log(selectedRuns)}
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{caseId}</td>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].ngrid.x} x {historyOfRuns[caseId].ngrid.z}</td>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].forward}</td>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].minimization}</td>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].threads}</td>
+                                                <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].caseFolder}</td>
 
                                                 {/* extend (model parameters) */}
                                                 {/* px-6 py-3 */}
                                                 {/* Dropdown container */}
-                                                <td className={`px-2 border-b border-[#D7DFFF] ${selectedRuns.includes(run) ? 'bg-[#F1F4FF]' : ''}`}>
-                                                    <div className={`relative size-fit ${selectedRuns.includes(run) ? 'hover:bg-[#D7DFFF]': 'hover:bg-[#F1F4FF]'} rounded`}>
+                                                <td className={`px-2 border-b border-[#D7DFFF] ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''}`}>
+                                                    <div className={`relative size-fit ${selectedRuns.includes(caseId) ? 'hover:bg-[#D7DFFF]': 'hover:bg-[#F1F4FF]'} rounded`}>
                                                         <button className={`absolute z-30 size-full peer `}
-                                                            onClick={() => setExpandedRun(expandedRun === runIndex ? null : runIndex)}
+                                                            onClick={() => setExpandedRun(expandedRun === caseId ? null : caseId)}
                                                         >
                                                         </button>
                                                         {/* const dropDownIcon = !isOpen ? <img src={dropdown} alt="dropdown.png" className="duration-500" /> : <img src={dropdown} alt="dropdown.png" className="rotate-180 duration-500" /> */}
                                                         {/* <img src={dropdown} alt="dropdown.png"
                                                             className={`${expandedRun === runIndex ? 'rotate-180' : ''} duration-500 fill-blue-600`}
                                                         /> */}
-                                                        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={`${expandedRun === runIndex ? 'rotate-180 fill-[#3561FE]' : ''} duration-500`}>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={`${expandedRun === caseId ? 'rotate-180 fill-[#3561FE]' : ''} duration-500`}>
                                                             <path d="M12.0008 15.2766C11.8674 15.2766 11.7424 15.2557 11.6258 15.2141C11.5091 15.1724 11.4008 15.1016 11.3008 15.0016L6.70078 10.4016C6.51745 10.2182 6.42578 9.9849 6.42578 9.70156C6.42578 9.41823 6.51745 9.1849 6.70078 9.00156C6.88411 8.81823 7.11745 8.72656 7.40078 8.72656C7.68411 8.72656 7.91745 8.81823 8.10078 9.00156L12.0008 12.9016L15.9008 9.00156C16.0841 8.81823 16.3174 8.72656 16.6008 8.72656C16.8841 8.72656 17.1174 8.81823 17.3008 9.00156C17.4841 9.1849 17.5758 9.41823 17.5758 9.70156C17.5758 9.9849 17.4841 10.2182 17.3008 10.4016L12.7008 15.0016C12.6008 15.1016 12.4924 15.1724 12.3758 15.2141C12.2591 15.2557 12.1341 15.2766 12.0008 15.2766Z"/>
                                                         </svg>
 
@@ -279,7 +290,7 @@ export default  function HistoryOfRuns({ onClose }) {
                                             </tr>
 
                                             {/* expand (model parameters) */}
-                                            {expandedRun === runIndex && (
+                                            {expandedRun === caseId && (
                                                 <tr>
                                                     <td colSpan={tableHeaders.length + 2} className='bg-[#F4F6FB] border-b border-[#D7DFFF]'>
                                                         {/* This is where you put your extra details */}
