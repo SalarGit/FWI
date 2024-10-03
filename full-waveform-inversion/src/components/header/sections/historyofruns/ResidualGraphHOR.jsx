@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext} from 'react';
 
 import { SessionContext } from '../../../../store/session-context';
 
@@ -8,7 +8,6 @@ export default function ResidualGraphHOR({ selectedRuns }) {
     const { historyOfRuns } = useContext(SessionContext);
 
     return (
-        // [823px]
         <div className="max-h-full overflow-y-auto scrollbar-webkit scrollbar-thin">
             <div className="grid grid-cols-2 gap-6 max-h-full">
                 {selectedRuns.map((caseId) => {

@@ -2,14 +2,11 @@ import { useContext } from 'react';
 
 import { SessionContext } from '../../store/session-context.jsx';
 
-import H1 from '../custom/headings/H1.jsx';
 import H2 from '../custom/headings/H2.jsx';
 
 import Model from './Model.jsx';
 import UpperPart from '../custom/UpperPart.jsx';
 import Chip from '../custom/Chip.jsx';
-import Border from '../custom/Border.jsx';
-import BorderTop from '../custom/borders/BorderTop.jsx';
 import BorderLeft from '../custom/borders/BorderLeft.jsx';
 
 export default function Settings({ encodeSpaces }) {

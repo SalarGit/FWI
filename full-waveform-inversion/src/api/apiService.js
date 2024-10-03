@@ -336,7 +336,7 @@ export const fetchHistoryOfRuns = async () => {
 
             return { 
                 caseId, 
-                data: { forward, minimization, forwardData, minimizationData, threads, ngrid, input, result, chiDifference, residual, metrics, caseFolder: '/' + encodeSpaces(caseId) } // result is not used in current design. Can use if I have enough time.
+                data: { forward, minimization, forwardData, minimizationData, threads, ngrid, input, result, chiDifference, residual, metrics, caseFolder: '/' + encodeSpaces(caseId) } // result is not used
             };
         });
         

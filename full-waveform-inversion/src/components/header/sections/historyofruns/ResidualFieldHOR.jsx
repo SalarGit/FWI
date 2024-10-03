@@ -1,20 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import { SessionContext } from '../../../../store/session-context';
 
-
 import BorderBottom from "../../../custom/borders/BorderBottom.jsx"
-import EmptyGraph from "../../../IO/EmptyGraph.jsx"
 
 export default function ResidualFieldHOR({ selectedRuns }) {
     const { historyOfRuns } = useContext(SessionContext);
 
     return (
-        // [823px]
         <div className="max-h-full overflow-y-auto scrollbar-webkit scrollbar-thin">
             <div className="grid grid-cols-2 gap-6 max-h-full">
                 {selectedRuns.map((caseId) => {
-                const imgSrc = historyOfRuns[caseId]?.chiDifference; // if chiDiff is undefined, so will imgSrc
+                const imgSrc = historyOfRuns[caseId]?.chiDifference;
 
                 return (
                     <div className="h-[400px] max-w-[838px] bg-white rounded-2xl">
@@ -29,7 +26,7 @@ export default function ResidualFieldHOR({ selectedRuns }) {
                             ) : (
                                 <img 
                                     src={historyOfRuns[caseId].chiDifference} 
-                                    alt="residual.img" // will probably never result to alt
+                                    alt="residual.img"
                                     className='h-[340px] w-[700px]'
                                 />
                             )}
