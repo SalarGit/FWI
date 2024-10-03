@@ -12,29 +12,23 @@ import Border from '../custom/Border.jsx';
 import BorderTop from '../custom/borders/BorderTop.jsx';
 import BorderLeft from '../custom/borders/BorderLeft.jsx';
 
-export default function Settings() {
+export default function Settings({ encodeSpaces }) {
     const { currentRun, sessionRuns } = useContext(SessionContext);
 
     return (
-        // Settings Container
-        // <div className={`flex flex-col bg-white border border-[#D7DFFF] rounded-3xl ${globalCond ? 'blur-[2.5px]' : ''}`}>
         <div className="flex flex-col bg-white border border-[#D7DFFF] rounded-3xl"> {/* w-[1808px] to get 1920 */}
-            
-            {/* Upper Part */}
             <UpperPart heading={"Settings"}/>
 
             {/* Lower Part */}
             <div className="flex space-x-6 py-6 px-8">
-                {/* CASE FOLDER */}
+                {/* Case folder */}
                 <div className="flex flex-col space-y-[34px]
                     border border-[#D7DFFF] rounded-2xl
-                    px-8 pt-8 h-[166px] w-[334px]" // Design says [332px] but I did +2 because entire settings section was 2px less than header and I/O section.
+                    px-8 pt-8 h-[166px] w-[334px]"
                 >
                     <H2 heading="case folder" styling='uppercase'/>
-                    {/* Used to be a div element. IDK why. Prob bc I didn't know semantics. */}
                     <p className="text-lg font-medium break-all line-clamp-2">
-                        {currentRun ? currentRun : '-'}
-                        {/* /Users/Username/Documents/Work/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/Projects/2023/July/FWI/ */}
+                        {currentRun ? `/${encodeSpaces(currentRun)}` : '-'}
                     </p>
                 </div>
             
@@ -44,18 +38,16 @@ export default function Settings() {
                 >
                     <Model model="forward" modelType={currentRun ? sessionRuns[currentRun].forwardModel : '-'} />
                     <BorderLeft />
-                    {/* <div className="border-l border-[#D7DFFF]" /> */}
                     <Model model="minimization" modelType={currentRun ? sessionRuns[currentRun].minimizationModel : '-'} />
                 </div>
                 
-                {/* PROCESSING STEPS container */}
+                {/* Processing steps */}
                 <div className="flex flex-col space-y-[30px]
                     border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 h-[166px] w-[594px]"
                 >
                     <H2 heading="processing steps" styling='uppercase'/>
 
-                    {/* Processes container */}
                     <div className="flex space-x-3">
                         {currentRun ? 
                             sessionRuns[currentRun].processingSteps.map((step) => (
@@ -64,12 +56,10 @@ export default function Settings() {
                         :
                             <p className='text-lg font-medium'>-</p>
                         }
-                        {/* <Chip title="Processing" disabled={true}/>
-                        <Chip title="Post-Processing" disabled={true}/> */}
                     </div>
                 </div>
 
-                {/* THREADS/CORES */}
+                {/* Threads/Cores */}
                 <div className="flex flex-col space-y-[34px]
                     border border-[#D7DFFF] rounded-2xl
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"

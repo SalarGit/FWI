@@ -11,12 +11,10 @@ import NewRun from './components/header/sections/newrun/NewRun.jsx';
 import HistoryOfRuns from './components/header/sections/historyofruns/HistoryOfRuns.jsx';
 import RunTab from './components/runtab/RunTab.jsx';
 import ProgressModal from './components/custom/progressmodal/ProgressModal.jsx';
-import * as api from './api/apiService.js'
 
 function App() {
     const [addingNewRun, setAddingNewRun] = useState(false);
     const [historyOfRuns, setHistoryOfRuns] = useState(false);
-    const [binary, setBinary] = useState(true);
 
     function handleSetAddingNewRun() {
         setAddingNewRun((prevState) => prevState ? false : true);
@@ -49,7 +47,7 @@ function App() {
 
 
                 <div className='flex flex-col space-y-6'>
-                    <Settings />
+                    <Settings encodeSpaces={encodeSpaces}/>
                     <div className="flex space-x-6">
                         <Input />
                         <Output />

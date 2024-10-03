@@ -2,7 +2,6 @@ import { useContext } from "react"; // allows us to access the context value
 
 import { SessionContext } from "../../store/session-context.jsx";
 
-import loading from '../../assets/loading.svg'
 import loadingUnselected from '../../assets/loading-unselected.png'
 import loadingSelected from '../../assets/loading-selected.png'
 
@@ -10,7 +9,7 @@ export default function RunTab() {
     const { sessionRuns, currentRun, progressingRuns, handleCurrentRun } = useContext(SessionContext);
 
     return (
-        // flex-wrap makes sure that if there are too many runs, a new row will be displayed below.
+        // If the runs flow out of the row, flex-wrap wraps the overflow to a new row.
         <>
             {Object.keys(sessionRuns).length > 0 && 
                 <div className='ml-6 mb-[30px] flex items-center flex-wrap'>

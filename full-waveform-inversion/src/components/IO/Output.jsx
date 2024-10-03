@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { SessionContext } from '../../store/session-context.jsx';
 import ssim from '../../assets/metrics/ssim.svg'
@@ -24,9 +24,7 @@ export default function Output() {
         'Quality metrics'
     ]
 
-    // original reservoir is: h-[353px]
     let output = null;
-    // is this supposed to be done when processed? not just sessionRuns[currentRun]?.result ??
     if (sessionRuns[currentRun]?.processed) {
         if (outputType === 'Output values') {
             output = sessionRuns[currentRun]?.result;
@@ -66,7 +64,7 @@ export default function Output() {
                                 <p className='text-2xl font-medium'>{metrics[metric].value}</p>
                             </div>
 
-                            {/* extra data onHover */}
+                            {/* onHover: extra data */}
                             <div className={`z-[50] w-[210px] h-[150px] p-4 absolute ${metrics[metric].absolute}
                                 border border-[#d7dfff] rounded-2xl bg-white
                                 opacity-0 group-hover:opacity-100
@@ -90,43 +88,25 @@ export default function Output() {
             output = (
                 <div className='size-full flex items-center justify-center'>
                     <img src={output} alt={`${output}.png`}
-                        // change size depending on outputType
                         className='w-[776px] h-[407px]'
-                    // original reservoir is: h-[353px]
                     />
                 </div>
             )
         }
     }
 
-    // relative
     return (
         <div className="flex flex-col bg-white border border-[#D7DFFF] pl- rounded-3xl w-1/2 h-[530px] backdrop-blur">
             <UpperPart heading="Calculated output" styling="pl-8 pr-6 py-4">
-                {/* <div className="w-[277px]"> */}
                 {/* updateItem & selectedItem are drilled instead of taking from context, because the drilled function is different per dropdown menu */}
                 <DropdownMenu items={calculatedOutputTypes} selectedItem={outputType} updateItem={handleOutputType} width="w-[277px]" />
-                {/* </div> */}
             </UpperPart>
 
-            {/* check if sessionRuns[currentRun]?.result !== undefined works as well */}
             {output === null ?
                 <EmptyGraph />
                 :
                 output
-                // <div className='size-full flex items-center justify-center'>
-                //     <img src={img} alt='result.png' 
-                //         className={size}
-
-                //     />
-                // </div>
             }
-
-            {/* <img id='result' alt='result.png' 
-                className={`${sessionRuns[currentRun].result === undefined ? 'hidden' : ''}`}
-            /> */}
-            {/* <EmptyGraph version='reconstructed' /> */}
-
         </div>
     )
 }

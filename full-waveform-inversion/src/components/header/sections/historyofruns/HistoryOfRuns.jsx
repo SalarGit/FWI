@@ -5,13 +5,8 @@ import { SessionContext } from '../../../../store/session-context';
 import { tableData } from '../../../../data';
 
 import checkWhite from '../../../../assets/check-white.png';
-import dropdown from '../../../../assets/dropdown.png';
-
-import UpperPart from '../../../custom/UpperPart';
 import closeBig from '../../../../assets/close-big.png';
-import search from '../../../../assets/search.png';
-import BorderTop from '../../../custom/borders/BorderTop';
-import BorderBottom from '../../../custom/borders/BorderBottom';
+
 import H1 from '../../../custom/headings/H1';
 
 import ModelParametersHOR from './ModelParametersHOR';
@@ -20,7 +15,7 @@ import ResidualGraphHOR from './ResidualGraphHOR';
 import QualityMetricsHOR from './QualityMetricsHOR';
 import * as api from '../../../../api/apiService.js';
 
-export default  function HistoryOfRuns({ onClose }) {
+export default function HistoryOfRuns({ onClose }) {
     const { historyOfRuns, updateHistoryOfRuns } = useContext(SessionContext);
 
     const [selectedRuns, setSelectedRuns] = useState([]);
@@ -45,11 +40,8 @@ export default  function HistoryOfRuns({ onClose }) {
         'Quality metrics'
     ];
 
-    {console.log(selectedRuns)}
     const isDisabled = selectedRuns.length === 0;
-    {console.log(isDisabled ? 'true' : 'false')}
 
-    // useEffect that runs only on component mount
     useEffect(() => {
         async function getHistory() {
             const { successHistory, history } = await api.fetchHistoryOfRuns();
@@ -58,7 +50,7 @@ export default  function HistoryOfRuns({ onClose }) {
         
         getHistory();
         setLoading(false);
-    }, []); // Empty dependency array to run the effect only on mount
+    }, []);
 
     function handleSelectRun(run) {
         setSelectedRuns((prevSelectedRuns) => {
@@ -98,22 +90,6 @@ export default  function HistoryOfRuns({ onClose }) {
         })      
     }
 
-    // function handleSelectOptions(option) {
-    //     if (option === 'SELECT ALL') {
-    //         setSelectedRuns(Object.keys(historyOfRuns)) // tableData should become all caseIds
-    //         setCheckboxStatus({
-    //             selectAll: false,
-    //             clear: true
-    //         })
-    //     }
-    //     else if (option === 'CLEAR') {
-    //         setSelectedRuns([])
-    //         setCheckboxStatus({
-    //             selectAll: true,
-    //             clear: false
-    //         })
-    //     }
-    // }
 
     function handleAll() {
         if (selectedRuns.length === Object.keys(historyOfRuns).length) { // if all are selected
@@ -139,7 +115,6 @@ export default  function HistoryOfRuns({ onClose }) {
 
     const th = 'text-start text-sm font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
     const td = 'px-6 py-3 border-b border-[#D7DFFF]'
-    const check = 'flex items-center justify-center'
 
     return (
         <>
@@ -147,10 +122,7 @@ export default  function HistoryOfRuns({ onClose }) {
             <div className='fixed right-0 top-0 w-screen h-screen z-20 bg-black bg-opacity-[0.36] backdrop-blur-[2.5px]' />
 
             {/* Main container */}
-            {/* 1746px width because border is outside */}
-            {/* flex items-center justify-center */}
             <div className='absolute top-0 left-0 z-30 size-full flex justify-center items-center'> {/* Disabled: #B6B7BE*/}
-                {/* Container to put upper & lower beneath each other */}
                 <div className='flex flex-col'>
                     {/* Upper part */}
                     <div className='flex items-center justify-between px-6 py-[26px]
@@ -158,14 +130,12 @@ export default  function HistoryOfRuns({ onClose }) {
                         relative'
                     >
                         <H1 heading='History of runs'/> 
-                        {/* px-6 py-[26px]  */}
-                        {/* <div className='absolute  -full flex items-center justify-center'> This way 'X' button becomes unclickable */}
                         <div className='absolute left-1/2 transform -translate-x-1/2'>
                             <div className='relative flex items-center space-x-1
                                 p-[6px] rounded-xl bg-[#F4F6FB]'
                             >
                                 {historyOutputTypes.map((outputType) =>
-                                // uncomment parent div and remove title prop in button for custom tooltip (custom tooltip needs to be styled)
+                                // uncomment div & custom tooltip & remove title prop in button for custom tooltip (needs styling)
                                 // <div className='relative group'>
                                     <> 
                                         <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
@@ -176,7 +146,6 @@ export default  function HistoryOfRuns({ onClose }) {
                                             {outputType}
                                         </button>
 
-                                        {/* uncomment for custom tooltip */}
                                         {/* <span className={`absolute z-50 bg-gray-800 text-white text-xs rounded py-1 px-2 -top-8 left-1/2 transform -translate-x-1/2 transition-opacity duration-200 opacity-0 pointer-events-none 
                                             ${isDisabled ? 'group-hover:opacity-100' : ''}`}
                                         >
@@ -208,9 +177,6 @@ export default  function HistoryOfRuns({ onClose }) {
 
                     {/* Lower part */}
                     <div className='w-[1746px] h-[897px] bg-[#F4F6FB] border border-[#D7DFFF] rounded-b-3xl p-6'>
-                        
-                        {/* This 10px padding is removed from the inner div using minus margin & table (by simple taking 6px from the padding)
-                            to keep the visuals the same. */}
                         {selectedOutputType === 'Overview' &&
                         <div className='p-[10px] pb-3 bg-white border border-[#D7DFFF] rounded-2xl'>
                             <div className='max-h-[823px] overflow-y-auto scrollbar-webkit scrollbar-thin ml-[-10px]'>
@@ -219,19 +185,12 @@ export default  function HistoryOfRuns({ onClose }) {
                                 >
                                     <thead className='sticky z-30 top-0 bg-white'>
                                         <tr>
-                                            {/* select options */}
-                                            {/* <th className={`py-[12px] px-2 bg-white 
-                                                text-start text-sm font-medium text-[#808080]
-                                                border-b border-[#808080]
-                                                flex justify-center -mt-1`}
-                                                > */}
                                             <th className={th}>
                                                 <div className='flex items-center justify-center'>
                                                     <label className="relative inline-flex items-center cursor-pointer">
                                                         <input type="checkbox" className={`appearance-none size-[20px] border-2 rounded
                                                             peer cursor-pointer hover:border-[#3561FE] checked:bg-[#3561FE] checked:border-[#3561FE]`}
                                                             checked={selectedRuns.length === Object.keys(historyOfRuns).length && Object.keys(historyOfRuns).length > 0}
-                                                            // handleAll -> select/deselect
                                                             onChange={handleAll}
                                                         />
                                                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none
@@ -240,24 +199,6 @@ export default  function HistoryOfRuns({ onClose }) {
                                                         </div>
                                                     </label>
                                                 </div>
-                                                {/* <div>
-                                                    <button className={`p-1 ${checkboxStatus.selectAll ? 'text-[#3561FE]' : 'cursor-not-allowed text-[#808080]'}`}
-                                                        onClick={() => handleSelectOptions('SELECT ALL')}
-                                                        disabled={selectedRuns.length === tableData.length}
-                                                        title='Select all runs.'
-                                                    >
-                                                        Select all
-                                                    </button>
-                                                    <span className='border-r border-[#808080]'></span>
-                                                    <button className={`p-1 ${checkboxStatus.clear ? 'text-[#3561FE]' : 'cursor-not-allowed text-[#808080]'}`}
-                                                        // onClick={() => setSelectedRuns([])}
-                                                        onClick={() => handleSelectOptions('CLEAR')}
-                                                        disabled={selectedRuns.length === 0}
-                                                        title='Deselect all runs.'
-                                                    >
-                                                        Clear
-                                                    </button>
-                                                </div> */}
                                             </th>
 
                                             {/* headers */}
@@ -265,12 +206,11 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 <th key={headerIndex} className={th}>{header}</th>
                                             )}
 
-                                            {/* extend (model parameters) */}
+                                            {/* empty th for extend button  */}
                                             <th className='px-2 border-b border-[#808080]'></th>
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    {/* run -> caseId. so run = historyOfRuns[caseId] */}
                                     {Object.keys(historyOfRuns).map((caseId) =>
                                         <React.Fragment key={caseId}>
                                             <tr>
@@ -278,16 +218,14 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''}`}>
                                                     <div className='flex items-center justify-center'>
                                                         <label className="relative inline-flex items-center cursor-pointer">
-                                                            {/* If the user manually checks a checkbox, it will check. If the user clicks 'Select all', I have to
-                                                            explicitly check the checkbox using 'Checked={}'. This is because 'Select all' just adds all the runs
-                                                            to 'selectedRuns'. It doesn't actually check all the runs in the table.*/}
                                                             <input type="checkbox" className={`appearance-none size-[20px] border-2 rounded
                                                                 peer cursor-pointer hover:border-[#3561FE] checked:bg-[#3561FE] checked:border-[#3561FE]`}
                                                                 checked={selectedRuns.includes(caseId)}
                                                                 onChange={() => handleSelectRun(caseId)}
                                                             />
                                                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none
-                                                            opacity-0 peer-checked:opacity-100">
+                                                                opacity-0 peer-checked:opacity-100"
+                                                            >
                                                                 <img src={checkWhite} alt="check-white.png" />
                                                             </div>
                                                         </label>
@@ -295,14 +233,6 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 </td>
 
                                                 {/* data */}
-                                                {/* {run.map((data, dataIndex) =>
-                                                    // <span>
-                                                        <td key={dataIndex} className={`${td} ${selectedRuns.includes(run) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === runIndex ? 'text-[#3561FE]' : ''}`}>{data}</td>
-                                                    // </span>
-                                                )} */}
-                                                {/* data */}
-                                                {/* {Array.from({ length: 6 }, (_, i) => (
-                                                ))} */}
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{caseId}</td>
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].ngrid.x} x {historyOfRuns[caseId].ngrid.z}</td>
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].forward}</td>
@@ -311,7 +241,6 @@ export default  function HistoryOfRuns({ onClose }) {
                                                 <td className={`${td} ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''} ${expandedRun === caseId ? 'text-[#3561FE]' : ''}`}>{historyOfRuns[caseId].caseFolder}</td>
 
                                                 {/* extend (model parameters) */}
-                                                {/* px-6 py-3 */}
                                                 {/* Dropdown container */}
                                                 <td className={`px-2 border-b border-[#D7DFFF] ${selectedRuns.includes(caseId) ? 'bg-[#F1F4FF]' : ''}`}>
                                                     <div className={`relative size-fit ${selectedRuns.includes(caseId) ? 'hover:bg-[#D7DFFF]': 'hover:bg-[#F1F4FF]'} rounded`}>
@@ -319,14 +248,9 @@ export default  function HistoryOfRuns({ onClose }) {
                                                             onClick={() => setExpandedRun(expandedRun === caseId ? null : caseId)}
                                                         >
                                                         </button>
-                                                        {/* const dropDownIcon = !isOpen ? <img src={dropdown} alt="dropdown.png" className="duration-500" /> : <img src={dropdown} alt="dropdown.png" className="rotate-180 duration-500" /> */}
-                                                        {/* <img src={dropdown} alt="dropdown.png"
-                                                            className={`${expandedRun === runIndex ? 'rotate-180' : ''} duration-500 fill-blue-600`}
-                                                        /> */}
                                                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={`${expandedRun === caseId ? 'rotate-180 fill-[#3561FE]' : ''} duration-500`}>
                                                             <path d="M12.0008 15.2766C11.8674 15.2766 11.7424 15.2557 11.6258 15.2141C11.5091 15.1724 11.4008 15.1016 11.3008 15.0016L6.70078 10.4016C6.51745 10.2182 6.42578 9.9849 6.42578 9.70156C6.42578 9.41823 6.51745 9.1849 6.70078 9.00156C6.88411 8.81823 7.11745 8.72656 7.40078 8.72656C7.68411 8.72656 7.91745 8.81823 8.10078 9.00156L12.0008 12.9016L15.9008 9.00156C16.0841 8.81823 16.3174 8.72656 16.6008 8.72656C16.8841 8.72656 17.1174 8.81823 17.3008 9.00156C17.4841 9.1849 17.5758 9.41823 17.5758 9.70156C17.5758 9.9849 17.4841 10.2182 17.3008 10.4016L12.7008 15.0016C12.6008 15.1016 12.4924 15.1724 12.3758 15.2141C12.2591 15.2557 12.1341 15.2766 12.0008 15.2766Z"/>
                                                         </svg>
-
                                                     </div>
                                                 </td>
                                             </tr>
@@ -335,9 +259,8 @@ export default  function HistoryOfRuns({ onClose }) {
                                             {expandedRun === caseId && (
                                                 <tr>
                                                     <td colSpan={tableHeaders.length + 2} className='bg-[#F4F6FB] border-b border-[#D7DFFF]'>
-                                                        {/* This is where you put your extra details */}
                                                         <div className='flex space-x-6 p-6 size-full'>
-                                                            <div className='flex space-x-6 h-[250px] w-1/2 p-6 
+                                                            <div className='flex space-x-6  w-1/2 p-6 
                                                                 bg-white border border-[#3561FE] rounded-3xl'
                                                             >
                                                                 <div className='size-12 rounded-xl bg-[#EEF9FC] flex items-center justify-center'>
@@ -347,11 +270,12 @@ export default  function HistoryOfRuns({ onClose }) {
                                                                     </svg>
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
-                                                                    <p className='text-base font-semibold'>Forward model parameters</p>
-                                                                    <ModelParametersHOR />
+                                                                    <p className='text-base font-semibold'>Minimization model parameters</p>
+                                                                    <ModelParametersHOR caseId={caseId} model='forward' />
                                                                 </div>
                                                             </div>
-                                                            <div className='flex space-x-6 h-[250px] w-1/2 p-6 
+                                                            {/* h-[250px] */}
+                                                            <div className='flex space-x-6  w-1/2 p-6 
                                                                 bg-white border border-[#3561FE] rounded-3xl'
                                                             >
                                                                 <div className='size-12 rounded-xl bg-[#FEEEF3] flex items-center justify-center'>
@@ -361,8 +285,8 @@ export default  function HistoryOfRuns({ onClose }) {
                                                                     </svg>
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
-                                                                    <p className='text-base font-semibold'>Forward model parameters</p>
-                                                                    <ModelParametersHOR />
+                                                                    <p className='text-base font-semibold'>Minimization model parameters</p>
+                                                                    <ModelParametersHOR caseId={caseId} model='minimization' />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -388,74 +312,9 @@ export default  function HistoryOfRuns({ onClose }) {
                             selectedOutputType === 'Quality metrics' &&
                             <QualityMetricsHOR selectedRuns={selectedRuns} />
                         }
-                        {/* <table className='table-auto'>
-                            <thead>
-                                <tr>
-                                    <th>Run name</th>
-                                    <th>Grid size</th>
-                                    <th>Forward model</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Data Analysis Run - 01-03-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>Integral</td>
-                                </tr>
-                                    <td>Data Analysis Run - 05-07-2023</td>
-                                    <td>62 x 32</td>
-                                    <td>FiniteDifferenceMPI</td>
-                            </tbody>
-                        </table> */}
                     </div>
-                    {/* 873px */}
-
-                    {/* <div className='relative w-[1746px] h-[952px]
-                        bg-white border border-[#D7DFFF] rounded-2xl'
-                    >
-                        <div className='flex items-center justify-between px-6 py-[26px]'>
-                            <H1 heading='Mode:'/>
-                            <button className='hover:bg-[#F1F4FF] duration-200 rounded-md'
-                                onClick={onClose}
-                            >
-                                <img src={closeBig} alt="close-big.png" />
-                            </button>
-                        </div>
-                        <BorderTop />
-
-                        
-                    </div> */}
                 </div>
             </div>
         </>
     )
 }
-
-// Class
-// Properties
-// static	position: static;
-// fixed	position: fixed;
-// absolute	position: absolute;
-// relative	position: relative;
-// sticky
-
-{/* <UpperPart heading='Mode:' styling='px-6 py-4'>
-                        <div className='flex'>
-                            <div>bruh</div>
-                            <div className='flex space-x-6'>
-
-                                <div className="w-[270px] h-12 pl-4 pr-2 py-2 bg-white rounded-xl border border-[#d7dfff] justify-between items-center inline-flex">
-                                    <div className="text-black text-base font-normal font-['Switzer Variable'] leading-normal">Select runs</div>
-                                    <div className="justify-end items-center gap-2 flex">
-                                        <img src={search} alt="search.png" />
-                                    </div>
-                                </div>
-
-                                <button onClick={onClose}
-                                    className='hover:bg-[#F1F4FF] duration-200 rounded-md'
-                                >
-                                    <img src={closeBig} alt="close-big.png" />
-                                </button>
-                            </div>
-                        </div>
-                    </UpperPart> */}
