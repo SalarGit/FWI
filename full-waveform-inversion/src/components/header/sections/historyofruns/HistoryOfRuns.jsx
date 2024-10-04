@@ -2,8 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 
 import { SessionContext } from '../../../../store/session-context';
 
-import { tableData } from '../../../../data';
-
 import checkWhite from '../../../../assets/check-white.png';
 import closeBig from '../../../../assets/close-big.png';
 
@@ -19,10 +17,9 @@ export default function HistoryOfRuns({ onClose }) {
     const { historyOfRuns, updateHistoryOfRuns } = useContext(SessionContext);
 
     const [selectedRuns, setSelectedRuns] = useState([]);
-    const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default could also be put in useEffect with historyOutputTypes[0]
-    const [checkboxStatus, setCheckboxStatus] = useState({selectAll: true, clear: false})
+    const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default could also be put in useEffect with historyOutputTypes[0].
     const [expandedRun, setExpandedRun] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true); // Not in use.
 
     const tableHeaders = [
         // "Select",
@@ -55,41 +52,12 @@ export default function HistoryOfRuns({ onClose }) {
     function handleSelectRun(run) {
         setSelectedRuns((prevSelectedRuns) => {
             if (prevSelectedRuns.includes(run)) {
-                // If run already selected; update select options (if required) & remove run
-                if (prevSelectedRuns.length === tableData.length && checkboxStatus.selectAll !== true) {
-                    setCheckboxStatus((prevStatus) => ({
-                        ...prevStatus, 
-                        selectAll: true
-                    }))
-                }
-                if (prevSelectedRuns.length === 1 && checkboxStatus.clear !== false) {
-                    setCheckboxStatus((prevStatus) => ({
-                        ...prevStatus, 
-                        clear: false
-                    }))
-                }
-
                 return prevSelectedRuns.filter((i) => i !== run)
             } else {
-                // If run not checked, update select options (if required) & add it
-                if (prevSelectedRuns.length === 0 && checkboxStatus.clear !== true) {
-                    setCheckboxStatus((prevStatus) => ({
-                        ...prevStatus, 
-                        clear: true
-                    }))
-                }
-                if (prevSelectedRuns.length + 1 === tableData.length && checkboxStatus.selectAll !== false) {
-                    setCheckboxStatus((prevStatus) => ({
-                        ...prevStatus, 
-                        selectAll: false
-                    }))
-                }
-
                 return [...prevSelectedRuns, run]
             }
         })      
     }
-
 
     function handleAll() {
         if (selectedRuns.length === Object.keys(historyOfRuns).length) { // if all are selected
@@ -98,15 +66,6 @@ export default function HistoryOfRuns({ onClose }) {
             return;
         } // else select all
         setSelectedRuns(Object.keys(historyOfRuns))
-    }
-
-    function handleSelectOutputType(outputType) {
-        // Check if chosen output type is alrdy selected, so that site doesn't refresh unnecessarily.
-        setSelectedOutputType((prev) => {
-            if (prev !== outputType) {
-                return outputType;
-            }
-        });
     }
 
     async function handleDownload() {
