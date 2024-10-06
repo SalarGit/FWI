@@ -390,34 +390,31 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
         if (processes['Pre-processing']) {
             const { error } = await process('generate_dummy_data', caseId[1], 'Pre-processing');
-            
             if (error !== null ) {console.log(`Pre-processing error : ${error}`)};
-
-            if (processes['Processing']) {
-                console.log("Entering process")
-                console.time("Processing Time");
-                await process('train_minimization_model', caseId[1], 'Processing');
-                console.timeEnd("Processing Time");
-
-                if (processes['Post-processing']) {
-                    console.log("Entering post-process")
-                    console.time("Post-processing Time");
-                    await process('post_process', caseId[1], 'Post-processing');
-                    console.timeEnd("Post-processing Time");
-                }
-            }
         }
-        
+        if (processes['Processing']) {
+            console.log("Entering process")
+            const { error } = await process('train_minimization_model', caseId[1], 'Processing');
+            if (error !== null ) {console.log(`Processing error : ${error}`)};
+        }
+        if (processes['Post-processing']) {
+            console.log("Entering post-process")
+            const { error } =  await process('post_process', caseId[1], 'Post-processing');
+            if (error !== null ) {console.log(`Post-processing error : ${error}`)};
+        }
+
         const { successInputChi, input } = await api.fetchInputChiImage(caseId[1]);
         const { successChiEstimate, result } = await api.fetchChiEstimateImage(caseId[1]);
         const { successChiDifference, chiDifference } = await api.fetchChiDifferenceImage(caseId[1]);
         const { successResidual, residual } = await api.fetchResidualImage(caseId[1]);
         const { successMetrics, metrics } = await api.fetchPerformanceMetrics(caseId[1]);
-
+        
+        console.log('bruh2')
         if (successInputChi && successChiEstimate && successChiDifference && successResidual && successMetrics) {
             updateSessionRun(caseId[1], input, result, chiDifference, residual, metrics);
         } 
         removeProgressingRun(caseId[1]);
+        console.log('bruh3')
     }
 
     return (
