@@ -8,9 +8,8 @@ export default defineConfig({
     proxy: {
       // Proxy all requests starting with '/cases' to the backend server
       '/cases': {
-        target: 'http://localhost:3000', // Backend server URL
+        target: 'http://localhost:3000',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/cases/, '/cases'),
       },
     },
   },
