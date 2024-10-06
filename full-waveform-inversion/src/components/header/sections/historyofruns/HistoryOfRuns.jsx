@@ -17,7 +17,7 @@ export default function HistoryOfRuns({ onClose }) {
     const { historyOfRuns, updateHistoryOfRuns } = useContext(SessionContext);
 
     const [selectedRuns, setSelectedRuns] = useState([]);
-    const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default could also be put in useEffect with historyOutputTypes[0].
+    const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default value could also be assigned in useEffect with historyOutputTypes[0].
     const [expandedRun, setExpandedRun] = useState(null);
     const [loading, setLoading] = useState(true); // Not in use.
 
@@ -94,7 +94,10 @@ export default function HistoryOfRuns({ onClose }) {
                                 p-[6px] rounded-xl bg-[#F4F6FB]'
                             >
                                 {historyOutputTypes.map((outputType) =>
-                                // uncomment div & custom tooltip & remove title prop in button for custom tooltip (needs styling)
+                                // For a custom tooltip:
+                                // - Uncomment div below
+                                // - Uncommend custom tooltip
+                                // - Remove title prop in button
                                 // <div className='relative group'>
                                     <> 
                                         <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
