@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react"; // allows us to access the context value
+import React, { useState, useContext, useEffect } from "react"; // allows us to access the context value
 
 import { SessionContext } from "../../../store/session-context";
 

@@ -1,4 +1,4 @@
-import { useContext } from "react"; // allows us to access the context value
+import React, { useContext } from "react"; // allows us to access the context value
 
 import { SessionContext } from "../../store/session-context.jsx";
 

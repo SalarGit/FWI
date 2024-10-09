@@ -41,7 +41,7 @@ export default function HistoryOfRuns({ onClose }) {
 
     useEffect(() => {
         async function getHistory() {
-            const { successHistory, history } = await api.fetchHistoryOfRuns();
+            const { history } = await api.fetchHistoryOfRuns();
             updateHistoryOfRuns(history);
         }
         
