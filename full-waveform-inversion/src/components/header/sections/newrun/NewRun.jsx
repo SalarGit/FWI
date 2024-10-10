@@ -21,7 +21,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
 
     const [zipContent, setZipContent] = useState(null);
     const [zipFileName, setZipFileName] = useState('')
-    const [caseId, setCaseId] = useState([false, '']);
+    const [caseId, setCaseId] = React.useState([false, '']);
     const [minimizationModels, setMinimizationModels] = useState([]);
     const [forwardModels, setForwardModels] = useState([]);
     const [selectedModels, setSelectedModels] = useState({
@@ -217,7 +217,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
     }
 
     async function caseIdExists() {
-        const { success, caseIds, error } = await api.fetchAllCaseIds();
+        const { success, caseIds } = await api.fetchAllCaseIds();
 
         if (success) {
             return caseIds.includes(caseId[1]);

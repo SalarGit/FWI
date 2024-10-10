@@ -99,7 +99,7 @@ export default function HistoryOfRuns({ onClose }) {
                                 // - Uncommend custom tooltip
                                 // - Remove title prop in button
                                 // <div className='relative group'>
-                                    <> 
+                                    <React.Fragment key={outputType}> 
                                         <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
                                             ${isDisabled ? 'cursor-not-allowed' : ''}`}
                                             onClick={() => setSelectedOutputType(outputType)}
@@ -115,7 +115,7 @@ export default function HistoryOfRuns({ onClose }) {
                                         </span>
 
                                         <div className={`group ${isDisabled ? 'pointer-events-none' : ''}`} /> */}
-                                    </>
+                                    </React.Fragment>
                                 // </div>
                                 )}
                             </div>

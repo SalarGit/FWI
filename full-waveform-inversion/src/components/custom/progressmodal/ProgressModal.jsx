@@ -150,7 +150,7 @@ export default function ProgressModal() {
                                 {/* progression bars */}
                                 <div className='flex flex-col space-y-3'>
                                     {Object.keys(progressingRuns).map((progressingRunCaseId) => (
-                                        <ProgressBar caseId={progressingRunCaseId}/>
+                                        <ProgressBar key={progressingRunCaseId} caseId={progressingRunCaseId}/>
                                     ))}
                                 </div>
                             </div>
