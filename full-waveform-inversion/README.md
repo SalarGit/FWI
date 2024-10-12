@@ -6,7 +6,7 @@ This is a React-based front-end that connects to a C++ back-end using a Node.js 
 - [Prerequisites](#prerequisites)
 - [Setup](#setup)
 - [Using a Proxy for Local Development](#using-a-proxy-for-local-development)
-- [Production Considerations](#production-considerations)
+- [Unit Testing](#unit-testing)
 
 ## Prerequisites
 
@@ -31,3 +31,8 @@ To avoid CORS[1] restrictions during local development, this project uses a prox
 ### Footnotes:
 1. CORS (Cross-Origin Resource Sharing) is a security feature implemented by web browsers to prevent malicious websites from making unauthorized requests to a different domain than the one that served the web page.
 
+## Unit Testing
+Unit tests are located in the `./src/fwi.test.js` file. You can run all tests by executing the following command in the root directory:
+    `npm test`
+
+To add more tests, simply extend the `fwi.test.js` file.
