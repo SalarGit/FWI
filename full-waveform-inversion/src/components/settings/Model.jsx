@@ -20,7 +20,7 @@ export default function Model({ model, modelType }) {
                     {currentRun && <ToolTip model={model} />}
                 </div>
             </div>
-            <p className="text-lg font-medium">{modelType}</p>
+            <p className="text-lg font-switzerMedium">{modelType}</p>
         </div>
     )
 }

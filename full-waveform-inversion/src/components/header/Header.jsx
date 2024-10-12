@@ -13,12 +13,12 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
             <div className='flex items-center'>
                 <img src={logo} alt="fwi_logo.png" className="w-11 h-11" />
 
-                <p className='ml-6 text-[44px] font-semibold leading-[56px]'>Full Waveform Inversion</p>
+                <p className='ml-6 text-[44px] font-semibold leading-[56px] font-generalSansSemibold'>Full Waveform Inversion</p>
             </div>
 
             <div className='flex space-x-4'>
                 <div className='relative'>
-                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE]`}
+                    <button className={`w-[200px] h-[56px] border-2 disabled:border-[#B6B7BE] disabled:text-[#B6B7BE] disabled:cursor-not-allowed rounded-xl enabled:border-[#3561FE] enabled:text-[#3561FE] font-generalSansSemibold`}
                         onClick={handleSetHistoryOfRuns}
                         disabled={historyLength === 0}
                     >
@@ -27,7 +27,7 @@ export default function Header({ handleSetAddingNewRun, handleSetHistoryOfRuns }
                 </div>
                 <div className='relative'>
                     <button onClick={handleSetAddingNewRun} 
-                        className='w-[200px] h-[56px] rounded-xl bg-[#3561FE] text-white'
+                        className='w-[200px] h-[56px] rounded-xl bg-[#3561FE] text-white font-generalSansSemibold'
                     >
                         Add new run
                     </button>

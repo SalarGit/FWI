@@ -119,7 +119,7 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
                         // Recursive call for nested objects
                         return (
                             <div key={inputKey} className="col-span-2">
-                                <div className="text-sm font-medium col-span-2 mb-4">{key}</div>
+                                <div className="text-sm col-span-2 mb-4 font-generalSansMedium">{key}</div>
                                 <div>{renderInputs(value, inputKey)}</div>
                             </div>
                         );
@@ -127,7 +127,7 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
                         const initialType = getTypeFromKey(inputKey);
                         return (
                             <div key={inputKey} className='flex flex-col space-y-3'>
-                                <label className="text-[#7f7f7f] font-medium">{key}:</label>
+                                <label className="text-[#7f7f7f] font-generalSansMedium">{key}:</label>
                                 {initialType === 'number' &&
                                     <input
                                         type='text'
@@ -136,7 +136,7 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
                                         onBlur={() => handleBlur(inputKey)}
                                         className="h-[48px] py-3 px-4
                                         rounded-xl border border-[#D7DFFF] 
-                                        text-sm font-normal"
+                                        text-sm font-switzerRegular"
                                     />
                                 }
                                 {initialType === 'string' &&
@@ -206,7 +206,7 @@ export default function EditModelData({ isEditOpen, handleAreOpen, handleModel, 
                             
                             <div className="sticky bottom-0 bg-white rounded-t-xl pb-[10px]">
                                 <button type="submit" className="py-4 bg-[#3561FE] rounded-xl w-full ">
-                                    <p className="text-white font-semibold">Save</p>
+                                    <p className="text-white font-switzerRegular">Save</p>
                                 </button>
                             </div>
                         </div>

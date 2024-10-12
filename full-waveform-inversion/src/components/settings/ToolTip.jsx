@@ -24,9 +24,9 @@ export default function ToolTip({ model }) {
 
     }, [sessionRuns]);
     
-    const header = 'text-sm font-medium col-span-2';
-    const dataKey = 'text-[#7f7f7f] text-sm font-medium';
-    const dataValue = 'text-sm font-normal';
+    const header = 'text-sm font-generalSansMedium col-span-2';
+    const dataKey = 'text-[#7f7f7f] text-sm font-generalSansMedium';
+    const dataValue = 'text-sm font-switzerRegular';
 
     return (
         <div className="absolute w-max top-[33px] p-4 z-10

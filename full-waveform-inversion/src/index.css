@@ -31,3 +31,400 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+
+/**
+* @license
+*
+* Font Family: General Sans
+* Designed by: Frode Helland
+* URL: https://www.fontshare.com/fonts/general-sans
+* © 2024 Indian Type Foundry
+*
+* General Sans Extralight 
+* General Sans ExtralightItalic 
+* General Sans Light 
+* General Sans LightItalic 
+* General Sans Regular 
+* General Sans Italic 
+* General Sans Medium 
+* General Sans MediumItalic 
+* General Sans Semibold 
+* General Sans SemiboldItalic 
+* General Sans Bold 
+* General Sans BoldItalic 
+* General Sans Variable (Variable font)
+* General Sans VariableItalic (Variable font)
+
+*
+*/
+@font-face {
+  font-family: 'GeneralSans-Extralight';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Extralight.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Extralight.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Extralight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-ExtralightItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-ExtralightItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-ExtralightItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-ExtralightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Light';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Light.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Light.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-LightItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-LightItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-LightItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Regular';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Regular.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-Italic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Italic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Italic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Medium';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Medium.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Medium.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-MediumItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-MediumItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-MediumItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Semibold';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Semibold.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Semibold.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-SemiboldItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-SemiboldItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-SemiboldItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-SemiboldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'GeneralSans-Bold';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Bold.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Bold.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GeneralSans-BoldItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-BoldItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-BoldItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 700.0;
+*
+* available axes:
+'wght' (range from 200.0 to 700.0
+*/
+@font-face {
+  font-family: 'GeneralSans-Variable';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-Variable.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Variable.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 700.0;
+*
+* available axes:
+'wght' (range from 200.0 to 700.0
+*/
+@font-face {
+  font-family: 'GeneralSans-VariableItalic';
+  src: url('/src/assets/fonts/GeneralSans/GeneralSans-VariableItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-VariableItalic.woff') format('woff'),
+       url('/src/assets/fonts/GeneralSans/GeneralSans-VariableItalic.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+/**
+* @license
+*
+* Font Family: Switzer
+* Designed by: Jérémie Hornus
+* URL: https://www.fontshare.com/fonts/switzer
+* © 2024 Indian Type Foundry
+*
+* Switzer Thin 
+* Switzer ThinItalic 
+* Switzer Extralight 
+* Switzer ExtralightItalic 
+* Switzer Light 
+* Switzer LightItalic 
+* Switzer Regular 
+* Switzer Italic 
+* Switzer Medium 
+* Switzer MediumItalic 
+* Switzer Semibold 
+* Switzer SemiboldItalic 
+* Switzer Bold 
+* Switzer BoldItalic 
+* Switzer Extrabold 
+* Switzer ExtraboldItalic 
+* Switzer Black 
+* Switzer BlackItalic 
+* Switzer Variable (Variable font)
+* Switzer VariableItalic (Variable font)
+
+*
+*/
+@font-face {
+  font-family: 'Switzer-Thin';
+  src: url('/src/assets/fonts/Switzer/Switzer-Thin.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Thin.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-ThinItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-ThinItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-ThinItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-ThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Extralight';
+  src: url('/src/assets/fonts/Switzer/Switzer-Extralight.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Extralight.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Extralight.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-ExtralightItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-ExtralightItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-ExtralightItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-ExtralightItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Light';
+  src: url('/src/assets/fonts/Switzer/Switzer-Light.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Light.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-LightItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-LightItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-LightItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Regular';
+  src: url('/src/assets/fonts/Switzer/Switzer-Regular.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Regular.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-Italic';
+  src: url('/src/assets/fonts/Switzer/Switzer-Italic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Italic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Medium';
+  src: url('/src/assets/fonts/Switzer/Switzer-Medium.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Medium.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-MediumItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-MediumItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-MediumItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Semibold';
+  src: url('/src/assets/fonts/Switzer/Switzer-Semibold.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Semibold.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-SemiboldItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-SemiboldItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-SemiboldItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-SemiboldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Bold';
+  src: url('/src/assets/fonts/Switzer/Switzer-Bold.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Bold.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-BoldItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-BoldItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-BoldItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Extrabold';
+  src: url('/src/assets/fonts/Switzer/Switzer-Extrabold.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Extrabold.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Extrabold.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-ExtraboldItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-ExtraboldItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-ExtraboldItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-ExtraboldItalic.ttf') format('truetype');
+  font-weight: 800;
+  font-display: swap;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Switzer-Black';
+  src: url('/src/assets/fonts/Switzer/Switzer-Black.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Black.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Switzer-BlackItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-BlackItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-BlackItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-BlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-display: swap;
+  font-style: italic;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0;
+*
+* available axes:
+'wght' (range from 100.0 to 900.0
+*/
+@font-face {
+  font-family: 'Switzer-Variable';
+  src: url('/src/assets/fonts/Switzer/Switzer-Variable.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-Variable.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-Variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+/**
+* This is a variable font
+* You can control variable axes as shown below:
+* font-variation-settings: wght 400.0;
+*
+* available axes:
+'wght' (range from 100.0 to 900.0
+*/
+@font-face {
+  font-family: 'Switzer-VariableItalic';
+  src: url('/src/assets/fonts/Switzer/Switzer-VariableItalic.woff2') format('woff2'),
+       url('/src/assets/fonts/Switzer/Switzer-VariableItalic.woff') format('woff'),
+       url('/src/assets/fonts/Switzer/Switzer-VariableItalic.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: italic;
+}

@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 import * as api from '../api/apiService.js'
 
@@ -80,43 +80,71 @@ export default function SessionContextProvider({ children }) {
             ...prev,
             ...run
         })}),
-        updateProgressingRun: (caseId, process, cpuUsage, currentCount, totalCount) => {
+        updateProgressingRun: (caseId, process, processingSteps, cpuUsage, currentCount, totalCount) => {
             if ((currentCount === undefined || totalCount === undefined) && process !== 'Post-processing') {
                 return;
             }
-
+            
+            function updateProgress(prev, updatedProgress) {
+                return {
+                    ...prev,
+                    [caseId]: {
+                        // ...prev[caseId],
+                        progress: updatedProgress,
+                    }
+                };
+            }
+            
             setProgressingRuns((prev) => {
-                if (process === 'Pre-processing') {
-                    const updatedProgress = Math.floor((currentCount / totalCount) * 13);
-        
-                    return {
-                        ...prev,
-                        [caseId]: {
-                            ...prev[caseId],
-                            progress: updatedProgress,
-                        }
-                    };
-                }  else if (process === 'Processing') {
-                    const updatedProgress = Math.floor(((currentCount / totalCount) * 85) + 13);
-
-                    return {
-                        ...prev,
-                        [caseId]: {
-                            ...prev[caseId],
-                            progress: updatedProgress,
-                        }
+                const containsPreProcessing = processingSteps.includes('Pre-processing');
+                const containsProcessing = processingSteps.includes('Processing');
+                const containsPostProcessing = processingSteps.includes('Post-processing');
+                
+                if (containsPreProcessing && containsProcessing && containsPostProcessing) {
+                    if (process === 'Pre-processing') {
+                        const updatedProgress = Math.floor((currentCount / totalCount) * 13);
+                        return updateProgress(prev, updatedProgress);
+                    } else if (process === 'Processing') {
+                        const updatedProgress = Math.floor(((currentCount / totalCount) * 85) + 13);
+                        return updateProgress(prev, updatedProgress)
+                    } else if (process === 'Post-processing') {
+                        const updatedProgress = prev[caseId].progress + 1;
+                        return updateProgress(prev, updatedProgress);
                     }
-                } else if (process === 'Post-processing') {
-                    const updatedProgress = prev[caseId].progress + 1;
-
-                    return {
-                        ...prev,
-                        [caseId]: {
-                            ...prev[caseId],
-                            progress: updatedProgress,
-                        }
+                } else if (containsPreProcessing && containsProcessing && !containsPostProcessing) {
+                    if (process === 'Pre-processing') {
+                        const updatedProgress = Math.floor((currentCount / totalCount) * 15);
+                        return updateProgress(prev, updatedProgress);
+                    }  else if (process === 'Processing') {
+                        const updatedProgress = Math.floor(((currentCount / totalCount) * 85) + 15);
+                        return updateProgress(prev, updatedProgress);
                     }
-                } 
+                } else if (containsPreProcessing && !containsProcessing && containsPostProcessing) {
+                    if (process === 'Pre-processing') {
+                        const updatedProgress = Math.floor((currentCount / totalCount) * 98);
+                        return updateProgress(prev, updatedProgress);
+                    }  else if (process === 'Post-processing') {
+                        const updatedProgress = prev[caseId].progress + 1;
+                        return updateProgress(prev, updatedProgress);
+                    }
+                } else if (!containsPreProcessing && containsProcessing && containsPostProcessing) {
+                    if (process === 'Processing') {
+                        const updatedProgress = Math.floor((currentCount / totalCount) * 98);
+                        return updateProgress(prev, updatedProgress);
+                    }  else if (process === 'Post-processing') {
+                        const updatedProgress = prev[caseId].progress + 1;
+                        return updateProgress(prev, updatedProgress);
+                    }
+                } else if (containsPreProcessing) {
+                    const updatedProgress = Math.floor((currentCount / totalCount) * 100);
+                    return updateProgress(prev, updatedProgress);
+                } else if (containsProcessing) {
+                    const updatedProgress = Math.floor((currentCount / totalCount) * 100);
+                    return updateProgress(prev, updatedProgress);
+                } else if (containsPostProcessing) {
+                    const updatedProgress = prev[caseId].progress + 50;
+                    return updateProgress(prev, updatedProgress);
+                }
             });
 
             setCpuUsage(Math.floor(cpuUsage));
@@ -132,4 +160,3 @@ export default function SessionContextProvider({ children }) {
         {children}
     </SessionContext.Provider>
 }
-

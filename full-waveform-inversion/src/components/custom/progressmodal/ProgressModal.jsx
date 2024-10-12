@@ -8,6 +8,7 @@ import pinFilled from '../../../assets/pinFilled.svg';
 import seperator from '../../../assets/seperator.svg';
 
 import ProgressBar from './ProgressBar.jsx';
+import ProgressData from "./ProgressData";
 
 export default function ProgressModal() {
     const { progressingRuns, cpuUsage } = useContext(SessionContext);
@@ -19,7 +20,8 @@ export default function ProgressModal() {
     const [hasDragged, setHasDragged] = useState(false);
     const [destination, setDestination] = useState('');
 
-    const progressingRunsLength = Object.keys(progressingRuns).length;
+    // const progressingRunsLength = Object.keys(progressingRuns).length;
+    const progressingRunsLength = progressingRuns ? Object.keys(progressingRuns).length : 0;
 
     const destinations = [
         { id: 'destination1', styles: 'top-9 left-[30px]' },
@@ -120,7 +122,7 @@ export default function ProgressModal() {
                                 {/* header */}
                                 <div className="mb-[22px] relative flex items-center justify-center space-x-1">
                                     <img src={hourglass} alt={hourglass} />
-                                    <p className="font-medium uppercase">CALCULATING...</p>
+                                    <p className="uppercase font-generalSansMedium">CALCULATING...</p>
                                     <button onClick={handleMinimize}
                                         className="absolute right-0 flex items-center justify-center
                                         size-12 rounded-xl hover:bg-[#f1f4ff]"
@@ -131,20 +133,11 @@ export default function ProgressModal() {
 
                                 {/* data */}
                                 <div className='mb-9 flex h-[68px]'>
-                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                        <p className='text-[#7f7f7f] text-sm font-medium'>Time Elapsed</p>
-                                        <p className='font-semibold'>{formatTime(timeElapsed)}</p>
-                                    </div>
+                                    <ProgressData title='Time Elapsed' data={formatTime(timeElapsed)}/>
                                     <div className='border-r border-[#d7dfff]'></div>
-                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                        <p className='text-[#7f7f7f] text-sm font-medium'>Remaining Runs</p>
-                                        <p className='font-semibold'>{progressingRunsLength}</p> {/* -1 because cpu_usage is a key */}
-                                    </div>
+                                    <ProgressData title='Remaining Runs' data={progressingRunsLength}/>
                                     <div className='border-r border-[#d7dfff]'></div>
-                                    <div className='flex flex-col items-center justify-center w-1/3 space-y-2'>
-                                        <p className='text-[#7f7f7f] text-sm font-medium'>CPU Usage</p>
-                                        <p className='font-semibold'>{cpuUsage}%</p>
-                                    </div>
+                                    <ProgressData title='CPU Usage' data={`${cpuUsage}%`}/>
                                 </div>
 
                                 {/* progression bars */}
@@ -179,7 +172,7 @@ export default function ProgressModal() {
                             >
                                 {/* header */}
                                 <div className="relative mb-1">
-                                    <p className="text-center text-sm font-medium text-[#7f7f7f]">Remaining</p>
+                                    <p className="text-center text-sm font-generalSansMedium text-[#7f7f7f]">Remaining</p>
                                     <button onClick={handleMinimize}
                                         className="absolute -right-[6px] -top-[6px] flex items-center justify-center
                                         size-8 rounded-xl hover:bg-[#f1f4ff]"
@@ -190,9 +183,9 @@ export default function ProgressModal() {
 
                                 {/* data */}
                                 <div className="mb-[14px] flex items-center justify-center space-x-4">
-                                    <p className="font-semibold">{remaining[0]} of {remaining[1]}</p>
+                                    <p className="font-generalSansSemibold">{remaining[0]} of {remaining[1]}</p>
                                     <img src={seperator} alt="seperator.svg" />
-                                    <p className="font-semibold">{formatTime(timeElapsed)}</p>
+                                    <p className="font-generalSansSemibold">{formatTime(timeElapsed)}</p>
                                 </div>
 
                                 {/* average progress */}

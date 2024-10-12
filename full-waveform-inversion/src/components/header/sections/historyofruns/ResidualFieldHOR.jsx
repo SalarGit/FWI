@@ -8,7 +8,7 @@ export default function ResidualFieldHOR({ selectedRuns }) {
     const { historyOfRuns } = useContext(SessionContext);
 
     return (
-        <div className="max-h-full overflow-y-auto scrollbar-webkit scrollbar-thin">
+        <div className="max-h-full overflow-auto scrollbar-webkit scrollbar-thin">
             <div className="grid grid-cols-2 gap-6 max-h-full">
                 {selectedRuns.map((caseId) => {
                 const imgSrc = historyOfRuns[caseId]?.chiDifference;
@@ -19,7 +19,7 @@ export default function ResidualFieldHOR({ selectedRuns }) {
                         <BorderBottom />
                         <div className='h-[340px] flex items-center justify-center'>
                             {imgSrc === undefined ? (
-                                <div className='flex flex-col space-y-1 items-center text-[#7f7f7f]'>
+                                <div className='flex flex-col space-y-1 items-center text-[#7f7f7f] font-switzerRegular'>
                                     <p>Run still processing...</p>
                                     <p>Re-open history of runs after '{caseId}' has finished processing.</p>
                                 </div>

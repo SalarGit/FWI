@@ -62,7 +62,7 @@ export default function QualityMetricsHOR({ selectedRuns }) {
                         <BorderBottom />
 
                             {unfinishedRuns.includes(caseId) ? (
-                                <div className='h-[340px] flex flex-col space-y-1 items-center justify-center text-[#7f7f7f]'>
+                                <div className='h-[340px] flex flex-col space-y-1 items-center justify-center text-[#7f7f7f] font-switzerRegular'>
                                     <p>Run still processing...</p>
                                     <p>Re-open history of runs after '{caseId}' has finished processing.</p>
                                 </div>
@@ -82,7 +82,7 @@ export default function QualityMetricsHOR({ selectedRuns }) {
                                     ))}
                                     </div>
                                 ) : (
-                                    <div className='h-[340px] flex flex-col space-y-1 items-center text-[#7f7f7f]'>
+                                    <div className='h-[340px] flex flex-col space-y-1 items-center text-[#7f7f7f] font-switzerRegular'>
                                         <p>No metrics available for this run.</p>
                                     </div>
                                 )

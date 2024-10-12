@@ -6,7 +6,8 @@ export default function SelectBox({ isOpen, onOpenClose, selectedItem }) {
         <button onClick={onOpenClose}
             className="flex items-center justify-between
             w-full h-[48px] pl-4 pr-2
-            border border-[#D7DFFF] rounded-xl"
+            border border-[#D7DFFF] rounded-xl
+            font-switzerRegular"
         >
             <p>{selectedItem}</p>
             {dropDownIcon}

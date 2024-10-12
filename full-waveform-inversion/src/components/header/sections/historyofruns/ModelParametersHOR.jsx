@@ -5,9 +5,9 @@ export default function ModelParametersHOR({ caseId, model }) {
     const { historyOfRuns } = useContext(SessionContext); // Access historyOfRuns from context
     const [groups, setGroups] = useState({ungrouped: [], grouped: []});
 
-    const header = 'text-sm font-medium col-span-2'
-    const dataKey = 'text-sm font-medium text-[#808080]'
-    const dataValue = 'text-sm' 
+    const header = 'text-sm col-span-2 font-generalSansMedium'
+    const dataKey = 'text-sm text-[#808080] font-generalSansMedium'
+    const dataValue = 'text-sm font-switzerRegular' 
 
     const { forwardData, minimizationData } = historyOfRuns[caseId] || {};
     const data = model === 'forward' ? forwardData : minimizationData;

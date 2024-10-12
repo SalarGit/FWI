@@ -21,10 +21,10 @@ export default function Settings({ encodeSpaces }) {
                 {/* Case folder */}
                 <div className="flex flex-col space-y-[34px]
                     border border-[#D7DFFF] rounded-2xl
-                    px-8 pt-8 h-[166px] w-[334px]"
+                    px-8 pt-8 h-[166px] w-[300px]"
                 >
                     <H2 heading="case folder" styling='uppercase'/>
-                    <p className="text-lg font-medium break-all line-clamp-2">
+                    <p className="text-lg font-switzerMedium break-all line-clamp-2">
                         {currentRun ? `/${encodeSpaces(currentRun)}` : '-'}
                     </p>
                 </div>
@@ -48,7 +48,7 @@ export default function Settings({ encodeSpaces }) {
                     <div className="flex space-x-3">
                         {currentRun ? 
                             sessionRuns[currentRun].processingSteps.map((step) => (
-                                <Chip title={step} disabled={true}/>
+                                <Chip key={step} title={step} disabled={true}/>
                             ))
                         :
                             <p className='text-lg font-medium'>-</p>
@@ -62,7 +62,7 @@ export default function Settings({ encodeSpaces }) {
                     px-8 pt-8 pb-[46px] h-[166px] w-[208px]"
                 >
                     <H2 heading="threads/cores:" styling='uppercase'/>
-                    <p className="text-lg font-medium">{currentRun ? sessionRuns[currentRun].threads : '-'}</p>
+                    <p className="text-lg font-switzerMedium">{currentRun ? sessionRuns[currentRun].threads : '-'}</p>
                 </div>
 
             </div>

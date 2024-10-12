@@ -72,8 +72,8 @@ export default function HistoryOfRuns({ onClose }) {
         await api.downloadCaseFolders(selectedRuns);
     }
 
-    const th = 'text-start text-sm font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
-    const td = 'px-6 py-3 border-b border-[#D7DFFF]'
+    const th = 'text-start text-sm font-generalSansVariable font-medium text-[#808080] px-6 py-[12px] border-b border-[#808080]'
+    const td = 'px-6 py-3 border-b border-[#D7DFFF] font-switzerRegular'
 
     return (
         <>
@@ -100,7 +100,7 @@ export default function HistoryOfRuns({ onClose }) {
                                 // - Remove title prop in button
                                 // <div className='relative group'>
                                     <React.Fragment key={outputType}> 
-                                        <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-medium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
+                                        <button title={isDisabled ? 'You need to select at least 1 run.' : undefined} className={`px-3 py-[6px] font-generalSansMedium text-sm ${outputType === selectedOutputType ? 'bg-white rounded-s' : 'text-[#808080]'}
                                             ${isDisabled ? 'cursor-not-allowed' : ''}`}
                                             onClick={() => setSelectedOutputType(outputType)}
                                             disabled={isDisabled}
@@ -121,7 +121,7 @@ export default function HistoryOfRuns({ onClose }) {
                             </div>
                         </div>
                         <div className='flex space-x-6 items-center'>
-                            <button className={`px-4 py-[10px] border rounded-xl 
+                            <button className={`px-4 py-[10px] border rounded-xl font-generalSansMedium
                                 ${selectedRuns.length === 0 ? 'border-[#B6B7BE] text-[#B6B7BE] cursor-not-allowed' : 'border-[#3561fe] text-[#3561fe]'}`}
                                 onClick={handleDownload}
                                 disabled={selectedRuns.length === 0}
@@ -232,7 +232,7 @@ export default function HistoryOfRuns({ onClose }) {
                                                                     </svg>
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
-                                                                    <p className='text-base font-semibold'>Minimization model parameters</p>
+                                                                    <p className='text-base font-generalSansSemibold'>Minimization model parameters</p>
                                                                     <ModelParametersHOR caseId={caseId} model='forward' />
                                                                 </div>
                                                             </div>
@@ -247,7 +247,7 @@ export default function HistoryOfRuns({ onClose }) {
                                                                     </svg>
                                                                 </div>
                                                                 <div className='flex flex-col space-y-6'>
-                                                                    <p className='text-base font-semibold'>Minimization model parameters</p>
+                                                                    <p className='text-base font-generalSansSemibold'>Minimization model parameters</p>
                                                                     <ModelParametersHOR caseId={caseId} model='minimization' />
                                                                 </div>
                                                             </div>

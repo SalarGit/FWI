@@ -7,8 +7,8 @@ export default function Menu({ items, onSelect, filter=undefined}) {
             {
                 items.map((item) => (
                     <button key={item} onClick={() => onSelect(item)}
-                        className="py-2 px-[10px] text-left rounded-md
-                        hover:bg-[#F1F4FF] hover:text-[#3561FE] duration-75" // w-full
+                        className="py-2 px-[10px] text-left rounded-md font-switzerRegular
+                        hover:bg-[#F1F4FF] hover:text-[#3561FE] duration-[25]" // w-full
                     >
                         {filter === undefined ? item : filter(item)}
                     </button>

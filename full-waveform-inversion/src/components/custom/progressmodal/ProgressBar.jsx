@@ -19,8 +19,8 @@ export default function ProgressBar({ caseId }) {
             {!caseId ? (
                 <>
                     <div className="flex space-x-6">
-                        <p className="font-medium">Calculating...</p>
-                        <p className="text-sm font-medium text-[#3561fe]">{progress}</p>
+                        <p className="font-generalSansMedium">Calculating...</p>
+                        <p className="text-sm font-generalSansMedium text-[#3561fe]">{progress}</p>
                     </div>
                     <div className="h-3 border-2 border-[#3561fe] rounded-full">
                         <div className={`bg-[#3561fe] h-full`} style={{ width: `${progress}` }} />
@@ -30,8 +30,8 @@ export default function ProgressBar({ caseId }) {
                 <div className='flex flex-col space-y-3 h-[78px] w-[444px] bg-[#f4f6fb] px-3 py-4 rounded-lg'>
                     {/* header */}
                     <div className='flex justify-between'>
-                        <p className="font-medium">{caseId}</p>
-                        <p className="text-[#3561fe] text-sm font-medium">{progress}</p>
+                        <p className="font-generalSansMedium">{caseId}</p>
+                        <p className="text-[#3561fe] text-sm font-generalSansMedium">{progress}</p>
                     </div>
 
                     {/* bar */}

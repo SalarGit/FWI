@@ -17,7 +17,7 @@ import * as api from '../../../../api/apiService.js'
 import closeBig from '../../../../assets/close-big.png';
 
 export default function NewRun({ onClose, encodeSpaces }) {
-    const { addRunToSession, updateSessionRun, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
+    const { sessionRuns, addRunToSession, updateSessionRun, handleCurrentRun, addProgressingRun, updateProgressingRun, removeProgressingRun } = useContext(SessionContext);
 
     const [zipContent, setZipContent] = useState(null);
     const [zipFileName, setZipFileName] = useState('')
@@ -300,6 +300,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                 }
         
                 if (chunk.length > 0) {
+                    if (process === 'Post-processing') {console.log(chunk)};
                     handleChunk(chunk, process);
                 }
         
@@ -310,8 +311,15 @@ export default function NewRun({ onClose, encodeSpaces }) {
         }
         
         function handleChunk(chunk, process) {
+            const processingSteps = [
+                processes['Pre-processing'] && 'Pre-processing',
+                processes['Processing'] && 'Processing',
+                processes['Post-processing'] && 'Post-processing',
+            ].filter(Boolean)
+
             if (process === 'Post-processing') {
-                updateProgressingRun(caseId[1], process)
+                const parsedChunk = JSON.parse(chunk);
+                updateProgressingRun(caseId[1], process, processingSteps, parsedChunk.cpu_usage)
             }
             
             const jsonObjects = chunk.match(/(\{.*?\})(?=\{|\s*$)/g);
@@ -325,12 +333,10 @@ export default function NewRun({ onClose, encodeSpaces }) {
                             const progressInfo = parsedChunk.progress;
 
                             if (process === 'Pre-processing') {
-                                updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
+                                updateProgressingRun(caseId[1], process, processingSteps, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
                             } else if (process === 'Processing') {
-                                updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
+                                updateProgressingRun(caseId[1], process, processingSteps, parsedChunk.cpu_usage, progressInfo.current_count, progressInfo.total_count)
                             } 
-                        } else if (process === 'Post-processing') {
-                            updateProgressingRun(caseId[1], process, parsedChunk.cpu_usage)
                         }
                     } catch (error) {
                         console.error("Error parsing JSON:", error);
@@ -409,12 +415,10 @@ export default function NewRun({ onClose, encodeSpaces }) {
         const { successResidual, residual } = await api.fetchResidualImage(caseId[1]);
         const { successMetrics, metrics } = await api.fetchPerformanceMetrics(caseId[1]);
         
-        console.log('bruh2')
         if (successInputChi && successChiEstimate && successChiDifference && successResidual && successMetrics) {
             updateSessionRun(caseId[1], input, result, chiDifference, residual, metrics);
         } 
         removeProgressingRun(caseId[1]);
-        console.log('bruh3')
     }
 
     return (
@@ -431,7 +435,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                     }
                     {!caseId[0] &&
                         <div className='flex space-x-1'>
-                        <input className='p-2 border border-[#D7DFFF] rounded-xl bg-white'
+                        <input className='p-2 border border-[#D7DFFF] rounded-xl bg-white font-generalSansRegular'
                             type='text' 
                             placeholder="Enter run name..."
                             value={caseId[1]}
@@ -439,7 +443,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                         >
                         </input>
                         <button onClick={handleConfirmCaseId}
-                            className={`p-2 font-semibold rounded-xl border
+                            className={`p-2 rounded-xl border font-generalSansSemibold
                             ${caseId[1] === '' ? 'text-[#b6b7be] border-[#b6b7be] cursor-not-allowed' : 'text-[#3561FE] border-[#3561FE]'}`}
                             disabled={caseId[1] === ''}
                         >
@@ -471,7 +475,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                                         value={zipFileName}
                                         className={`flex items-center justify-between
                                         w-full h-[48px] pl-4 pr-2
-                                        border border-[#D7DFFF] rounded-xl
+                                        border border-[#D7DFFF] rounded-xl font-switzerRegular
                                         ${!zipFileName ? 'text-[#b6b7be]' : 'text-black'}`}
                                         readOnly
                                     />
@@ -481,17 +485,17 @@ export default function NewRun({ onClose, encodeSpaces }) {
                                 
                                 <div className='flex justify-between pt-1'>
                                     <div className='flex space-x-3'>
-                                        <p className="text-[#7F7F7F] text-sm font-normal">Grid size:</p>
+                                        <p className="text-[#7F7F7F] text-sm font-normal font-switzerRegular">Grid size:</p>
                                         {Object.keys(genericInput).length === 0 
-                                            ? <p className="text-sm font-normal text-[#7F7F7F]">...</p>
-                                            : <p className='text-sm font-normal'>{`${genericInput.ngrid.x} x ${genericInput.ngrid.z}`}</p>
+                                            ? <p className="text-sm font-normal text-[#7F7F7F] font-switzerRegular">...</p>
+                                            : <p className='text-sm font-normal font-switzerRegular'>{`${genericInput.ngrid.x} x ${genericInput.ngrid.z}`}</p>
                                         }
                                     </div>
                                     <div className='flex space-x-3'>
-                                        <p className="text-[#7F7F7F] text-sm font-normal">Subsurface model:</p>
+                                        <p className="text-[#7F7F7F] text-sm font-normal font-switzerRegular">Subsurface model:</p>
                                         {Object.keys(genericInput).length === 0 
-                                            ? <p className="text-sm font-normal text-[#7F7F7F]">...</p>
-                                            : <p className='text-sm font-normal'>{genericInput.fileName}</p>
+                                            ? <p className="text-sm font-normal text-[#7F7F7F] font-switzerRegular">...</p>
+                                            : <p className='text-sm font-normal font-switzerRegular'>{genericInput.fileName}</p>
                                         }
                                     </div>
                                 </div>
@@ -548,7 +552,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                                             <div className='flex space-x-3'>
                                                 <AddSubstract type='substract' handleThreads={() => handleThreads("MINUS")} isDisabled={genericInput.threads === 1} />
                                                 <div className='flex items-center justify-center w-12 h-12
-                                                    bg-white border border-[#D7DFFF] rounded-xl'
+                                                    bg-white border border-[#D7DFFF] rounded-xl font-switzerRegular'
                                                 >
                                                     {genericInput.threads}
                                                 </div>
@@ -562,7 +566,7 @@ export default function NewRun({ onClose, encodeSpaces }) {
                                     <button onClick={handleCalculate}
                                         className="py-4 bg-[#3561FE] rounded-xl"
                                     >
-                                        <p className="text-center text-white font-semibold">
+                                        <p className="text-center text-white font-generalSansSemibold">
                                             Calculate
                                         </p>
                                     </button>

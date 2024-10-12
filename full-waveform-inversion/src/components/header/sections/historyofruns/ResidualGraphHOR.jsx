@@ -19,7 +19,7 @@ export default function ResidualGraphHOR({ selectedRuns }) {
                             <BorderBottom />
                             <div className='h-[340px] flex items-center justify-center'>
                                 {imgSrc === undefined ? (
-                                    <div className='flex flex-col space-y-1 items-center text-[#7f7f7f]'>
+                                    <div className='flex flex-col space-y-1 items-center text-[#7f7f7f] font-switzerRegular'>
                                         <p>Run still processing...</p>
                                         <p>Re-open history of runs after '{caseId}' has finished processing.</p>
                                     </div>
