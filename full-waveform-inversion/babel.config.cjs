@@ -1,22 +1,7 @@
-// export default {
-//     presets: [
-//       ['@babel/preset-env', { targets: { node: 'current' } }],
-//       '@babel/preset-react'
-//     ]
-//   };
-  
-// module.exports = {
-//     presets: [
-//       ['@babel/preset-env', { targets: { node: 'current' } }],
-//       '@babel/preset-react'
-//     ]
-//   };
-
-  module.exports = {
+module.exports = {
     presets: [
-      ['@babel/preset-env', { targets: { node: 'current' } }],
-      ['@babel/preset-react', { runtime: 'automatic' }]  // Add runtime: 'automatic'
+        ['@babel/preset-env', { targets: { node: 'current' } }],
+        ['@babel/preset-react', { runtime: 'automatic' }]  // Add runtime: 'automatic'
     ]
-  };
-  
-  
+};
+

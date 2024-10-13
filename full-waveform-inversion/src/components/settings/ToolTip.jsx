@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect} from 'react';
+import React, { useContext, useState, useEffect} from 'react';
 import { SessionContext } from '../../store/session-context.jsx';
 
 import Border from "../custom/Border.jsx";
@@ -47,8 +47,8 @@ export default function ToolTip({ model }) {
                     {groups.grouped.length > 0 && <Border />}
                     
                     {groups.grouped.map((groupKey, index) => (
-                        <>
-                            <div key={groupKey} className='grid grid-cols-2 gap-4'>
+                        <React.Fragment key={groupKey}>
+                            <div className='grid grid-cols-2 gap-4'>
                                 <p className={header}>{groupKey}</p>
                                 {Object.keys(data[groupKey]).map((key) => (
                                         <div key={key} className='flex flex-col space-y-3'>
@@ -58,7 +58,7 @@ export default function ToolTip({ model }) {
                                 ))}
                             </div>
                             {index < groups.grouped.length - 1 && <Border />}
-                        </>
+                        </React.Fragment>
                     ))}
                 </div>
             }

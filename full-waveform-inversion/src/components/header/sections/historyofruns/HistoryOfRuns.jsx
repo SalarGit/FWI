@@ -19,7 +19,7 @@ export default function HistoryOfRuns({ onClose }) {
     const [selectedRuns, setSelectedRuns] = useState([]);
     const [selectedOutputType, setSelectedOutputType] = useState('Overview'); // Default value could also be assigned in useEffect with historyOutputTypes[0].
     const [expandedRun, setExpandedRun] = useState(null);
-    const [loading, setLoading] = useState(true); // Not in use.
+    const [loading, setLoading] = useState(true); // not in use
 
     const tableHeaders = [
         // "Select",
@@ -43,10 +43,10 @@ export default function HistoryOfRuns({ onClose }) {
         async function getHistory() {
             const { history } = await api.fetchHistoryOfRuns();
             updateHistoryOfRuns(history);
+            setLoading(false);
         }
         
         getHistory();
-        setLoading(false);
     }, []);
 
     function handleSelectRun(run) {

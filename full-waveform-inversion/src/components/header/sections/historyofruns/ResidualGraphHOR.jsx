@@ -14,7 +14,7 @@ export default function ResidualGraphHOR({ selectedRuns }) {
                     const imgSrc = historyOfRuns[caseId]?.residual; // if residual is undefined, so will imgSrc
 
                     return (
-                        <div className="h-[400px] max-w-[838px] bg-white rounded-2xl">
+                        <div key={caseId} className="h-[400px] max-w-[838px] bg-white rounded-2xl">
                             <p className="py-[18px] px-6 font-medium">{caseId}</p>
                             <BorderBottom />
                             <div className='h-[340px] flex items-center justify-center'>

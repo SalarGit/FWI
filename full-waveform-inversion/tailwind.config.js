@@ -7,6 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        // GeneralSans fonts
         generalSansExtralight: ['GeneralSans-Extralight', 'sans-serif'],
         generalSansExtralightItalic: ['GeneralSans-ExtralightItalic', 'sans-serif'],
         generalSansLight: ['GeneralSans-Light', 'sans-serif'],
@@ -43,12 +44,10 @@ export default {
         switzerVariable: ['Switzer-Variable', 'sans-serif'],
         switzerVariableItalic: ['Switzer-VariableItalic', 'sans-serif'],
       },
+      // FWI colors can be set up here
       // colors: {
       //   primary: '#FF5733',
       //   secondary: '#FFFC33',
-      // },
-      // spacing: {
-      //   5: '3.5rem',
       // },
     },
   },
@@ -62,32 +61,13 @@ export default {
               '0%': { transform: 'rotate(0deg)' },
               '100%': { transform: 'rotate(-360deg)' },
             },
-            ".scrollbar-thin" : {
-                // Specifically for firefox, bc firefox doesn't allow much customization
-                // scrollbarWidth : "thin",
-                // scrollbarColor : "rgb(31 29 29) white", // rgb thumb, white drag
-                // borderRadius: "20px"
-            },
             ".scrollbar-webkit": {
                 "&::-webkit-scrollbar" : {
                   width: "8px"
                 },
-                // "&::webkit-scrollbar-button": {
-                //     display: "none"
-                // },
-                // "&::-webkit-scrollbar-track" : {
-                //     background: "white",
-                //     // borderRadius: "20px",
-                // },
-                // "&::-webkit-scrollbar-track:hover" : {
-                //     background: "black"
-                // },
                 "&::-webkit-scrollbar-thumb" : {
                   background: "#c0c0c0",
                   borderRadius: "20px",
-                  // borderRight: "solid 2px transparent",
-                  // backgroundClip: "padding-box",
-                  // border: "1px solid white"
                 },
                 "&::-webkit-scrollbar-thumb:hover" : {
                   background: "#888888"
@@ -98,17 +78,3 @@ export default {
     },
   ],
 }
-// https://stackoverflow.com/questions/21684101/css-vertical-scrollbar-padding-left-right-in-ul-possible
-// https://stackoverflow.com/questions/29866759/how-do-i-add-a-margin-to-a-css-webkit-scrollbar
-// https://stackoverflow.com/questions/9333379/check-if-an-elements-content-is-overflowing
-
-// #f1f1f1;
-// #888888;
-// #c0c0c0;
-
-// Vragen:
-
-// Scrollbar Solutions
-// 1. Check of overflown is en dan vierkant maken met regular scrollbar/
-// 2. Custom scrollbar maken
-
